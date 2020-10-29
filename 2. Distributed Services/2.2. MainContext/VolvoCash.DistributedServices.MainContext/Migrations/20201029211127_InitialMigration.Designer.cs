@@ -10,7 +10,7 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20201029200402_InitialMigration")]
+    [Migration("20201029211127_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,9 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<string>("TPChasis")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
+
+                    b.Property<string>("TPContractBatchNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("TPContractDate")
                         .HasColumnType("datetime2");

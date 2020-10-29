@@ -38,11 +38,9 @@ namespace VolvoCash.Application.MainContext.DTO.Batches
 
         public ClientDTO Client { get; set; }
 
-        public int CardTypeId { get; set; }
-
-        public string CardTPCode { get; set; }
-
         public string TPContractNumber { get; set; }
+
+        public string TPContractBatchNumber { get; set; }
 
         public string TPContractReason { get; set; }
 

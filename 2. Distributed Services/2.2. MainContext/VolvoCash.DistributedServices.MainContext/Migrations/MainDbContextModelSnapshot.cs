@@ -63,6 +63,9 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
+                    b.Property<string>("TPContractBatchNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("TPContractDate")
                         .HasColumnType("datetime2");
 

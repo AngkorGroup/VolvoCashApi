@@ -32,6 +32,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
 
         public string TPContractNumber { get; set; }
 
+        public string TPContractBatchNumber { get; set; }
+
         public string TPReason { get; set; }
 
         [Required]
@@ -61,10 +63,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         {
         }
 
-        public Batch(Money amount, DateTime expire, string tpChasis, DateTime? tpContractDate, string tpInvoiceCode,
+        public Batch(string tpContractBatchNumber,Money amount, DateTime expire, string tpChasis, DateTime? tpContractDate, string tpInvoiceCode,
                     DateTime? tpInvoiceDate, TPContractType tpContractType, string tpContractNumber, string tpContractReason,
                     string dealerCode, string dealerName, string businessCode, string businessDescription)
         {
+            TPContractBatchNumber = tpContractBatchNumber;
             Amount = amount;
             ExpiresAt = expire.Date.AddDays(1);
             ExpiresAtExtent = ExpiresAt;

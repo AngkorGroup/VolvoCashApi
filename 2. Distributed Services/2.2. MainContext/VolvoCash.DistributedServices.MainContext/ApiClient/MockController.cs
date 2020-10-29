@@ -41,19 +41,6 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         #endregion
 
         #region Public Methods
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("mock_card")]
-        public async Task<ActionResult> MockCard(BatchDTO request)
-        {
-            var cardDTO = new CardDTO()
-            {
-                CardTypeId = request.CardTypeId,
-                TPCode = request.CardTPCode
-            };
-            var batch = await _loadAppService.PerformLoadAsync(request.Client, request.Client.MainContact, cardDTO, request);
-            return Ok(batch);
-        }
 
         [HttpPost]
         [AllowAnonymous]

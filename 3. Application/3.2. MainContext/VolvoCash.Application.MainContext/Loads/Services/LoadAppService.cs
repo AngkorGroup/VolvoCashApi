@@ -133,6 +133,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     TPInvoiceCode = invoiceDocumentNumber,
                     TPContractType = contractType,
                     TPContractNumber = contractNumber,
+                    TPContractBatchNumber = batchTPCode,
                     DealerCode = dealerCode,
                     DealerName = dealerName,
                     BusinessCode = businessCode,
@@ -225,8 +226,10 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             batchDTO.TPContractReason += " " + batchReason;
             var expire = DateTime.Now.AddDays(cardType.Term);
             var batch = new Batch(
+                batchDTO.TPContractBatchNumber,
                 new Money(batchDTO.Amount.Currency, batchDTO.Amount.Value),
-                expire, batchDTO.TPChasis,
+                expire, 
+                batchDTO.TPChasis,
                 batchDTO.TPContractDate,
                 batchDTO.TPInvoiceCode,
                 batchDTO.TPInvoiceDate,

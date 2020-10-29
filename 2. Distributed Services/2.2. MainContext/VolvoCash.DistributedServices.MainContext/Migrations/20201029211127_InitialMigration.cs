@@ -135,6 +135,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     TPInvoiceDate = table.Column<DateTime>(nullable: true),
                     TPInvoiceCode = table.Column<string>(nullable: true),
                     TPContractNumber = table.Column<string>(nullable: true),
+                    TPContractBatchNumber = table.Column<string>(nullable: true),
                     TPReason = table.Column<string>(nullable: true),
                     TPContractType = table.Column<int>(nullable: false),
                     DealerCode = table.Column<string>(nullable: true),
