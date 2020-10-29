@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="UnitOfWork\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\4. Domain\4.1. Seedwork\VolvoCash.Domain.Seedwork\VolvoCash.Domain.Seedwork.csproj" />
+    <ProjectReference Include="..\..\..\6. CrossCutting\VolvoCash.CrossCutting.NetFramework\VolvoCash.CrossCutting.NetFramework.csproj" />
+    <ProjectReference Include="..\..\..\6. CrossCutting\VolvoCash.CrossCutting\VolvoCash.CrossCutting.csproj" />
+  </ItemGroup>
+</Project>

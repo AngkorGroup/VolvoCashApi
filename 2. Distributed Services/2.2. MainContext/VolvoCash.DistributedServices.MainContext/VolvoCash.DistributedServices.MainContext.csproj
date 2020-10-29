@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'VolvoCashAPI' " />
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <Compile Remove="fonts\**" />
+    <Compile Remove="wwwwroot\**" />
+    <Content Remove="bin\**" />
+    <Content Remove="fonts\**" />
+    <Content Remove="wwwwroot\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="fonts\**" />
+    <EmbeddedResource Remove="wwwwroot\**" />
+    <None Remove="bin\**" />
+    <None Remove="fonts\**" />
+    <None Remove="wwwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Startup.cs~RF4dec0c3.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.2.2" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Selenium.Chrome.WebDriver" Version="85.0.0" />
+    <PackageReference Include="Selenium.Support" Version="3.141.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\3. Application\3.2. MainContext\VolvoCash.Application.MainContext.DTO\VolvoCash.Application.MainContext.DTO.csproj" />
+    <ProjectReference Include="..\..\..\3. Application\3.2. MainContext\VolvoCash.Application.MainContext\VolvoCash.Application.MainContext.csproj" />
+    <ProjectReference Include="..\..\..\5. Data\5.2. MainContext\VolvoCash.Data.MainContext\VolvoCash.Data.MainContext.csproj" />
+    <ProjectReference Include="..\..\..\6. CrossCutting\VolvoCash.CrossCutting.NetFramework\VolvoCash.CrossCutting.NetFramework.csproj" />
+    <ProjectReference Include="..\..\2.1. Seedwork\VolvoCash.DistributedServices.Seedwork\VolvoCash.DistributedServices.Seedwork.csproj" />
+    <ProjectReference Include="..\..\..\4. Domain\4.2. MainContext\VolvoCash.Domain.MainContext\VolvoCash.Domain.MainContext.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+</Project>

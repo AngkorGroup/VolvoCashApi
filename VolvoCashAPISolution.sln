@@ -1,0 +1,175 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentation", "1. Presentation", "{3DD0D113-D4DA-4381-B947-11529426D031}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Distributed Services", "2. Distributed Services", "{33D99130-CF9D-492C-BDAE-0D4027C1D60F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Application", "3. Application", "{0D087D65-FE56-4C94-B61C-769D58B4B948}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Domain", "4. Domain", "{38A62996-5CAD-4AB7-9573-03C51649AF22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.1. Seedwork", "2.1. Seedwork", "{40521CDC-86FC-4F1D-80B0-1171107C0BB0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.2. MainContext", "2.2. MainContext", "{AF2DF490-F1D6-4740-A760-E93F71108608}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.1. Seedwork", "3.1. Seedwork", "{F24574D3-E081-4007-978E-405127E2150D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.2. MainContext", "3.2. MainContext", "{A7B04457-CF3D-4871-969E-D427778352ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Application.MainContext", "3. Application\3.2. MainContext\VolvoCash.Application.MainContext\VolvoCash.Application.MainContext.csproj", "{DC22B2D4-6F11-47E1-8A56-8C78D3AD0493}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1. Seedwork", "4.1. Seedwork", "{AD009602-F75B-43FF-A8AE-08FBCEB3F229}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2. MainContext", "4.2. MainContext", "{291A6B20-7BE7-47BE-8268-0A8800DD8EA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Data", "5. Data", "{E47DF57D-020C-45CB-85F4-DC34B9071D8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6. CrossCutting", "6. CrossCutting", "{1831A50F-1E35-4470-A7A5-9AAF00ACB214}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.1 Seedwork", "5.1 Seedwork", "{E1197D54-F297-4FDF-BA11-0E591C1FEC71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.2 MainContext", "5.2 MainContext", "{BAAF4A0B-A837-403E-86EB-148C6AE26CA4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Data.Seedwork", "5. Data\5.1. Seedwork\VolvoCash.Data.Seedwork\VolvoCash.Data.Seedwork.csproj", "{E1581841-872A-426A-994C-45EE81BF4BE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Data.MainContext", "5. Data\5.2. MainContext\VolvoCash.Data.MainContext\VolvoCash.Data.MainContext.csproj", "{2CA57FD3-61B9-403F-AEFD-FBDA70BF15CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Data.MainContext.Tests", "5. Data\5.2. MainContext\VolvoCash.Data.MainContext.Tests\VolvoCash.Data.MainContext.Tests.csproj", "{455F8976-BD0A-40BF-AF51-4587DCC653E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.CrossCutting", "6. CrossCutting\VolvoCash.CrossCutting\VolvoCash.CrossCutting.csproj", "{DA0A9141-AE02-4CD8-ADFB-E71997634AE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.CrossCutting.NetFramework", "6. CrossCutting\VolvoCash.CrossCutting.NetFramework\VolvoCash.CrossCutting.NetFramework.csproj", "{4049DBF1-8A84-41FC-A412-59D2021F476D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.CrossCutting.Tests", "6. CrossCutting\VolvoCash.CrossCutting.Tests\VolvoCash.CrossCutting.Tests.csproj", "{C2AA670F-D37B-40FE-B33E-DFF8C86C2540}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.DistributedServices.Seedwork", "2. Distributed Services\2.1. Seedwork\VolvoCash.DistributedServices.Seedwork\VolvoCash.DistributedServices.Seedwork.csproj", "{426C0232-9AED-489E-8977-1BB26C168FB3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.DistributedServices.MainContext", "2. Distributed Services\2.2. MainContext\VolvoCash.DistributedServices.MainContext\VolvoCash.DistributedServices.MainContext.csproj", "{4CBF21F3-5F33-40FB-9AAB-ADAD3CD26466}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.DistributedServices.MainContext.Tests", "2. Distributed Services\2.2. MainContext\VolvoCash.DistributedServices.MainContext.Tests\VolvoCash.DistributedServices.MainContext.Tests.csproj", "{6AF266E8-E6F5-4EEB-AA60-FC6B0A3440B7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Application.Seedwork", "3. Application\3.1. Seedwork\VolvoCash.Application.Seedwork\VolvoCash.Application.Seedwork.csproj", "{F3339DD9-ACC2-406F-A761-85CC9331AAC0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Application.MainContext.DTO", "3. Application\3.2. MainContext\VolvoCash.Application.MainContext.DTO\VolvoCash.Application.MainContext.DTO.csproj", "{C12FA465-A2CE-421F-AE8D-3FB0B1E0DC32}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Application.MainContext.Tests", "3. Application\3.2. MainContext\VolvoCash.Application.MainContext.Tests\VolvoCash.Application.MainContext.Tests.csproj", "{5388CBF2-D058-4FC8-9B5C-1A1CE9287A1A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Domain.Seedwork", "4. Domain\4.1. Seedwork\VolvoCash.Domain.Seedwork\VolvoCash.Domain.Seedwork.csproj", "{0838F303-9D4A-496B-90F0-97175FBDCA20}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Domain.Seedwork.Tests", "4. Domain\4.1. Seedwork\VolvoCash.Domain.Seedwork.Tests\VolvoCash.Domain.Seedwork.Tests.csproj", "{6D1F918B-95DD-4CAC-82C4-4634B2C51183}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Domain.MainContext", "4. Domain\4.2. MainContext\VolvoCash.Domain.MainContext\VolvoCash.Domain.MainContext.csproj", "{FB30CE2E-4418-4236-9FDE-3E31DC79975C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolvoCash.Domain.MainContext.Tests", "4. Domain\4.2. MainContext\VolvoCash.Domain.MainContext.Tests\VolvoCash.Domain.MainContext.Tests.csproj", "{A6CA7BDE-B327-456F-B203-B88EFEF965F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC22B2D4-6F11-47E1-8A56-8C78D3AD0493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC22B2D4-6F11-47E1-8A56-8C78D3AD0493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC22B2D4-6F11-47E1-8A56-8C78D3AD0493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC22B2D4-6F11-47E1-8A56-8C78D3AD0493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1581841-872A-426A-994C-45EE81BF4BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1581841-872A-426A-994C-45EE81BF4BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1581841-872A-426A-994C-45EE81BF4BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1581841-872A-426A-994C-45EE81BF4BE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CA57FD3-61B9-403F-AEFD-FBDA70BF15CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CA57FD3-61B9-403F-AEFD-FBDA70BF15CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CA57FD3-61B9-403F-AEFD-FBDA70BF15CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CA57FD3-61B9-403F-AEFD-FBDA70BF15CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455F8976-BD0A-40BF-AF51-4587DCC653E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455F8976-BD0A-40BF-AF51-4587DCC653E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455F8976-BD0A-40BF-AF51-4587DCC653E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455F8976-BD0A-40BF-AF51-4587DCC653E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA0A9141-AE02-4CD8-ADFB-E71997634AE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA0A9141-AE02-4CD8-ADFB-E71997634AE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA0A9141-AE02-4CD8-ADFB-E71997634AE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA0A9141-AE02-4CD8-ADFB-E71997634AE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4049DBF1-8A84-41FC-A412-59D2021F476D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4049DBF1-8A84-41FC-A412-59D2021F476D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4049DBF1-8A84-41FC-A412-59D2021F476D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4049DBF1-8A84-41FC-A412-59D2021F476D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2AA670F-D37B-40FE-B33E-DFF8C86C2540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2AA670F-D37B-40FE-B33E-DFF8C86C2540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2AA670F-D37B-40FE-B33E-DFF8C86C2540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2AA670F-D37B-40FE-B33E-DFF8C86C2540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426C0232-9AED-489E-8977-1BB26C168FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426C0232-9AED-489E-8977-1BB26C168FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426C0232-9AED-489E-8977-1BB26C168FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426C0232-9AED-489E-8977-1BB26C168FB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CBF21F3-5F33-40FB-9AAB-ADAD3CD26466}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CBF21F3-5F33-40FB-9AAB-ADAD3CD26466}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CBF21F3-5F33-40FB-9AAB-ADAD3CD26466}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CBF21F3-5F33-40FB-9AAB-ADAD3CD26466}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AF266E8-E6F5-4EEB-AA60-FC6B0A3440B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AF266E8-E6F5-4EEB-AA60-FC6B0A3440B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AF266E8-E6F5-4EEB-AA60-FC6B0A3440B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AF266E8-E6F5-4EEB-AA60-FC6B0A3440B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3339DD9-ACC2-406F-A761-85CC9331AAC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3339DD9-ACC2-406F-A761-85CC9331AAC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3339DD9-ACC2-406F-A761-85CC9331AAC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3339DD9-ACC2-406F-A761-85CC9331AAC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C12FA465-A2CE-421F-AE8D-3FB0B1E0DC32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C12FA465-A2CE-421F-AE8D-3FB0B1E0DC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C12FA465-A2CE-421F-AE8D-3FB0B1E0DC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C12FA465-A2CE-421F-AE8D-3FB0B1E0DC32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5388CBF2-D058-4FC8-9B5C-1A1CE9287A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5388CBF2-D058-4FC8-9B5C-1A1CE9287A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5388CBF2-D058-4FC8-9B5C-1A1CE9287A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5388CBF2-D058-4FC8-9B5C-1A1CE9287A1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0838F303-9D4A-496B-90F0-97175FBDCA20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0838F303-9D4A-496B-90F0-97175FBDCA20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0838F303-9D4A-496B-90F0-97175FBDCA20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0838F303-9D4A-496B-90F0-97175FBDCA20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D1F918B-95DD-4CAC-82C4-4634B2C51183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D1F918B-95DD-4CAC-82C4-4634B2C51183}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D1F918B-95DD-4CAC-82C4-4634B2C51183}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D1F918B-95DD-4CAC-82C4-4634B2C51183}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB30CE2E-4418-4236-9FDE-3E31DC79975C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB30CE2E-4418-4236-9FDE-3E31DC79975C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB30CE2E-4418-4236-9FDE-3E31DC79975C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB30CE2E-4418-4236-9FDE-3E31DC79975C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6CA7BDE-B327-456F-B203-B88EFEF965F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6CA7BDE-B327-456F-B203-B88EFEF965F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6CA7BDE-B327-456F-B203-B88EFEF965F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6CA7BDE-B327-456F-B203-B88EFEF965F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{40521CDC-86FC-4F1D-80B0-1171107C0BB0} = {33D99130-CF9D-492C-BDAE-0D4027C1D60F}
+		{AF2DF490-F1D6-4740-A760-E93F71108608} = {33D99130-CF9D-492C-BDAE-0D4027C1D60F}
+		{F24574D3-E081-4007-978E-405127E2150D} = {0D087D65-FE56-4C94-B61C-769D58B4B948}
+		{A7B04457-CF3D-4871-969E-D427778352ED} = {0D087D65-FE56-4C94-B61C-769D58B4B948}
+		{DC22B2D4-6F11-47E1-8A56-8C78D3AD0493} = {A7B04457-CF3D-4871-969E-D427778352ED}
+		{AD009602-F75B-43FF-A8AE-08FBCEB3F229} = {38A62996-5CAD-4AB7-9573-03C51649AF22}
+		{291A6B20-7BE7-47BE-8268-0A8800DD8EA8} = {38A62996-5CAD-4AB7-9573-03C51649AF22}
+		{E1197D54-F297-4FDF-BA11-0E591C1FEC71} = {E47DF57D-020C-45CB-85F4-DC34B9071D8D}
+		{BAAF4A0B-A837-403E-86EB-148C6AE26CA4} = {E47DF57D-020C-45CB-85F4-DC34B9071D8D}
+		{E1581841-872A-426A-994C-45EE81BF4BE6} = {E1197D54-F297-4FDF-BA11-0E591C1FEC71}
+		{2CA57FD3-61B9-403F-AEFD-FBDA70BF15CF} = {BAAF4A0B-A837-403E-86EB-148C6AE26CA4}
+		{455F8976-BD0A-40BF-AF51-4587DCC653E2} = {BAAF4A0B-A837-403E-86EB-148C6AE26CA4}
+		{DA0A9141-AE02-4CD8-ADFB-E71997634AE2} = {1831A50F-1E35-4470-A7A5-9AAF00ACB214}
+		{4049DBF1-8A84-41FC-A412-59D2021F476D} = {1831A50F-1E35-4470-A7A5-9AAF00ACB214}
+		{C2AA670F-D37B-40FE-B33E-DFF8C86C2540} = {1831A50F-1E35-4470-A7A5-9AAF00ACB214}
+		{426C0232-9AED-489E-8977-1BB26C168FB3} = {40521CDC-86FC-4F1D-80B0-1171107C0BB0}
+		{4CBF21F3-5F33-40FB-9AAB-ADAD3CD26466} = {AF2DF490-F1D6-4740-A760-E93F71108608}
+		{6AF266E8-E6F5-4EEB-AA60-FC6B0A3440B7} = {AF2DF490-F1D6-4740-A760-E93F71108608}
+		{F3339DD9-ACC2-406F-A761-85CC9331AAC0} = {F24574D3-E081-4007-978E-405127E2150D}
+		{C12FA465-A2CE-421F-AE8D-3FB0B1E0DC32} = {A7B04457-CF3D-4871-969E-D427778352ED}
+		{5388CBF2-D058-4FC8-9B5C-1A1CE9287A1A} = {A7B04457-CF3D-4871-969E-D427778352ED}
+		{0838F303-9D4A-496B-90F0-97175FBDCA20} = {AD009602-F75B-43FF-A8AE-08FBCEB3F229}
+		{6D1F918B-95DD-4CAC-82C4-4634B2C51183} = {AD009602-F75B-43FF-A8AE-08FBCEB3F229}
+		{FB30CE2E-4418-4236-9FDE-3E31DC79975C} = {291A6B20-7BE7-47BE-8268-0A8800DD8EA8}
+		{A6CA7BDE-B327-456F-B203-B88EFEF965F0} = {291A6B20-7BE7-47BE-8268-0A8800DD8EA8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76EB1A0E-8CA8-4D64-B3F5-BD594429100F}
+	EndGlobalSection
+EndGlobal

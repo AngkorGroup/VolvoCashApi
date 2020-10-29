@@ -1,0 +1,24 @@
+
+{
+    "region" : "us-east-2",
+    "configuration" : "Debug",
+    "framework"     : "netcoreapp3.1",
+    "self-contained" : false,
+    "application"    : "VolvoCashApi",
+    "environment"    : "VolvoCashApi-dev1",
+    "enable-xray"    : true,
+    "enhanced-health-type" : "basic",
+    "additional-options"   : "",
+    "proxy-server"         : "nginx",
+    "profile"              : "angkor-dev",
+    "cname"                : "volvocashapi-stage",
+    "solution-stack"       : "64bit Windows Server Core 2019 v2.5.10 running IIS 10.0",
+    "environment-type"     : "SingleInstance",
+    "instance-profile"     : "aws-elasticbeanstalk-ec2-role",
+    "service-role"         : "aws-elasticbeanstalk-service-role",
+    "health-check-url"     : "/",
+    "instance-type"        : "t2.micro",
+    "key-pair"             : "",
+    "iis-website"          : "Default Web Site",
+    "app-path"             : "/"
+}

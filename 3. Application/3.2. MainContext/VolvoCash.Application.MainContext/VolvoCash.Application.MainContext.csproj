@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\4. Domain\4.2. MainContext\VolvoCash.Domain.MainContext\VolvoCash.Domain.MainContext.csproj" />
+    <ProjectReference Include="..\..\..\6. CrossCutting\VolvoCash.CrossCutting.NetFramework\VolvoCash.CrossCutting.NetFramework.csproj" />
+    <ProjectReference Include="..\..\3.1. Seedwork\VolvoCash.Application.Seedwork\VolvoCash.Application.Seedwork.csproj" />
+    <ProjectReference Include="..\VolvoCash.Application.MainContext.DTO\VolvoCash.Application.MainContext.DTO.csproj" />
+  </ItemGroup>
+
+</Project>
