@@ -40,7 +40,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         public async Task<ActionResult> AddContact(ContactDTO request)
         {
             //TODO VALIDAR QUE EL TELEFONO SEA VALIDO
-            request.ContactParent = new ContactDTO() { Phone = _applicationUser.GetUserName() };
+            request.ContactParent = new ContactListDTO() { Phone = _applicationUser.GetUserName() };
             var contact = await _contactAppService.AddContact(request);
             return Ok(contact);
         }

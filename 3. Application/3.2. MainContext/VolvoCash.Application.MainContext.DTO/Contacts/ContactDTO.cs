@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections;
+using System.Collections.Generic;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Contacts
@@ -33,11 +34,11 @@ namespace VolvoCash.Application.MainContext.DTO.Contacts
 
         public int ClientId { get; set; }
 
-        public ICollection ContactChildren { get; set; }
+        public ICollection<ContactListDTO> ContactChildren { get; set; }
 
         public int? ContactParentId { get; set; }
 
-        public ContactDTO ContactParent { get; set; }
+        public ContactListDTO ContactParent { get; set; }
 
         public int UserId { get; set; }
         #endregion

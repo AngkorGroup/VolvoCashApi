@@ -51,11 +51,19 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         [ForeignKey("Client")]
         public int ClientId { get; set; }
 
-        public virtual Client Client { get; }
+        public virtual Client Client { get; set; }
+
+        [ForeignKey("CardType")]
+        public int? CardTypeId { get; set; }
+
+        public virtual CardType CardType { get; set; }
 
         public virtual ICollection<BatchMovement> BatchMovements { get; } = new List<BatchMovement>();
 
         public virtual ICollection<CardBatch> CardBatches { get; } = new List<CardBatch>();
+
+        [MaxLength(4000)]
+        public string LineContent { get; set; }
         #endregion
 
         #region Constructor
@@ -65,7 +73,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
 
         public Batch(string tpContractBatchNumber,Money amount, DateTime expire, string tpChasis, DateTime? tpContractDate, string tpInvoiceCode,
                     DateTime? tpInvoiceDate, TPContractType tpContractType, string tpContractNumber, string tpContractReason,
-                    string dealerCode, string dealerName, string businessCode, string businessDescription)
+                    string dealerCode, string dealerName, string businessCode, string businessDescription,
+                    int cardTypeId,string lineContent)
         {
             TPContractBatchNumber = tpContractBatchNumber;
             Amount = amount;
@@ -82,6 +91,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
             DealerName = dealerName;
             BusinessCode = businessCode;
             BusinessDescription = businessDescription;
+            CardTypeId = cardTypeId;
+            LineContent = lineContent;
         }
         #endregion
     }

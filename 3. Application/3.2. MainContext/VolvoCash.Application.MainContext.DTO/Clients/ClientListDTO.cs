@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Clients
@@ -22,6 +23,8 @@ namespace VolvoCash.Application.MainContext.DTO.Clients
         public Status Status { get; set; }
 
         public DateTime? ArchiveAt { get; set; }
+
+        public ContactListDTO MainContact { get; set; }
         #endregion
     }
 }

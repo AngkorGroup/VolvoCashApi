@@ -8,6 +8,26 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "BatchErrors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedAt = table.Column<DateTime>(nullable: true),
+                    RowIndex = table.Column<int>(nullable: false),
+                    ErrorMessage = table.Column<string>(maxLength: 300, nullable: true),
+                    FileName = table.Column<string>(maxLength: 300, nullable: true),
+                    LineContent = table.Column<string>(maxLength: 4000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BatchErrors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CardTypes",
                 columns: table => new
                 {
@@ -142,11 +162,19 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     DealerName = table.Column<string>(nullable: true),
                     BusinessCode = table.Column<string>(nullable: true),
                     BusinessDescription = table.Column<string>(nullable: true),
-                    ClientId = table.Column<int>(nullable: false)
+                    ClientId = table.Column<int>(nullable: false),
+                    CardTypeId = table.Column<int>(nullable: true),
+                    LineContent = table.Column<string>(maxLength: 4000, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Batches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Batches_CardTypes_CardTypeId",
+                        column: x => x.CardTypeId,
+                        principalTable: "CardTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Batches_Clients_ClientId",
                         column: x => x.ClientId,
@@ -489,6 +517,11 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Batches_CardTypeId",
+                table: "Batches",
+                column: "CardTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Batches_ClientId",
                 table: "Batches",
                 column: "ClientId");
@@ -588,6 +621,9 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Admins");
+
+            migrationBuilder.DropTable(
+                name: "BatchErrors");
 
             migrationBuilder.DropTable(
                 name: "BatchMovements");

@@ -21,15 +21,29 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         {
             _loadAppService = loadAppService;
         }
-        #endregion        
+        #endregion
 
         #region Public Methods
+        [HttpGet]
+        public async Task<ActionResult> GetLoads()
+        {
+            var loads = await _loadAppService.GetLoads();
+            return Ok(loads);
+        }
+
+        [HttpGet("errors")]
+        public async Task<ActionResult> GetErrorLoads()
+        {
+            var loads = await _loadAppService.GetErrorLoads();
+            return Ok(loads);
+        }
+
         [HttpPost]
         public async Task<ActionResult> PerformLoad()
         {
-            var file = Request.Form.Files["file"]?.OpenReadStream();
-            var errors = await _loadAppService.PerformLoadsFromFileStreamAsync(file);
-            return Ok(errors);
+            var file = Request.Form.Files["file"];
+            var batchErrors = await _loadAppService.PerformLoadsFromFileStreamAsync(file?.FileName, file?.OpenReadStream());
+            return Ok(batchErrors);
         }
         #endregion
     }

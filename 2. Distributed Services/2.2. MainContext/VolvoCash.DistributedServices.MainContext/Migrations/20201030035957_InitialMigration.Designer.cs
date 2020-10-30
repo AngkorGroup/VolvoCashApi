@@ -10,7 +10,7 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20201029211127_InitialMigration")]
+    [Migration("20201030035957_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                     b.Property<string>("BusinessDescription")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CardTypeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -61,6 +64,10 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LineContent")
+                        .HasColumnType("nvarchar(4000)")
+                        .HasMaxLength(4000);
+
                     b.Property<string>("TPChasis")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -88,9 +95,50 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CardTypeId");
+
                     b.HasIndex("ClientId");
 
                     b.ToTable("Batches");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BatchAgg.BatchError", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LineContent")
+                        .HasColumnType("nvarchar(4000)")
+                        .HasMaxLength(4000);
+
+                    b.Property<int>("RowIndex")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BatchErrors");
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BatchAgg.BatchMovement", b =>
@@ -795,7 +843,11 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BatchAgg.Batch", b =>
                 {
-                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.ClientAgg.Client", null)
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.CardAgg.CardType", "CardType")
+                        .WithMany()
+                        .HasForeignKey("CardTypeId");
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.ClientAgg.Client", "Client")
                         .WithMany("Batches")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -21,4 +21,8 @@
     <ProjectReference Include="..\..\3.1. Seedwork\VolvoCash.Application.Seedwork\VolvoCash.Application.Seedwork.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Loads\" />
+  </ItemGroup>
+
 </Project>

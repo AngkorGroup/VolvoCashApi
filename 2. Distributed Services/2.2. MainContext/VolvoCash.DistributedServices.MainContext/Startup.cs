@@ -30,6 +30,7 @@ using VolvoCash.Data.MainContext;
 using VolvoCash.Data.MainContext.Repositories;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Settings;
+using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
@@ -127,6 +128,8 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IChargeRepository, ChargeRepository>();
             services.AddScoped<ICashierRepository, CashierRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IBatchRepository, BatchRepository>();
+            services.AddScoped<IBatchErrorRepository, BatchErrorRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();
