@@ -37,6 +37,7 @@ msbuild.wrn
 .vs/
 
 # ignore appsettings configuration files
+**/appsettings.Local.json
 **/appsettings.Development.json
 **/appsettings.Staging.json
 **/appsettings.Production.json

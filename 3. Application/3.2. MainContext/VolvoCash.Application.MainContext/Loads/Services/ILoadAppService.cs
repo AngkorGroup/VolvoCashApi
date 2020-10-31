@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Batches;
 using VolvoCash.Application.MainContext.DTO.Cards;

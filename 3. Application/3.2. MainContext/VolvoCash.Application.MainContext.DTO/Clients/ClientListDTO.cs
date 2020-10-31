@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Clients
@@ -21,7 +22,8 @@ namespace VolvoCash.Application.MainContext.DTO.Clients
         [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }
 
-        public DateTime? ArchiveAt { get; set; }
+        [JsonConverter(typeof(DefaultShortLiterallyDateConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
     }
 }

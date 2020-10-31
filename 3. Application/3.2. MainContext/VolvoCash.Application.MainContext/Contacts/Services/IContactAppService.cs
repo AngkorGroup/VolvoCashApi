@@ -17,5 +17,9 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         Task<List<ContactListDTO>> GetContacts(string query, int pageIndex, int pageLength);
         Task<List<CardListDTO>> GetContactCards(int id);
         #endregion
+
+        #region ApiWeb
+        Task<List<ContactListDTO>> GetContactsByClientId(int clientId);
+        #endregion
     }
 }
