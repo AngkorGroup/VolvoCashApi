@@ -108,7 +108,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     var client = new ClientDTO()
                     {
                         Ruc = clientRuc,
-                        Address = clientAddress,
+                        Address = Address,
                         Email = clientEmail,
                         Name = clientName,
                         Phone = clientPhone,
@@ -160,7 +160,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                         Card = card,
                         Client = client,
                         Contact = contact,
-                        RowIndex = rowIndex                        
+                        RowIndex = rowIndex
                     };
 
                     return load;
@@ -183,7 +183,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     RowIndex = rowIndex,
                     LineContent = line
                 };
-            }          
+            }
         }
         private List<Load> GetLoadsFromStream(Stream stream)
         {
@@ -202,7 +202,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<BatchDTO>> GetLoads()
         {
             var batches = await _batchRepository.FilterAsync(includeProperties: "Client.Contacts,CardType",
-                                                             orderBy: bq => bq.OrderByDescending(b=>b.CreatedAt));
+                                                             orderBy: bq => bq.OrderByDescending(b => b.CreatedAt));
             return batches.ProjectedAsCollection<BatchDTO>();
         }
 
@@ -251,7 +251,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<BatchDTO> PerformLoadAsync(ClientDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO)
         {
             var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc,
-                                                     includeProperties: "Contacts.Cards")).FirstOrDefault();
+                                                              includeProperties: "Contacts.Cards")).FirstOrDefault();
             if (client == null)
             {
                 client = new Client(clientDTO.Ruc, clientDTO.Address, clientDTO.Email, clientDTO.Name, clientDTO.Phone);
