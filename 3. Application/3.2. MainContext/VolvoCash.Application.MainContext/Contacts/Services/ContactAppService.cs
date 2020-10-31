@@ -113,6 +113,19 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         }
         #endregion
 
+        #region ApiWeb Public Methods
+        public async Task<List<ContactListDTO>> GetContactsByClientId(int clientId)
+        {
+            var contacts = await _contactRepository.FilterAsync(filter: c => c.ClientId == clientId);
+
+            if (contacts != null && contacts.Any())
+            {
+                return contacts.ProjectedAsCollection<ContactListDTO>();
+            }
+            return new List<ContactListDTO>();
+        }
+        #endregion
+
         #region IDisposable Members
         public void Dispose()
         {

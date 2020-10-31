@@ -8,7 +8,7 @@ namespace VolvoCash.Data.MainContext.Repositories
     {
         #region Constructor
         public BatchErrorRepository(MainDbContext dbContext,
-                               ILogger<Repository<BatchError, MainDbContext>> logger) : base(dbContext, logger)
+                                    ILogger<Repository<BatchError, MainDbContext>> logger) : base(dbContext, logger)
         {
         }
         #endregion
