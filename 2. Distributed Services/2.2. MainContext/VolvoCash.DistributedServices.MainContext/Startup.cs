@@ -16,7 +16,7 @@ using VolvoCash.Application.MainContext.Cards.Services;
 using VolvoCash.Application.MainContext.Charges.Services;
 using VolvoCash.Application.MainContext.Clients.Services;
 using VolvoCash.Application.MainContext.Contacts.Services;
-using VolvoCash.Application.MainContext.Loads.Services;
+using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.MainContext.Transfers.Services;
 using VolvoCash.CrossCutting.Adapter;
 using VolvoCash.CrossCutting.Localization;
@@ -111,7 +111,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ITransferAppService, TransferAppService>();
             services.AddScoped<IChargeAppService, ChargeAppService>();
             services.AddScoped<IClientAppService, ClientAppService>();
-            services.AddScoped<ILoadAppService, LoadAppService>();
+            services.AddScoped<IBatchAppService, BatchAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();

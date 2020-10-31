@@ -10,7 +10,7 @@ using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.MainContext.DTO.POJOS;
-using VolvoCash.Application.MainContext.Loads.Services;
+using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
@@ -23,7 +23,7 @@ using VolvoCash.Domain.MainContext.Services.CardService;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
-    public class LoadAppService : ILoadAppService
+    public class BatchAppService : IBatchAppService
     {
 
         #region Members
@@ -37,7 +37,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region Constructor
-        public LoadAppService(IClientRepository clientRepository,
+        public BatchAppService(IClientRepository clientRepository,
                               IContactRepository contactRepository,
                               ICardTypeRepository cardTypeRepository,
                               IBatchRepository batchRepository,
@@ -199,14 +199,14 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<BatchDTO>> GetLoads()
+        public async Task<List<BatchDTO>> GetBatches()
         {
             var batches = await _batchRepository.FilterAsync(includeProperties: "Client.Contacts,CardType",
                                                              orderBy: bq => bq.OrderByDescending(b=>b.CreatedAt));
             return batches.ProjectedAsCollection<BatchDTO>();
         }
 
-        public async Task<List<BatchErrorDTO>> GetErrorLoads()
+        public async Task<List<BatchErrorDTO>> GetErrorBatches()
         {
             var batchErrors = await _batchErrorRepository.FilterAsync(orderBy: beq => beq.OrderByDescending(be => be.CreatedAt));
             return batchErrors.ProjectedAsCollection<BatchErrorDTO>();
@@ -216,7 +216,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             if (stream == null)
             {
-                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_LoadFileIsNull));
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BatchFileIsNull));
             }
             var loads = GetLoadsFromStream(stream);
             var batchsErrors = new List<BatchError>();
