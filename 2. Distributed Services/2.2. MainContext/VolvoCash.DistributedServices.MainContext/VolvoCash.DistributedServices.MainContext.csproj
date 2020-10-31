@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'VolvoCashAPI' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Staging' " />
   <ItemGroup>
     <Compile Remove="bin\**" />
     <Compile Remove="fonts\**" />
@@ -18,6 +19,7 @@
     <None Remove="bin\**" />
     <None Remove="fonts\**" />
     <None Remove="wwwwroot\**" />
+    <Content Remove="appsettings.Local.json" />
   </ItemGroup>
 
   <ItemGroup>
