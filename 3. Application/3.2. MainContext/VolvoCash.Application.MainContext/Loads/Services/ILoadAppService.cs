@@ -12,7 +12,9 @@ namespace VolvoCash.Application.MainContext.Loads.Services
     public interface ILoadAppService : IDisposable
     {
         #region ApiWeb 
-        Task<List<string>> PerformLoadsFromFileStreamAsync(Stream stream);
+        Task<List<BatchDTO>> GetLoads();
+        Task<List<BatchErrorDTO>> GetErrorLoads();
+        Task<List<BatchErrorDTO>> PerformLoadsFromFileStreamAsync(string fileName, Stream stream);
         Task<BatchDTO> PerformLoadAsync(ClientDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO);
         #endregion
     }

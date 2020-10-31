@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.Seedwork.DateConverters;
@@ -36,7 +37,7 @@ namespace VolvoCash.Application.MainContext.DTO.Batches
 
         public int ClientId { get; set; }
 
-        public ClientDTO Client { get; set; }
+        public ClientListDTO Client { get; set; }
 
         public string TPContractNumber { get; set; }
 
@@ -51,6 +52,12 @@ namespace VolvoCash.Application.MainContext.DTO.Batches
         public string BusinessCode { get; set; }
 
         public string BusinessDescription { get; set; }
+
+        public int CardTypeId { get; set; }
+
+        public CardTypeDTO CardType { get; set; }
+
+        public string LineContent { get; set; }
         #endregion
     }
 }

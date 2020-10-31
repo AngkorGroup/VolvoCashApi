@@ -19,6 +19,8 @@ namespace VolvoCash.Application.MainContext.DTO.Loads
         public int RowIndex { get; set; }
 
         public string ErrorMessage { get; set; }
+
+        public string LineContent { get; set; }
         #endregion
     }
 }

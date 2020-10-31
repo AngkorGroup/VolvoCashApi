@@ -29,6 +29,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<Transfer> Transfers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<SMSCode> SMSCodes { get; set; }
+        public DbSet<BatchError> BatchErrors { get; set; }
         #endregion
 
         #region Constructor
