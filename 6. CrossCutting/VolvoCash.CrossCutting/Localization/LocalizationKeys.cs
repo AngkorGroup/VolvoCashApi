@@ -60,7 +60,7 @@
             exception_ContactAlreadyExists,
             exception_ChargeNotFound,
             exception_InvalidCardTypeCode,
-            exception_LoadFileIsNull,
+            exception_BatchFileIsNull,
             exception_CannotUpdateContactWithEmptyInformation,
             exception_CannotUpdateNonExistingContact
         }

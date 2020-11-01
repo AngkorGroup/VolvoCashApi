@@ -8,7 +8,7 @@ using VolvoCash.Application.MainContext.DTO.Cards;
 using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.MainContext.DTO.Transfers;
-using VolvoCash.Application.MainContext.Loads.Services;
+using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.MainContext.Transfers.Services;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
@@ -21,14 +21,14 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
     public class MockController : ControllerBase
     {
         #region Members
-        private readonly ILoadAppService _loadAppService;
+        private readonly IBatchAppService _loadAppService;
         private readonly IContactAppService _contactAppService;
         private readonly ITransferAppService _transferAppService;
         private readonly IChargeAppService _chargeAppService;
         #endregion
 
         #region Constructor
-        public MockController(ILoadAppService loadAppService,
+        public MockController(IBatchAppService loadAppService,
                               IContactAppService contactAppService,
                               ITransferAppService transferAppService,
                               IChargeAppService chargeAppService)

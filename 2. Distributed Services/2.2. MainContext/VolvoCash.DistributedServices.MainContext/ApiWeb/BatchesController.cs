@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using VolvoCash.Application.MainContext.Loads.Services;
+using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
@@ -10,39 +10,39 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
-    public class LoadsController : ControllerBase
+    public class BatchesController : ControllerBase
     {
         #region Members
-        private readonly ILoadAppService _loadAppService;
+        private readonly IBatchAppService _batchAppService;
         #endregion
 
         #region Constructor
-        public LoadsController(ILoadAppService loadAppService)
+        public BatchesController(IBatchAppService batchAppService)
         {
-            _loadAppService = loadAppService;
+            _batchAppService = batchAppService;
         }
         #endregion
 
         #region Public Methods
         [HttpGet]
-        public async Task<ActionResult> GetLoads()
+        public async Task<ActionResult> GetBatches()
         {
-            var loads = await _loadAppService.GetLoads();
+            var loads = await _batchAppService.GetBatches();
             return Ok(loads);
         }
 
         [HttpGet("errors")]
-        public async Task<ActionResult> GetErrorLoads()
+        public async Task<ActionResult> GetErrorBatches()
         {
-            var loads = await _loadAppService.GetErrorLoads();
+            var loads = await _batchAppService.GetErrorBatches();
             return Ok(loads);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> PerformLoad()
+        [HttpPost("massive_load")]
+        public async Task<ActionResult> PerformBatch()
         {
             var file = Request.Form.Files["file"];
-            var batchErrors = await _loadAppService.PerformLoadsFromFileStreamAsync(file?.FileName, file?.OpenReadStream());
+            var batchErrors = await _batchAppService.PerformLoadsFromFileStreamAsync(file?.FileName, file?.OpenReadStream());
             return Ok(batchErrors);
         }
         #endregion
