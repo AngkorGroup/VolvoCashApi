@@ -11,5 +11,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         Task<List<CardListDTO>> GetCardsByPhone(string phone);
         Task<CardDTO> GetCardByPhone(string phone, int id);
         #endregion
+
+        #region ApiWeb
+        Task<List<CardDTO>> GetCards(string query);
+        #endregion
     }
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using VolvoCash.DistributedServices.Seedwork.Filters;
@@ -23,6 +24,12 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Public Methods
+        [HttpGet]
+        public async Task<ActionResult> GetCards([FromQuery] string query = "")
+        {
+            var cards = await _cardAppService.GetCards(query);
+            return Ok(cards);
+        }
         #endregion
     }
 }

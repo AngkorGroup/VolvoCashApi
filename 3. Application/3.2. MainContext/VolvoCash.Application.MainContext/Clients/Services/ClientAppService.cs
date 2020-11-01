@@ -33,11 +33,12 @@ namespace VolvoCash.Application.MainContext.Clients.Services
         #region ApiWeb Public Methods
         public async Task<List<ClientListDTO>> GetClients(string query, int pageIndex, int pageLength)
         {
+            query.Trim().ToUpper();
             var clients = await _clientRepository.GetFilteredAsync(
-                c => c.Name.ToUpper().Contains(query.Trim().ToUpper())
-                  || c.Ruc.Contains(query.Trim())
-                  || c.Address.ToUpper().Contains(query.Trim().ToUpper())
-                  || c.Phone.Contains(query.Trim()),
+                c => c.Name.Trim().ToUpper().Contains(query)
+                  || c.Ruc.Trim().Contains(query)
+                  || c.Address.Trim().ToUpper().Contains(query)
+                  || c.Phone.Trim().Contains(query),
                 pageIndex,
                 pageLength,
                 c => c.Name,

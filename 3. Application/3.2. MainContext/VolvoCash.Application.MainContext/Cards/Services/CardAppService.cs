@@ -61,7 +61,27 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CardNotFound));
             }
         }
-       #endregion
+        #endregion
+
+        #region ApiWeb Public Methods
+        public async Task<List<CardDTO>> GetCards(string query)
+        {
+            query.Trim().ToUpper();
+            var cards = await _cardRepository.FilterAsync(
+                filter: c => c.Code.Trim().ToUpper().Contains(query)
+                  || c.Contact.FirstName.ToUpper().Contains(query)
+                  || c.Contact.LastName.ToUpper().Contains(query)
+                  || c.Contact.Phone.Trim().Contains(query)
+                  || c.Contact.Client.Ruc.Trim().Contains(query),
+                includeProperties: "Contact.Client");
+
+            if (cards != null && cards.Any())
+            {
+                return cards.ProjectedAsCollection<CardDTO>();
+            }
+            return new List<CardDTO>();
+        }
+        #endregion
 
         #region IDisposable Members
         public void Dispose()

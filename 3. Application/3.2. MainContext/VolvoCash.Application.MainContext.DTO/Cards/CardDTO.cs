@@ -21,14 +21,14 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
 
         public ContactListDTO Contact { get; set; }
 
-        public int ContactId { get; set; }       
-       
-        public List<MovementDTO> Movements { get; set; } 
+        public int ContactId { get; set; }
+
+        public List<MovementDTO> Movements { get; set; }
 
         public List<CardBatchDTO> CardBatchesWithBalance { get; set; }
 
         public int CardTypeId { get; set; }
-        
+
         public string TPCode { get; set; }
         #endregion
 
