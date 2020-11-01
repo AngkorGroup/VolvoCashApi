@@ -38,11 +38,11 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
         #region Constructor
         public BatchAppService(IClientRepository clientRepository,
-                              IContactRepository contactRepository,
-                              ICardTypeRepository cardTypeRepository,
-                              IBatchRepository batchRepository,
+                               IContactRepository contactRepository,
+                               ICardTypeRepository cardTypeRepository,
+                               IBatchRepository batchRepository,
                                IBatchErrorRepository batchErrorRepository,
-                              ICardRechargeService rechargeService)
+                               ICardRechargeService rechargeService)
         {
             _clientRepository = clientRepository;
             _contactRepository = contactRepository;
