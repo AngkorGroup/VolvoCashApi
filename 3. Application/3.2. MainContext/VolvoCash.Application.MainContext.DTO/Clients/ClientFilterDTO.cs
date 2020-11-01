@@ -1,7 +1,6 @@
-using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
+using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Clients
@@ -18,7 +17,7 @@ namespace VolvoCash.Application.MainContext.DTO.Clients
         [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }
 
-        public Money Balance { get; set; }
+        public MoneyDTO Balance { get; set; }
         #endregion
     }
 }

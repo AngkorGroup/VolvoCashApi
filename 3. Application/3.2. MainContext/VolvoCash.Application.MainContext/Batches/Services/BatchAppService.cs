@@ -10,16 +10,17 @@ using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.MainContext.DTO.POJOS;
+using VolvoCash.Application.MainContext.DTO.CardBatches;
 using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.Seedwork;
-using VolvoCash.CrossCutting.Localization;
-using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
+using VolvoCash.CrossCutting.Utils;
+using VolvoCash.CrossCutting.Localization;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -29,6 +30,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region Members
         private readonly IClientRepository _clientRepository;
         private readonly IContactRepository _contactRepository;
+        private readonly ICardRepository _cardRepository;
         private readonly ICardTypeRepository _cardTypeRepository;
         private readonly IBatchRepository _batchRepository;
         private readonly IBatchErrorRepository _batchErrorRepository;
@@ -39,6 +41,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region Constructor
         public BatchAppService(IClientRepository clientRepository,
                                IContactRepository contactRepository,
+                               ICardRepository cardRepository,
                                ICardTypeRepository cardTypeRepository,
                                IBatchRepository batchRepository,
                                IBatchErrorRepository batchErrorRepository,
@@ -47,6 +50,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             _clientRepository = clientRepository;
             _contactRepository = contactRepository;
             _cardTypeRepository = cardTypeRepository;
+            _cardRepository = cardRepository;
             _batchRepository = batchRepository;
             _batchErrorRepository = batchErrorRepository;
             _rechargeService = rechargeService;
@@ -203,6 +207,20 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             var batches = await _batchRepository.FilterAsync(includeProperties: "Client.Contacts,CardType",
                                                              orderBy: bq => bq.OrderByDescending(b => b.CreatedAt));
             return batches.ProjectedAsCollection<BatchDTO>();
+        }
+
+        public async Task<List<CardBatchDTO>> GetBatchesByCard(int cardId)
+        {
+            var card = (await _cardRepository.FilterAsync(
+                filter: c => c.Id == cardId,
+                includeProperties: "CardBatches.Batch"
+            )).FirstOrDefault();
+
+            if (card != null && card.CardBatches.Any())
+            {
+                return card.CardBatches.ProjectedAsCollection<CardBatchDTO>();
+            }
+            return new List<CardBatchDTO>();
         }
 
         public async Task<List<BatchErrorDTO>> GetErrorBatches()
