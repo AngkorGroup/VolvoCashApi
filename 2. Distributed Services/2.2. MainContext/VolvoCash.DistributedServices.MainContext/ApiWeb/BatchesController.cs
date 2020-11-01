@@ -31,6 +31,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(loads);
         }
 
+        [HttpGet("by_card")]
+        public async Task<ActionResult> GetBatchesByCard(int cardId)
+        {
+            var batches = await _batchAppService.GetBatchesByCard(cardId);
+            return Ok(batches);
+        }
+
         [HttpGet("errors")]
         public async Task<ActionResult> GetErrorBatches()
         {
