@@ -82,6 +82,19 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             return new List<CardListDTO>();
         }
 
+        public async Task<List<CardListDTO>> GetCardsByClientId(int clientId)
+        {
+            var cards = await _cardRepository.FilterAsync(
+                filter: c => c.Contact.ClientId == clientId,
+                includeProperties: "Contact");
+
+            if (cards != null && cards.Any())
+            {
+                return cards.ProjectedAsCollection<CardListDTO>();
+            }
+            return new List<CardListDTO>();
+        }
+
         public async Task<List<CardListDTO>> GetCardsByClientIdAndCardTypeId(int clientId, int cardTypeId)
         {
             var cards = await _cardRepository.FilterAsync(

@@ -31,6 +31,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(cards);
         }
 
+        [HttpGet("by_client")]
+        public async Task<ActionResult> GetCardsByClientId([FromQuery] int clientId)
+        {
+            var cards = await _cardAppService.GetCardsByClientId(clientId);
+            return Ok(cards);
+        }
+
         [HttpGet("by_client_and_card_type")]
         public async Task<ActionResult> GetCardsByClientIdAndCardTypeId([FromQuery] int clientId, [FromQuery] int cardTypeId)
         {
