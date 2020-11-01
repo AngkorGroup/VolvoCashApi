@@ -124,6 +124,34 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
             }
             return new List<ContactListDTO>();
         }
+
+        public async Task<ContactDTO> UpdateContact(ContactDTO contactDTO)
+        {
+            if (contactDTO == null)
+            {
+                throw new ArgumentException(_resources.GetStringResource(LocalizationKeys.Application.exception_CannotUpdateContactWithEmptyInformation));
+            }
+
+            var contactPersisted = await _contactRepository.GetAsync(contactDTO.Id);
+            if (contactPersisted != null)
+            {
+                contactPersisted.FirstName = contactDTO.FirstName;
+                contactPersisted.LastName = contactDTO.LastName;
+                contactPersisted.Phone = contactDTO.Phone;
+                contactPersisted.Email = contactDTO.Email;
+                contactPersisted.DocumentType = contactDTO.DocumentType;
+                contactPersisted.DocumentNumber = contactDTO.DocumentNumber;
+                contactPersisted.Status = contactDTO.Status;
+                
+                _contactRepository.Modify(contactPersisted);
+                await _contactRepository.UnitOfWork.CommitAsync();
+            }
+            else
+            {
+                throw new ArgumentException(_resources.GetStringResource(LocalizationKeys.Application.exception_CannotUpdateNonExistingContact));
+            }
+            return contactPersisted.ProjectedAs<ContactDTO>();
+        }
         #endregion
 
         #region IDisposable Members

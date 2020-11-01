@@ -61,6 +61,8 @@
             exception_ChargeNotFound,
             exception_InvalidCardTypeCode,
             exception_LoadFileIsNull,
+            exception_CannotUpdateContactWithEmptyInformation,
+            exception_CannotUpdateNonExistingContact
         }
 
         public enum DistributedServices

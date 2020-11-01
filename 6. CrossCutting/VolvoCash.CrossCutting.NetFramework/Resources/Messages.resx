@@ -186,6 +186,12 @@
   <data name="Application_ContactNotFound" xml:space="preserve">
     <value>El contacto no fue encontrado.</value>
   </data>
+  <data name="Application_exception_CannotUpdateContactWithEmptyInformation" xml:space="preserve">
+    <value>No se puede actualizar un contacto con información vacía.</value>
+  </data>
+  <data name="Application_exception_CannotUpdateNonExistingContact" xml:space="preserve">
+    <value>No se puede actualizar un contacto que no existe.</value>
+  </data>
   <data name="DistributedServices_messages_RequestCodeMessage" xml:space="preserve">
     <value>Tu código de verificación es:</value>
   </data>
