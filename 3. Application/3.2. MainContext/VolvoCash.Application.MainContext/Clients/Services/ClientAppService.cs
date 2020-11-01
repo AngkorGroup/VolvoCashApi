@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
@@ -31,9 +29,26 @@ namespace VolvoCash.Application.MainContext.Clients.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<ClientListDTO>> GetClients(string query, int pageIndex, int pageLength)
+        public async Task<List<ClientFilterDTO>> GetClientsByFilter(string query)
         {
             query.Trim().ToUpper();
+            var clients = await _clientRepository.FilterAsync(
+                filter: c => c.Name.Trim().ToUpper().Contains(query)
+                          || c.Ruc.Trim().Contains(query)
+                          || c.Address.Trim().ToUpper().Contains(query)
+                          || c.Phone.Trim().Contains(query)
+            );
+
+            if (clients != null && clients.Any())
+            {
+                return clients.ProjectedAsCollection<ClientFilterDTO>();
+            }
+            return new List<ClientFilterDTO>();
+        }
+
+        public async Task<List<ClientListDTO>> GetClientsByPagination(string query, int pageIndex, int pageLength)
+        {
+            query?.Trim().ToUpper();
             var clients = await _clientRepository.GetFilteredAsync(
                 c => c.Name.Trim().ToUpper().Contains(query)
                   || c.Ruc.Trim().Contains(query)

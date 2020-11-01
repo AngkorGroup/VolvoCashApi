@@ -24,7 +24,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Public Methods
-        [HttpGet]
+        [HttpGet("by_client")]
         public async Task<ActionResult> GetContactsByClientId([FromQuery] int clientId)
         {
             var contacts = await _contactAppService.GetContactsByClientId(clientId);

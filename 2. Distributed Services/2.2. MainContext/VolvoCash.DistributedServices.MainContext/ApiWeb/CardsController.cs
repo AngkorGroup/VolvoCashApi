@@ -24,12 +24,19 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Public Methods
-        [HttpGet]
-        public async Task<ActionResult> GetCards([FromQuery] string query = "")
+        [HttpGet("by_filter")]
+        public async Task<ActionResult> GetCardsByFilter([FromQuery] string query = "")
         {
-            var cards = await _cardAppService.GetCards(query);
+            var cards = await _cardAppService.GetCardsByFilter(query);
             return Ok(cards);
         }
+
+        //[HttpGet("by_client_and_card_type")]
+        //public async Task<ActionResult> GetCardsByClientIdAndCardTypeId([FromQuery] int clientId, [FromQuery] int cardTypeId)
+        //{
+        //    var cards = await _cardAppService.GetCardsByClientIdAndCardTypeId(clientId, cardTypeId);
+        //    return Ok(cards);
+        //}
         #endregion
     }
 }

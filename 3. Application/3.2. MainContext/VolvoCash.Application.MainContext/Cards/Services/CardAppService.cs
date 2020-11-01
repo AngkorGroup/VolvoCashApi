@@ -64,9 +64,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<CardDTO>> GetCards(string query)
+        public async Task<List<CardDTO>> GetCardsByFilter(string query)
         {
-            query.Trim().ToUpper();
+            query?.Trim().ToUpper();
             var cards = await _cardRepository.FilterAsync(
                 filter: c => c.Code.Trim().ToUpper().Contains(query)
                   || c.Contact.FirstName.ToUpper().Contains(query)

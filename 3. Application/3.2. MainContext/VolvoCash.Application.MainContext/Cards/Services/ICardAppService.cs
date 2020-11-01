@@ -13,7 +13,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiWeb
-        Task<List<CardDTO>> GetCards(string query);
+        Task<List<CardDTO>> GetCardsByFilter(string query);
         #endregion
     }
 }
