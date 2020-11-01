@@ -31,12 +31,12 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(cards);
         }
 
-        //[HttpGet("by_client_and_card_type")]
-        //public async Task<ActionResult> GetCardsByClientIdAndCardTypeId([FromQuery] int clientId, [FromQuery] int cardTypeId)
-        //{
-        //    var cards = await _cardAppService.GetCardsByClientIdAndCardTypeId(clientId, cardTypeId);
-        //    return Ok(cards);
-        //}
+        [HttpGet("by_client_and_card_type")]
+        public async Task<ActionResult> GetCardsByClientIdAndCardTypeId([FromQuery] int clientId, [FromQuery] int cardTypeId)
+        {
+            var cards = await _cardAppService.GetCardsByClientIdAndCardTypeId(clientId, cardTypeId);
+            return Ok(cards);
+        }
         #endregion
     }
 }

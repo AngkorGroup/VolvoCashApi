@@ -64,7 +64,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<CardDTO>> GetCardsByFilter(string query)
+        public async Task<List<CardListDTO>> GetCardsByFilter(string query)
         {
             query?.Trim().ToUpper();
             var cards = await _cardRepository.FilterAsync(
@@ -77,9 +77,22 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
             if (cards != null && cards.Any())
             {
-                return cards.ProjectedAsCollection<CardDTO>();
+                return cards.ProjectedAsCollection<CardListDTO>();
             }
-            return new List<CardDTO>();
+            return new List<CardListDTO>();
+        }
+
+        public async Task<List<CardListDTO>> GetCardsByClientIdAndCardTypeId(int clientId, int cardTypeId)
+        {
+            var cards = await _cardRepository.FilterAsync(
+                filter: c => c.Contact.ClientId == clientId && c.CardTypeId == cardTypeId,
+                includeProperties: "Contact");
+
+            if (cards != null && cards.Any())
+            {
+                return cards.ProjectedAsCollection<CardListDTO>();
+            }
+            return new List<CardListDTO>();
         }
         #endregion
 
