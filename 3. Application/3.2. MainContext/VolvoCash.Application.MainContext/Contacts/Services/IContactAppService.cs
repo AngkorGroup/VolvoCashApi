@@ -20,6 +20,7 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
 
         #region ApiWeb
         Task<List<ContactListDTO>> GetContactsByClientId(int clientId);
+        Task<ContactDTO> UpdateContact(ContactDTO contactDTO);
         #endregion
     }
 }

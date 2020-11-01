@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Application.MainContext.Contacts.Services;
+using VolvoCash.Application.MainContext.DTO.Contacts;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -24,11 +25,18 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Public Methods
-        [HttpGet]
+        [HttpGet("by_client")]
         public async Task<ActionResult> GetContactsByClientId([FromQuery] int clientId)
         {
             var contacts = await _contactAppService.GetContactsByClientId(clientId);
             return Ok(contacts);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateContact([FromBody] ContactDTO contactDTO)
+        {
+            var contact = await _contactAppService.UpdateContact(contactDTO);
+            return Ok(contact);
         }
         #endregion
     }

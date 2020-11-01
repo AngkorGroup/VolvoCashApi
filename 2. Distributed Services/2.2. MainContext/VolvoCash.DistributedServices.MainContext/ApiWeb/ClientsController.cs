@@ -24,11 +24,25 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Public Methods
-        [HttpGet]
-        public async Task<ActionResult> GetClients([FromQuery] string query = "", [FromQuery] int pageIndex = 0, [FromQuery] int pageLength = 10)
+        [HttpGet("by_filter")]
+        public async Task<ActionResult> GetClientsByFilter([FromQuery] string query = "")
         {
-            var clients = await _clientAppService.GetClients(query, pageIndex, pageLength);
+            var clients = await _clientAppService.GetClientsByFilter(query);
             return Ok(clients);
+        }
+
+        [HttpGet("by_pagination")]
+        public async Task<ActionResult> GetClientsByPagination([FromQuery] string query = "", [FromQuery] int pageIndex = 0, [FromQuery] int pageLength = 10)
+        {
+            var clients = await _clientAppService.GetClientsByPagination(query, pageIndex, pageLength);
+            return Ok(clients);
+        }
+
+        [HttpGet("{id}/card_types_summary")]
+        public async Task<ActionResult> GetClientCardTypesSummary([FromRoute] int id)
+        {
+            var cardTypesSummary = await _clientAppService.GetClientCardTypesSummary(id);
+            return Ok(cardTypesSummary);
         }
         #endregion
     }

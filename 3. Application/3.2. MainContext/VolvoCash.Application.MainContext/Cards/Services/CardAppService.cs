@@ -61,7 +61,53 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CardNotFound));
             }
         }
-       #endregion
+        #endregion
+
+        #region ApiWeb Public Methods
+        public async Task<List<CardListDTO>> GetCardsByFilter(string query)
+        {
+            query?.Trim().ToUpper();
+            var cards = await _cardRepository.FilterAsync(
+                filter: c => c.Code.Trim().ToUpper().Contains(query)
+                  || c.Contact.FirstName.ToUpper().Contains(query)
+                  || c.Contact.LastName.ToUpper().Contains(query)
+                  || c.Contact.Phone.Trim().Contains(query)
+                  || c.Contact.Client.Ruc.Trim().Contains(query),
+                includeProperties: "Contact.Client");
+
+            if (cards != null && cards.Any())
+            {
+                return cards.ProjectedAsCollection<CardListDTO>();
+            }
+            return new List<CardListDTO>();
+        }
+
+        public async Task<List<CardListDTO>> GetCardsByClientId(int clientId)
+        {
+            var cards = await _cardRepository.FilterAsync(
+                filter: c => c.Contact.ClientId == clientId,
+                includeProperties: "Contact");
+
+            if (cards != null && cards.Any())
+            {
+                return cards.ProjectedAsCollection<CardListDTO>();
+            }
+            return new List<CardListDTO>();
+        }
+
+        public async Task<List<CardListDTO>> GetCardsByClientIdAndCardTypeId(int clientId, int cardTypeId)
+        {
+            var cards = await _cardRepository.FilterAsync(
+                filter: c => c.Contact.ClientId == clientId && c.CardTypeId == cardTypeId,
+                includeProperties: "Contact");
+
+            if (cards != null && cards.Any())
+            {
+                return cards.ProjectedAsCollection<CardListDTO>();
+            }
+            return new List<CardListDTO>();
+        }
+        #endregion
 
         #region IDisposable Members
         public void Dispose()

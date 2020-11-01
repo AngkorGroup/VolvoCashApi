@@ -10,6 +10,7 @@ namespace VolvoCash.Application.MainContext.DTO.Profiles
         {
             CreateMap<Client, ClientDTO>().PreserveReferences();
             CreateMap<Client, ClientListDTO>().PreserveReferences();
+            CreateMap<Client, ClientFilterDTO>().PreserveReferences();
         }
     }
 }

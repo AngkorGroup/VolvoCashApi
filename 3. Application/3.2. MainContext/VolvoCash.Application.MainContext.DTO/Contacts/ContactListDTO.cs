@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Contacts
@@ -29,6 +30,8 @@ namespace VolvoCash.Application.MainContext.DTO.Contacts
 
         [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }
+
+        public ClientListDTO Client { get; set; }
 
         public int ClientId { get; set; }
 

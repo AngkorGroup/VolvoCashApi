@@ -61,7 +61,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         }
 
         [NotMapped]
-        public IEnumerable<CardBatch> CardBatchesWithBalance
+        public IEnumerable<CardBatch> CardBatchesWithBalancex
         {
             get => CardBatches.Where(cb => cb.Balance.Value > 0).OrderByDescending(cb => cb.Batch.ExpiresAtExtent);
         }
