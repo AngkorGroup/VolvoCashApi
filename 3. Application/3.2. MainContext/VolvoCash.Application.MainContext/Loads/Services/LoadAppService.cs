@@ -41,7 +41,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                               IContactRepository contactRepository,
                               ICardTypeRepository cardTypeRepository,
                               IBatchRepository batchRepository,
-                               IBatchErrorRepository batchErrorRepository,
+                              IBatchErrorRepository batchErrorRepository,
                               ICardRechargeService rechargeService)
         {
             _clientRepository = clientRepository;
@@ -108,7 +108,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     var client = new ClientDTO()
                     {
                         Ruc = clientRuc,
-                        Address = Address,
+                        Address = clientAddress,
                         Email = clientEmail,
                         Name = clientName,
                         Phone = clientPhone,
