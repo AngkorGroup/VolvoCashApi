@@ -14,7 +14,8 @@ namespace VolvoCash.Application.MainContext.Batches.Services
     {
         #region ApiWeb 
         Task<List<BatchDTO>> GetBatches();
-        Task<List<CardBatchDTO>> GetBatchesByCard(int cardId);
+        Task<List<CardBatchDTO>> GetBatchesByCardId(int cardId);
+        Task<List<CardBatchDTO>> GetBatchesByClientId(int clientId);
         Task<List<BatchErrorDTO>> GetErrorBatches();
         Task<List<BatchErrorDTO>> PerformLoadsFromFileStreamAsync(string fileName, Stream stream);
         Task<BatchDTO> PerformLoadAsync(ClientDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO);
