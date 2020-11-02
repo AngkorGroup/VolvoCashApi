@@ -25,9 +25,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet("by_filter")]
-        public async Task<ActionResult> GetClientsByFilter([FromQuery] string query = "")
+        public async Task<ActionResult> GetClientsByFilter([FromQuery] string query = "", [FromQuery] int maxRecords = 8)
         {
-            var clients = await _clientAppService.GetClientsByFilter(query);
+            var clients = await _clientAppService.GetClientsByFilter(query, maxRecords);
             return Ok(clients);
         }
 

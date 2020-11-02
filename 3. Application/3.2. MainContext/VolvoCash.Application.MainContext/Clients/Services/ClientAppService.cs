@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<ClientFilterDTO>> GetClientsByFilter(string query)
+        public async Task<List<ClientFilterDTO>> GetClientsByFilter(string query, int maxRecords)
         {
             query.Trim().ToUpper();
             var clients = await _clientRepository.FilterAsync(
@@ -38,7 +39,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
                           || c.Address.Trim().ToUpper().Contains(query)
                           || c.Phone.Trim().Contains(query)
             );
-
+            clients = clients.Take(Math.Min(clients.Count(), maxRecords));
             if (clients != null && clients.Any())
             {
                 return clients.ProjectedAsCollection<ClientFilterDTO>();
