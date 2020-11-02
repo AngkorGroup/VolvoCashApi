@@ -73,7 +73,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                   || c.Contact.LastName.ToUpper().Contains(query)
                   || c.Contact.Phone.Trim().Contains(query)
                   || c.Contact.Client.Ruc.Trim().Contains(query),
-                includeProperties: "Contact.Client");
+                includeProperties: "Contact.Client,CardType");
 
             if (cards != null && cards.Any())
             {
@@ -86,7 +86,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             var cards = await _cardRepository.FilterAsync(
                 filter: c => c.Contact.ClientId == clientId,
-                includeProperties: "Contact");
+                includeProperties: "Contact,CardType");
 
             if (cards != null && cards.Any())
             {
@@ -99,7 +99,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             var cards = await _cardRepository.FilterAsync(
                 filter: c => c.Contact.ClientId == clientId && c.CardTypeId == cardTypeId,
-                includeProperties: "Contact");
+                includeProperties: "Contact,CardType");
 
             if (cards != null && cards.Any())
             {

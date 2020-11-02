@@ -22,6 +22,8 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         public int ContactId { get; set; }
 
         public string CardToken { get; set; }
+
+        public int CardTypeId { get; set; }
         #endregion
 
         #region Public Methods
