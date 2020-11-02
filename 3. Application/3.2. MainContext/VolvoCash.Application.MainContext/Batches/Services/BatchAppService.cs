@@ -209,7 +209,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             return batches.ProjectedAsCollection<BatchDTO>();
         }
 
-        public async Task<List<CardBatchDTO>> GetBatchesByCard(int cardId)
+        public async Task<List<CardBatchDTO>> GetBatchesByCardId(int cardId)
         {
             var card = (await _cardRepository.FilterAsync(
                 filter: c => c.Id == cardId,
@@ -221,6 +221,22 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 return card.CardBatches.ProjectedAsCollection<CardBatchDTO>();
             }
             return new List<CardBatchDTO>();
+        }
+
+        public async Task<List<CardBatchDTO>> GetBatchesByClientId(int clientId)
+        {
+            var batches = await _batchRepository.FilterAsync(filter: b => b.ClientId == clientId,
+                                                             includeProperties: "CardBatches.Card",
+                                                             orderBy: b => b.OrderByDescending(b => b.CreatedAt));
+            var cardBatches = new List<CardBatchDTO>();
+            if (batches != null && batches.Any())
+            {
+                foreach (var batch in batches)
+                {
+                    cardBatches.AddRange(batch.CardBatches.ProjectedAsCollection<CardBatchDTO>());
+                }
+            }
+            return cardBatches;
         }
 
         public async Task<List<BatchErrorDTO>> GetErrorBatches()
@@ -330,6 +346,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             _clientRepository.Dispose();
             _contactRepository.Dispose();
             _cardTypeRepository.Dispose();
+            _cardRepository.Dispose();
+            _batchRepository.Dispose();
+            _batchErrorRepository.Dispose();
         }
         #endregion
     }

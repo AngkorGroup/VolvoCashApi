@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using VolvoCash.Application.MainContext.DTO.Batches;
+using VolvoCash.Application.MainContext.DTO.Cards;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.Seedwork.DateConverters;
 
@@ -16,6 +17,10 @@ namespace VolvoCash.Application.MainContext.DTO.CardBatches
         public int BatchId { get; set; }
 
         public virtual BatchDTO Batch { get; set; }
+
+        public int CardId { get; set; }
+
+        public virtual CardDTO Card { get; set; }
 
         [JsonConverter(typeof(DefaultShortLiterallyDateConverter))]
         public DateTime ExpiresAt { get; set; }
