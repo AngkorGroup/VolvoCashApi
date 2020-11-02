@@ -12,6 +12,8 @@ namespace VolvoCash.Application.MainContext.DTO.Movements
     public class MovementDTO
     {
         #region Properties
+        public int Id { get; set; }
+
         public MoneyDTO Amount { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
@@ -27,7 +29,6 @@ namespace VolvoCash.Application.MainContext.DTO.Movements
 
         [JsonConverter(typeof(DefaultLiterallyDateConverter))]
         public DateTime CreatedAt { get; set; }
-
         #endregion
     }
 }

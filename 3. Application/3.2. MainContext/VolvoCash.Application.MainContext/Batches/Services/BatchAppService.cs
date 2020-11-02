@@ -346,6 +346,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             _clientRepository.Dispose();
             _contactRepository.Dispose();
             _cardTypeRepository.Dispose();
+            _cardRepository.Dispose();
+            _batchRepository.Dispose();
+            _batchErrorRepository.Dispose();
         }
         #endregion
     }

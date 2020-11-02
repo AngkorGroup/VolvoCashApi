@@ -1,4 +1,4 @@
-using FluentValidation.AspNetCore;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.Text;
+using FluentValidation.AspNetCore;
 using VolvoCash.Application.MainContext.Authentication.Services;
 using VolvoCash.Application.MainContext.Cards.Services;
 using VolvoCash.Application.MainContext.Charges.Services;
@@ -37,6 +37,7 @@ using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
+using VolvoCash.Application.MainContext.Movements.Services;
 
 namespace VolvoCash.DistributedServices.MainContext
 {
@@ -109,6 +110,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICardAppService, CardAppService>();
             services.AddScoped<IContactAppService, ContactAppService>();
             services.AddScoped<ITransferAppService, TransferAppService>();
+            services.AddScoped<IMovementAppService, MovementAppService>();
             services.AddScoped<IChargeAppService, ChargeAppService>();
             services.AddScoped<IClientAppService, ClientAppService>();
             services.AddScoped<IBatchAppService, BatchAppService>();
@@ -125,6 +127,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICardTypeRepository, CardTypeRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ITransferRepository, TransferRepository>();
+            services.AddScoped<IMovementRepository, MovementRepository>();
             services.AddScoped<IChargeRepository, ChargeRepository>();
             services.AddScoped<ICashierRepository, CashierRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
