@@ -1,12 +1,13 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
+using Newtonsoft.Json.Converters;
+using VolvoCash.Domain.Seedwork;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.CardTypes
 {
-    public class CardTypeDTO
+    public class CardTypeDTO :  AuditableEntity
     {
         #region Properties
         public int Id { get; set; }
