@@ -15,6 +15,8 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
 
         public MoneyDTO CalculatedBalance { get; set; }
 
+        public int CardTypeId { get; set; }
+
         public CardTypeDTO CardType { get; set; }
 
         public ContactListDTO Contact { get; set; }
@@ -22,8 +24,6 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         public int ContactId { get; set; }
 
         public string CardToken { get; set; }
-
-        public int CardTypeId { get; set; }
         #endregion
 
         #region Public Methods

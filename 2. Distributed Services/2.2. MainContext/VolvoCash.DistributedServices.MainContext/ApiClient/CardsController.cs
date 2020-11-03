@@ -39,8 +39,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
             return Ok(cards);
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetCard([FromRoute] int id)
         {
             var card = await _cardAppService.GetCardByPhone(_applicationUser.GetUserName(), id);
