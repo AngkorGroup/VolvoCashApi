@@ -103,7 +103,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
             return cards;
         }
 
-        public List<CardTypeSummary> GetCardTypesSummary()
+        public IEnumerable<CardTypeSummary> GetCardTypesSummary()
         {
             var cards = GetAllCards();
             var cardTypesSummary = cards.GroupBy(c => c.CardTypeId)

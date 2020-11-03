@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Charges.Services;
-using VolvoCash.Application.MainContext.DTO.Charges.Requests;
 using VolvoCash.CrossCutting.NetFramework.Identity;
 using VolvoCash.CrossCutting.NetFramework.Utils;
+using VolvoCash.DistributedServices.MainContext.ApiClient.Requests.Charges;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Utils;
 

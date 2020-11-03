@@ -9,6 +9,7 @@ namespace VolvoCash.Application.MainContext.DTO.Profiles
         public CardTypeProfile()
         {
             CreateMap<CardType, CardTypeDTO>().PreserveReferences();
+            CreateMap<CardTypeSummary, CardTypeSummaryDTO>().PreserveReferences();
         }
     }
 }

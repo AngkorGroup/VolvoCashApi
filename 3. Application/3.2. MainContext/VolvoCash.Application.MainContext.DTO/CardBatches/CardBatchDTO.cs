@@ -16,11 +16,11 @@ namespace VolvoCash.Application.MainContext.DTO.CardBatches
 
         public int BatchId { get; set; }
 
-        public virtual BatchDTO Batch { get; set; }
+        public virtual BatchListDTO Batch { get; set; }
 
         public int CardId { get; set; }
 
-        public virtual CardDTO Card { get; set; }
+        public virtual CardListDTO Card { get; set; }
 
         [JsonConverter(typeof(DefaultShortLiterallyDateConverter))]
         public DateTime ExpiresAt { get; set; }

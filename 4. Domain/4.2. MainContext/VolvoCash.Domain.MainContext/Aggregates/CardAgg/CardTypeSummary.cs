@@ -1,6 +1,8 @@
+using VolvoCash.Domain.Seedwork;
+
 namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 {
-    public class CardTypeSummary
+    public class CardTypeSummary: Entity
     {
         #region Properties
         public int Id { get; set; }

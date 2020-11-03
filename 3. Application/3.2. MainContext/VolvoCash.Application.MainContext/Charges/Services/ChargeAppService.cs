@@ -36,7 +36,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region ApiClient Public Methods
         public async Task<List<ChargeDTO>> GetChargesByPhone(string phone)
         {
-            var charges = await _chargeRepository.FilterAsync(c => c.Card.Contact.Phone == phone && c.Status == ChargeStatus.Pending);
+            var charges = await _chargeRepository.FilterAsync(c => c.Card.Contact.Phone == phone && c.Status == ChargeStatus.Pending , includeProperties: "Cashier");
             return charges.ProjectedAsCollection<ChargeDTO>();
         }
 
