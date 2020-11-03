@@ -27,19 +27,26 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
 
             if (originCard.CanWithdraw(transfer.Amount))
             {
+                var displayNameFrom = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferFromMessageDisplayName);
+                displayNameFrom = string.Format(displayNameFrom, destinyCard.Contact.Phone);
+                var descriptionFrom = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferFromMessageDescription);
+                descriptionFrom = string.Format(descriptionFrom, destinyCard.Contact.Phone);
                 var movementBatchs = originCard.WithdrawMoney(
-                    transfer.Amount,
                     MovementType.STR,
-                    messages.GetStringResource(LocalizationKeys.Domain.messages_TransferFromMessageDescription),
-                    messages.GetStringResource(LocalizationKeys.Domain.messages_TransferFromMessageDisplayName),
-                    movement : null,
+                    transfer.Amount,
+                    displayNameFrom,
+                    descriptionFrom,
                     transfer
                 );
+                var displayNameTo = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferToMessageDescription);
+                displayNameTo = string.Format(displayNameTo, originCard.Contact.Phone);
+                var descriptionTo = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferToMessageDisplayName);
+                descriptionTo = string.Format(descriptionTo, originCard.Contact.Phone);
                 destinyCard.DepositMoneyFromTransfer(
                     transfer.Amount,
                     movementBatchs,
-                    messages.GetStringResource(LocalizationKeys.Domain.messages_TransferToMessageDescription),
-                    messages.GetStringResource(LocalizationKeys.Domain.messages_TransferToMessageDisplayName),
+                    displayNameTo,
+                    descriptionTo,
                     transfer
                 );
             }

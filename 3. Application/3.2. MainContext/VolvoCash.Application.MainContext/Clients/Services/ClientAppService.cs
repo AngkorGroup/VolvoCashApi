@@ -7,7 +7,6 @@ using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
-using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 
 namespace VolvoCash.Application.MainContext.Clients.Services

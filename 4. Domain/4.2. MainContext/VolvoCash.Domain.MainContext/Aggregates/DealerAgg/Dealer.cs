@@ -30,6 +30,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
         [MaxLength(20)]
         public string Phone { get; set; }
 
+        [MaxLength(100)]
+        public string Zone { get; set; }
+
         [Required]
         public int MaxCashiers { get; set; }
 

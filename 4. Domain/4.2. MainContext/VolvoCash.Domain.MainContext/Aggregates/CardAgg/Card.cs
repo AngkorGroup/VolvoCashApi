@@ -72,13 +72,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             get
             {
                 return Balance;
-                var calculatedBalance = new Money(Balance.Currency, 0);
-                var cardBatches = AvailableCardBatches;
-                foreach (var cardBatch in cardBatches)
-                {
-                    calculatedBalance = calculatedBalance.Add(cardBatch.Balance);
-                }
-                return calculatedBalance;
             }
         }
         #endregion
@@ -110,10 +103,21 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             }).ToList();
         }
 
-        private void AddMovement(Money amount, MovementType movementType, string description, string displayName,
-                                List<BatchMovement> batchMovements = null,Transfer transfer = null)
+        private void AddMovement(Money amount, MovementType movementType, string description, string displayName)
+        {
+            Movements.Add(new Movement(amount, description, displayName, movementType));
+            Balance = Balance.Add(amount);
+        }
+
+        private void AddMovement(Money amount, MovementType movementType, string description, string displayName, List<BatchMovement> batchMovements,Transfer transfer)
         {
             Movements.Add(new Movement(amount, description, displayName, movementType, batchMovements, transfer));
+            Balance = Balance.Add(amount);
+        }
+
+        private void AddMovement(Money amount, MovementType movementType, string description, string displayName, List<BatchMovement> batchMovements)
+        {
+            Movements.Add(new Movement(amount, description, displayName, movementType, batchMovements));
             Balance = Balance.Add(amount);
         }
 
@@ -151,14 +155,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             };
             AddMovement(batch.Amount, MovementType.REC, description, displayName, batchMovements);
         }
-
-        public List<BatchMovement> WithdrawMoney(Money amountNeeded, MovementType movementType, string description, string displayName,
-                                                Movement movement = null,Transfer transfer = null)
+        public List<BatchMovement> CalculateBatchesMoney(Money amountNeeded, Movement movement = null)
         {
             var batchMovements = new List<BatchMovement>();
             var amountTaken = new Money(amountNeeded.Currency, 0.0);
             var cardBatches = AvailableCardBatches;
-
             foreach (var cardBatch in cardBatches)
             {
                 if (amountTaken.IsLessThan(amountNeeded))
@@ -175,10 +176,19 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
                     amountTaken = amountTaken.Add(amountToAdd);
                 }
             }
-            if (movement == null)
-            {
-                AddMovement(amountNeeded.Opposite(), movementType, description, displayName, batchMovements, transfer);
-            }
+            return batchMovements;
+        }
+
+        public List<BatchMovement> WithdrawMoney(Movement movement,Money amountNeeded)
+        {
+            var batchMovements = CalculateBatchesMoney(amountNeeded, movement);
+            return batchMovements;
+        }
+
+        public List<BatchMovement> WithdrawMoney(MovementType movementType,Money amountNeeded, string description, string displayName,Transfer transfer)
+        {
+            var batchMovements = CalculateBatchesMoney(amountNeeded);
+            AddMovement(amountNeeded.Opposite(), movementType, description, displayName, batchMovements, transfer);
             return batchMovements;
         }
 

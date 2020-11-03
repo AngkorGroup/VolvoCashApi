@@ -5,6 +5,8 @@ using VolvoCash.Application.MainContext.CardTypes.Services;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.DistributedServices.Seedwork.Controllers;
+using System.Threading.Tasks;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -14,14 +16,24 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
     public class CardTypesController : AsyncBaseApiController<CardType, CardTypeDTO>
     {
-        #region Members
-        private readonly ICardTypeAppService _cardTypeAppService;
-        #endregion
 
         #region Constructor
         public CardTypesController(ICardTypeAppService cardTypeAppService) : base(cardTypeAppService)
         {
-            _cardTypeAppService = cardTypeAppService;
+        }
+        #endregion
+
+        #region Public Methods
+        [HttpPost]
+        public override async Task<CardTypeDTO> Post([FromBody] CardTypeDTO entityDTO)
+        {
+            entityDTO.Status = Status.Active;
+            return await _service.AddAsync(entityDTO);
+        }
+        [HttpDelete("{id}")]
+        public override async Task Delete([FromRoute] int id)
+        {
+             await (_service as ICardTypeAppService).Delete(id);            
         }
         #endregion
     }

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VolvoCash.Application.MainContext.DTO.Batches;
 using VolvoCash.Application.MainContext.DTO.Cards;
+using VolvoCash.Application.MainContext.DTO.Movements;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 
@@ -15,15 +18,21 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
         #region Members
         private readonly IContactRepository _contactRepository;
+        private readonly IMovementRepository _movementRepository;
+        private readonly IBatchMovementRepository _batchMovementRepository;
         private readonly ICardRepository _cardRepository;
         private readonly ILocalization _resources;
         #endregion
 
         #region Constructor
         public CardAppService(IContactRepository contactRepository,
+            IMovementRepository movementRepository,
+            IBatchMovementRepository batchMovementRepository,
                               ICardRepository cardRepository)
         {
             _contactRepository = contactRepository;
+            _movementRepository = movementRepository;
+            _batchMovementRepository = batchMovementRepository;
             _cardRepository = cardRepository;
             _resources = LocalizationFactory.CreateLocalResources();
         }
@@ -32,15 +41,12 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region ApiClient Public Methods
         public async Task<List<CardListDTO>> GetCardsByPhone(string phone)
         {
-            var cards = new List<Card>();
-            var contact = (await _contactRepository.FilterAsync(filter: c => c.Phone == phone,
-                                                                includeProperties: "Cards.CardType,Cards.CardBatches.Batch,ContactChildren.Cards.CardType")
-            ).FirstOrDefault();
-            cards.AddRange(contact.Cards);
-            contact.ContactChildren.ToList().ForEach(c => cards.AddRange(c.Cards));
-            if (cards != null && cards.Any())
+            var contactChildrenCards = (await _cardRepository.FilterAsync(c => c.Contact.ContactParent.Phone == phone)).ToList();
+            var contact = (await _contactRepository.FilterAsync(filter: c => c.Phone == phone, includeProperties: "Cards.CardType")).FirstOrDefault();
+            contactChildrenCards.AddRange(contact.Cards);
+            if (contactChildrenCards != null && contactChildrenCards.Any())
             {
-                var cardsDTO = cards.ProjectedAsCollection<CardListDTO>();
+                var cardsDTO = contactChildrenCards.ProjectedAsCollection<CardListDTO>();
                 return cardsDTO;
             }
             return new List<CardListDTO>();
@@ -48,12 +54,13 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
         public async Task<CardDTO> GetCardByPhone(string phone, int id)
         {
-            var cards = await _cardRepository.FilterAsync(filter: c => c.Id == id && c.Contact.Phone == phone,
-                                                          includeProperties: "CardType,Movements.Charge,Movements.Transfer,CardBatches.Batch,Contact");
+            var cards = await _cardRepository.FilterAsync(filter: c => c.Contact.Phone == phone && c.Id == id, includeProperties: "CardType,CardBatches.Batch,Contact");
             if (cards != null && cards.Any())
             {
                 var card = cards.FirstOrDefault();
+                var movements = await _movementRepository.GetMovementsByCard(id);
                 var cardDTO = card.ProjectedAs<CardDTO>();
+                cardDTO.Movements = movements.ProjectedAsCollection<MovementDTO>();
                 return cardDTO;
             }
             else
@@ -82,10 +89,11 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             return new List<CardListDTO>();
         }
 
-        public async Task<List<CardListDTO>> GetCardsByClientId(int clientId)
+        public async Task<List<CardListDTO>> GetCardsByClientId(int? clientId, int? contactId)
         {
             var cards = await _cardRepository.FilterAsync(
-                filter: c => c.Contact.ClientId == clientId,
+                filter: c => (  clientId == null ||  c.Contact.ClientId == clientId) &&
+                              (contactId == null ||  c.Contact.Id == contactId) ,
                 includeProperties: "Contact,CardType");
 
             if (cards != null && cards.Any())
@@ -106,6 +114,19 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 return cards.ProjectedAsCollection<CardListDTO>();
             }
             return new List<CardListDTO>();
+        }
+
+        public async Task<List<BatchMovementDTO>> GetCardBatchMovements(int cardId, int batchId)
+        {
+            var batchMovements = await _batchMovementRepository.FilterAsync(
+                filter: bm => bm.Movement.CardId == cardId && bm.BatchId == batchId,
+                includeProperties: "Movement.Charge.Cashier.Dealer,Movement.Transfer,Movement.Card");
+
+            if (batchMovements != null && batchMovements.Any())
+            {
+                return batchMovements.ProjectedAsCollection<BatchMovementDTO>();
+            }
+            return new List<BatchMovementDTO>();
         }
         #endregion
 

@@ -9,6 +9,7 @@ namespace VolvoCash.Application.MainContext.DTO.Profiles
         public ChargeProfile()
         {
             CreateMap<Charge, ChargeDTO>().PreserveReferences();
+            CreateMap<Charge, ChargeListDTO>().PreserveReferences();
         }
     }
 }

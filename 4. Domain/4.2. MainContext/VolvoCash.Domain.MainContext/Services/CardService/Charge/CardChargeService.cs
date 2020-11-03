@@ -20,12 +20,7 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                 }
                 if (card.CanWithdraw(charge.Amount))
                 {
-                    card.WithdrawMoney(charge.Amount,
-                        MovementType.CON,
-                        messages.GetStringResource(LocalizationKeys.Domain.messages_ChargeMessageDescription),
-                        messages.GetStringResource(LocalizationKeys.Domain.messages_ChargeMessageDisplayName),
-                        charge.Movements.FirstOrDefault()
-                    );
+                    card.WithdrawMoney(charge.Movements.FirstOrDefault(),charge.Amount);
                     charge.Status = ChargeStatus.Accepted;
                     charge.GenerateOperationCode();
                     charge.ImageUrl = GenerateChargeUrl();

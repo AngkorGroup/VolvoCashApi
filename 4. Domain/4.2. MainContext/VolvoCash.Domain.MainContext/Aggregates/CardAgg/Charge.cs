@@ -64,7 +64,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             ChargeType = chargeType;
             Description = description;
             Status = ChargeStatus.Pending;
-            var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON);
+            var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON,this);
             movement.CardId = card.Id;
             Movements.Add(movement);
             if (!card.CanWithdraw(amount))

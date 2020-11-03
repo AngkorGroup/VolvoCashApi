@@ -24,5 +24,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             _cashierAppService = cashierAppService;
         }
         #endregion
+
+
     }
 }

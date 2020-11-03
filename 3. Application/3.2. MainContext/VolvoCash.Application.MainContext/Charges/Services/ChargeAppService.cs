@@ -50,7 +50,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         public async Task<ChargeDTO> PerformChargeByPhone(string phone, int chargeId, bool confirmed)
         {
             var charge = _chargeRepository.Filter(filter: c => c.Id == chargeId && c.Card.Contact.Phone == phone,
-                                    includeProperties: "Card.Contact.Client,Card.CardBatches.Batch,Card.CardType").FirstOrDefault();
+                                    includeProperties: "Card.Contact.Client,Card.CardBatches.Batch,Card.CardType,Movements").FirstOrDefault();
             if (charge == null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_ChargeNotFound));

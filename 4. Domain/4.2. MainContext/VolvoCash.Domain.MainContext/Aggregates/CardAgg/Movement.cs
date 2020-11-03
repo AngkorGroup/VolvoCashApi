@@ -47,8 +47,35 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         }
 
-        public Movement(Money amount, string description, string displayName, MovementType movementType,
-                        ICollection<BatchMovement> batchMovements = null,Transfer transfer = null )
+        public Movement(Money amount, string description, string displayName, MovementType movementType, Charge charge)
+        {
+            Amount = amount;
+            Description = description;
+            DisplayName = displayName;
+            BatchMovements = new List<BatchMovement>();
+            Type = movementType;
+            Charge = charge;
+        }
+
+        public Movement(Money amount, string description, string displayName, MovementType movementType)
+        {
+            Amount = amount;
+            Description = description;
+            DisplayName = displayName;
+            BatchMovements = new List<BatchMovement>();
+            Type = movementType;
+        }
+
+        public Movement(Money amount, string description, string displayName, MovementType movementType, ICollection<BatchMovement> batchMovements)
+        {
+            Amount = amount;
+            Description = description;
+            DisplayName = displayName;
+            BatchMovements = batchMovements;
+            Type = movementType;
+        }
+
+        public Movement(Money amount, string description, string displayName, MovementType movementType, ICollection<BatchMovement> batchMovements,Transfer transfer)
         {
             Amount = amount;
             Description = description;

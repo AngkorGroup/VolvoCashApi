@@ -5,6 +5,8 @@ using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.DistributedServices.Seedwork.Controllers;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
+using System.Threading.Tasks;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -22,6 +24,20 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         public DealersController(IDealerAppService dealerAppService) : base(dealerAppService)
         {
             _dealerAppService = dealerAppService;
+        }
+        #endregion
+
+        #region Public Methods
+        [HttpPost]
+        public override async Task<DealerDTO> Post([FromBody] DealerDTO entityDTO)
+        {
+            entityDTO.Status = Status.Active;
+            return await _service.AddAsync(entityDTO);
+        }
+        [HttpDelete("{id}")]
+        public override async Task Delete([FromRoute] int id)
+        {
+            await (_service as IDealerAppService).Delete(id);
         }
         #endregion
     }

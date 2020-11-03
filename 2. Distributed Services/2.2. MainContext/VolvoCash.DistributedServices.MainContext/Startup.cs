@@ -141,6 +141,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IBatchRepository, BatchRepository>();
             services.AddScoped<IBatchErrorRepository, BatchErrorRepository>();
+            services.AddScoped<IBatchMovementRepository, BatchMovementRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();
