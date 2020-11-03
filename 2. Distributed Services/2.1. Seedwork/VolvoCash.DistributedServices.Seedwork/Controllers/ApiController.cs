@@ -31,7 +31,7 @@ namespace VolvoCash.DistributedServices.Seedwork.Controllers
         }
 
         // GET api/Entity/GetById/id
-        [HttpGet("GetById/{id}")]
+        [HttpGet("{id}")]
         public virtual TEntityDTO GetById(int id)
         {
             return _service.GetDTO(id);
@@ -59,7 +59,7 @@ namespace VolvoCash.DistributedServices.Seedwork.Controllers
         }
 
         // PUT api/Entity/PutWithId/5
-        [HttpPut("PutWithId/{id}")]
+        [HttpPut("{id}")]
         public virtual TEntityDTO PutWithId(int id, [FromBody] TEntityDTO entityDTO)
         {
             return _service.Modify(id, entityDTO);
