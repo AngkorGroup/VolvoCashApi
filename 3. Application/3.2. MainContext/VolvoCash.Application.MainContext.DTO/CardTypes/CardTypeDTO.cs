@@ -7,7 +7,7 @@ using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.CardTypes
 {
-    public class CardTypeDTO :  AuditableEntity
+    public class CardTypeDTO : AuditableEntity
     {
         #region Properties
         public int Id { get; set; }
@@ -16,8 +16,12 @@ namespace VolvoCash.Application.MainContext.DTO.CardTypes
 
         public string DisplayName { get; set; }
 
+        public int Term { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public Currency Currency { get; set; }
+
+        public string TPCode { get; set; }
 
         public string Color { get; set; }
 

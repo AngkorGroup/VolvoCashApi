@@ -30,7 +30,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             var movements = (await _movementRepository.FilterAsync(
                 filter: m => m.CardId == cardId,
-                includeProperties:"Charge.Cashier,Transfer"));
+                includeProperties:"Charge.Cashier.Dealer,Transfer"));
 
             if (movements != null && movements.Any())
             {

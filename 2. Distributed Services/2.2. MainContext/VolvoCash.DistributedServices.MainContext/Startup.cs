@@ -39,6 +39,9 @@ using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
 using VolvoCash.Application.MainContext.Movements.Services;
 using VolvoCash.Application.MainContext.CardTypes.Services;
+using VolvoCash.Application.MainContext.Cashiers.Services;
+using VolvoCash.Application.MainContext.Dealers.Services;
+using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 
 namespace VolvoCash.DistributedServices.MainContext
 {
@@ -116,6 +119,8 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IChargeAppService, ChargeAppService>();
             services.AddScoped<IClientAppService, ClientAppService>();
             services.AddScoped<IBatchAppService, BatchAppService>();
+            services.AddScoped<ICashierAppService, CashierAppService>();
+            services.AddScoped<IDealerAppService, DealerAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();
@@ -132,6 +137,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IMovementRepository, MovementRepository>();
             services.AddScoped<IChargeRepository, ChargeRepository>();
             services.AddScoped<ICashierRepository, CashierRepository>();
+            services.AddScoped<IDealerRepository, DealerRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IBatchRepository, BatchRepository>();
             services.AddScoped<IBatchErrorRepository, BatchErrorRepository>();
