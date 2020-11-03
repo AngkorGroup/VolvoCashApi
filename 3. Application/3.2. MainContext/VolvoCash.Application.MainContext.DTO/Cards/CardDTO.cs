@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using VolvoCash.Application.MainContext.DTO.CardBatches;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.MainContext.DTO.Movements;
@@ -31,6 +32,8 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         public List<CardBatchDTO> CardBatchesWithBalance { get; set; }
 
         public int CardTypeId { get; set; }
+
+        public CardTypeDTO CardType { get; set; }
 
         public string TPCode { get; set; }
 
