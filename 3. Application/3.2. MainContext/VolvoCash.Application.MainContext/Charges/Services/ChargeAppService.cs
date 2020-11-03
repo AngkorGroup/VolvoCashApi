@@ -72,7 +72,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
                 c => c.Cashier.Id == id && c.ChargeType == chargeType, pageIndex, pageLength, c => c.CreatedAt, false);
             return charges.ProjectedAsCollection<ChargeDTO>();
         }
-        
+
         public async Task<ChargeDTO> AddCharge(ChargeDTO chargeDTO)
         {
             var charge = new Charge(

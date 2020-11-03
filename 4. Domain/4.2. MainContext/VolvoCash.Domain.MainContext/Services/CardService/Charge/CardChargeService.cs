@@ -16,7 +16,7 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
             {
                 if (charge.Status != ChargeStatus.Pending)
                 {
-                    throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_InvalidStateForCharge));
+                    throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_InvalidStatusForCharge));
                 }
                 if (card.CanWithdraw(charge.Amount))
                 {

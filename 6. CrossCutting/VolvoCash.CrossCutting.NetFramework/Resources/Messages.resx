@@ -117,33 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Application_exception_ApplicationValidationExceptionDefaultMessage" xml:space="preserve">
-    <value>Validation exception, check ValidationErrors for more information</value>
-  </data>
-  <data name="Application_validation_No_Records_Found_Error" xml:space="preserve">
-    <value>No records found</value>
-  </data>
-  <data name="Application_validation_Null_Parameters_Error" xml:space="preserve">
-    <value>Null values</value>
-  </data>
-  <data name="Application_validation_Validation_Error" xml:space="preserve">
-    <value>Invalid data</value>
-  </data>
-  <data name="Domain_validation_PropertyIsEmptyOrNull" xml:space="preserve">
-    <value>The {0} in {1} cannot be empty or null</value>
-  </data>
-  <data name="Domain_validation_PropertyOutOfRange" xml:space="preserve">
-    <value>The value of {0} in {1} must be greater than {2} and less than {3}</value>
-  </data>
-  <data name="Infrastructure_exception_NotMapFoundForTypeAdapter" xml:space="preserve">
-    <value>Not mapped found for type {0} to type {1}</value>
-  </data>
-  <data name="Infrastructure_exception_RegisterTypeMapConfigurationElementInvalidTypeValue" xml:space="preserve">
-    <value>The type is not a fully qualified assembly name</value>
-  </data>
-  <data name="Infrastructure_exception_RegisterTypesMapConfigurationInvalidType" xml:space="preserve">
-    <value>Invalid type, expected is RegisterTypesMapConfigurationElement</value>
-  </data>
+
+  <!-- Infraestructure  -->
+
   <data name="Infrastructure_info_CannotAddNullEntity" xml:space="preserve">
     <value>Cannot add null entity into {0} repository</value>
   </data>
@@ -156,15 +132,24 @@
   <data name="Infrastructure_info_CannotTrackNullEntity" xml:space="preserve">
     <value>Cannot track null item into {0} repository</value>
   </data>
-  <data name="Application_validation_BadRequest" xml:space="preserve">
-    <value>Bad Request</value>
+  <data name="Infrastructure_exception_NotMapFoundForTypeAdapter" xml:space="preserve">
+    <value>Not mapped found for type {0} to type {1}</value>
   </data>
-  <data name="Application_validation_Exception" xml:space="preserve">
-    <value>Validation exception, check ValidationErrors for more information</value>
+  <data name="Infrastructure_exception_RegisterTypeMapConfigurationElementInvalidTypeValue" xml:space="preserve">
+    <value>The type is not a fully qualified assembly name</value>
+  </data>
+  <data name="Infrastructure_exception_RegisterTypesMapConfigurationInvalidType" xml:space="preserve">
+    <value>Invalid type, expected is RegisterTypesMapConfigurationElement</value>
   </data>
   <data name="Infrastructure_exception_InvalidEnumeratedType" xml:space="preserve">
     <value>T must be an enumerated type</value>
   </data>
+  <data name="Infrastructure_exception_ContactAlreadyExistsForOtherClient" xml:space="preserve">
+    <value>El contacto ya existe para otro cliente</value>
+  </data>
+
+  <!-- DistributedServices  -->
+
   <data name="DistributedServices_info_OnExecuted" xml:space="preserve">
     <value>On Executing {0} at {1} </value>
   </data>
@@ -174,17 +159,68 @@
   <data name="DistributedServices_info_Parameter" xml:space="preserve">
     <value>Parameter: {0}</value>
   </data>
-  <data name="Application_exception_InvalidPageIndexOrPageCount" xml:space="preserve">
-    <value>Invalid page index or page count data</value>
+  <data name="DistributedServices_messages_RequestCodeMessage" xml:space="preserve">
+    <value>Tu código de verificación es:</value>
   </data>
-  <data name="Application_PhoneNotFound" xml:space="preserve">
+
+  <!-- Application  -->
+
+  <data name="Application_validation_No_Records_Found_Error" xml:space="preserve">
+    <value>No records found</value>
+  </data>
+  <data name="Application_validation_Null_Parameters_Error" xml:space="preserve">
+    <value>Null values</value>
+  </data>
+  <data name="Application_validation_Exception" xml:space="preserve">
+    <value>Validation exception, check ValidationErrors for more information</value>
+  </data>
+  <data name="Application_validation_Validation_Error" xml:space="preserve">
+    <value>Invalid data</value>
+  </data>
+  <data name="Application_validation_BadRequest" xml:space="preserve">
+    <value>Bad Request</value>
+  </data>
+  <data name="Application_messages_CreateTransferDisplayName" xml:space="preserve">
+    <value>Se creó la transferencia.</value>
+  </data>
+  <data name="Application_messages_CreateChargeDisplayName" xml:space="preserve">
+    <value>Se realizó el cobro</value>
+  </data>
+  <data name="Application_exception_ApplicationValidationExceptionDefaultMessage" xml:space="preserve">
+    <value>Validation exception, check ValidationErrors for more information.</value>
+  </data>
+  <data name="Application_exception_InvalidPageIndexOrPageCount" xml:space="preserve">
+    <value>Invalid page index or page count data.</value>
+  </data>
+  <data name="Application_exception_PhoneNotFound" xml:space="preserve">
     <value>El teléfono no fue encontrado.</value>
   </data>
-  <data name="Application_CardNotFound" xml:space="preserve">
+  <data name="Application_exception_SmsCodeEmpty" xml:space="preserve">
+    <value>El código de verificación no puede ser vacío.</value>
+  </data>
+  <data name="Application_exception_CardNotFound" xml:space="preserve">
     <value>La tarjeta no fue encontrada.</value>
   </data>
   <data name="Application_ContactNotFound" xml:space="preserve">
     <value>El contacto no fue encontrado.</value>
+  </data>
+  <data name="Application_exception_CannotCreateContactForNonExistingClient" xml:space="preserve">
+    <value>No se puede crear un contacto para un cliente que no existe.</value>
+  </data>
+  <data name="Application_exception_ContactAlreadyExistsForOtherClient" xml:space="preserve">
+    <value>El contacto ya existe para otro cliente.</value>
+  </data>
+  <data name="Application_exception_ContactAlreadyExists" xml:space="preserve">
+    <value>El contacto ya existe.</value>
+  </data>
+  <data name="Application_exception_ChargeNotFound" xml:space="preserve">
+    <value>El cobro no fue encontrado.</value>
+  </data>
+  <data name="Application_exception_InvalidCardTypeCode" xml:space="preserve">
+    <value>El Código de Tipo de Tarjeta no es válido.</value>
+  </data>
+  <data name="Application_exception_BatchFileIsNull" xml:space="preserve">
+    <value>El archivo para realizar las recargas no puede ser nulo.</value>
   </data>
   <data name="Application_exception_CannotUpdateContactWithEmptyInformation" xml:space="preserve">
     <value>No se puede actualizar un contacto con información vacía.</value>
@@ -192,7 +228,77 @@
   <data name="Application_exception_CannotUpdateNonExistingContact" xml:space="preserve">
     <value>No se puede actualizar un contacto que no existe.</value>
   </data>
-  <data name="DistributedServices_messages_RequestCodeMessage" xml:space="preserve">
-    <value>Tu código de verificación es:</value>
+
+  <!-- Domain  -->
+
+  <data name="Domain_validation_PropertyIsEmptyOrNull" xml:space="preserve">
+    <value>The {0} in {1} cannot be empty or null</value>
   </data>
+  <data name="Domain_validation_PropertyOutOfRange" xml:space="preserve">
+    <value>The value of {0} in {1} must be greater than {2} and less than {3}</value>
+  </data>
+  <data name="Domain_messages_RechargeMessageDisplayName" xml:space="preserve">
+    <value>Recarga desde el Sistema</value>
+  </data>
+  <data name="Domain_messages_RechargeMessageDescription" xml:space="preserve">
+    <value>Recarga desde el Sistema</value>
+  </data>
+  <data name="Domain_messages_TransferFromMessageDisplayName" xml:space="preserve">
+    <value>Transferencia desde </value>
+  </data>
+  <data name="Domain_messages_TransferFromMessageDescription" xml:space="preserve">
+    <value>Transferencia desde </value>
+  </data>
+  <data name="Domain_messages_TransferToMessageDisplayName" xml:space="preserve">
+    <value>Transferencia a </value>
+  </data>
+  <data name="Domain_messages_TransferToMessageDescription" xml:space="preserve">
+    <value>Transferencia a </value>
+  </data>
+  <data name="Domain_messages_ChargeMessageDisplayName" xml:space="preserve">
+    <value>Cobro</value>
+  </data>
+  <data name="Domain_messages_ChargeMessageDescription" xml:space="preserve">
+    <value>Cobro</value>
+  </data>
+  <data name="Domain_messages_CreationCardMessageDisplayName" xml:space="preserve">
+    <value>Creación de Tarjeta</value>
+  </data>
+  <data name="Domain_messages_CreationCardMessageDescription" xml:space="preserve">
+    <value>Creación de Tarjeta</value>
+  </data>
+  <data name="Domain_exception_PerformRechargeCardIsNull" xml:space="preserve">
+    <value>No se puede realizar una recarga a una tarjeta nula.</value>
+  </data>
+  <data name="Domain_exception_PerformTransferCardIsNull" xml:space="preserve">
+    <value>No se puede realizar una transferencia a una tarjeta nula.</value>
+  </data>
+  <data name="Domain_exception_PerformChargeCardIsNull" xml:space="preserve">
+    <value>No se puede realizar un cobro a una tarjeta nula.</value>
+  </data>
+  <data name="Domain_exception_NoEnoughMoneyToWithdraw" xml:space="preserve">
+    <value>No hay suficiente dinero para realizar el retiro.</value>
+  </data>
+  <data name="Domain_exception_NoEnoughMoneyToTransfer" xml:space="preserve">
+    <value>No hay suficiente dinero para realizar la transferencia.</value>
+  </data>
+  <data name="Domain_exception_NoEnoughMoneyToCharge" xml:space="preserve">
+    <value>No hay suficiente dinero para realizar el cobro.</value>
+  </data>
+  <data name="Domain_exception_InvalidTransferToSameCard" xml:space="preserve">
+    <value>No se puede realizar una transferencia a la misma tarjeta.</value>
+  </data>
+  <data name="Domain_exception_InvalidTransferDifferentContactClient" xml:space="preserve">
+    <value>No se puede realizar una transferencia a un contacto de otro cliente.</value>
+  </data>
+  <data name="Domain_exception_InvalidStateForCharge" xml:space="preserve">
+    <value>Estado de consumo inválido.</value>
+  </data>
+  <data name="Domain_exception_PerformTransferOriginCardIsNull" xml:space="preserve">
+    <value>No se puede realizar una transferencia de una tarjeta origen nula.</value>
+  </data>
+  <data name="Domain_exception_PerformTransferDestinyCardIsNull" xml:space="preserve">
+    <value>No se puede realizar una transferencia a una tarjeta destino nula.</value>
+  </data>
+  
 </root>
