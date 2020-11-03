@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using VolvoCash.Application.MainContext.DTO.CardBatches;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.MainContext.DTO.Movements;
+using VolvoCash.Application.Seedwork.DateConverters;
 
 namespace VolvoCash.Application.MainContext.DTO.Cards
 {
@@ -30,6 +33,9 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         public int CardTypeId { get; set; }
 
         public string TPCode { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
 
         #region Public Methods

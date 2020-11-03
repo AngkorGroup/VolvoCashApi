@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Enums;
@@ -53,18 +55,24 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         {
         }
 
-        public Charge(int cashierId, int cardId, ChargeType chargeType, Money amount, string displayName, string description)
+        public Charge(int cashierId, Card card, ChargeType chargeType, Money amount, string displayName, string description)
         {
             CashierId = cashierId;
-            CardId = cardId;
+            Card = card;
             Amount = amount;
             DisplayName = displayName;
             ChargeType = chargeType;
             Description = description;
             Status = ChargeStatus.Pending;
             var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON);
-            movement.CardId = cardId;
+            movement.CardId = card.Id;
             Movements.Add(movement);
+            if (!card.CanWithdraw(amount))
+            {
+                var messages = LocalizationFactory.CreateLocalResources();
+                throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_NoEnoughMoneyToWithdraw));
+            }
+            //TODO move this to a Factory Pattern instead of using the constructor
         }
         #endregion
 

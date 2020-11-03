@@ -45,6 +45,7 @@ namespace VolvoCash.DistributedServices.Seedwork.Filters
                 }
             }
 
+            var errorMessage = message.ToString();
             var controller = context.ActionDescriptor.RouteValues["controller"];
             var action = context.ActionDescriptor.RouteValues["action"];
             var result = new JsonResult(new { controller, action, message });
@@ -52,7 +53,7 @@ namespace VolvoCash.DistributedServices.Seedwork.Filters
             _logger.LogError(null, exception, result.Value.ToString());
 
             result.StatusCode = (int)HttpStatusCode.BadRequest;
-            context.Result = new BadRequestObjectResult(result);
+            context.Result = new BadRequestObjectResult(new { errorMessage });
         }
         #endregion
     }

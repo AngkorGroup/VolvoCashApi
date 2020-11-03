@@ -71,6 +71,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         {
             get
             {
+                return Balance;
                 var calculatedBalance = new Money(Balance.Currency, 0);
                 var cardBatches = AvailableCardBatches;
                 foreach (var cardBatch in cardBatches)

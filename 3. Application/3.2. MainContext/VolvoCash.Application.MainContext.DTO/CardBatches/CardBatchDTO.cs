@@ -27,6 +27,9 @@ namespace VolvoCash.Application.MainContext.DTO.CardBatches
 
         [JsonConverter(typeof(DefaultShortLiterallyDateConverter))]
         public DateTime ExpiresAtExtent { get;  set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
     }
 }

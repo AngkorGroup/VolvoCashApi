@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.CardTypes
@@ -19,6 +21,9 @@ namespace VolvoCash.Application.MainContext.DTO.CardTypes
         public string Color { get; set; }
 
         public string ImageUrl { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
     }
 }

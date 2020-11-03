@@ -58,6 +58,9 @@ namespace VolvoCash.Application.MainContext.DTO.Batches
         public CardTypeDTO CardType { get; set; }
 
         public string LineContent { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
     }
 }

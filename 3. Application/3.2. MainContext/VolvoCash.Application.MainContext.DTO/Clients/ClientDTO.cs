@@ -1,4 +1,7 @@
-﻿using VolvoCash.Application.MainContext.DTO.Contacts;
+﻿using Newtonsoft.Json;
+using System;
+using VolvoCash.Application.MainContext.DTO.Contacts;
+using VolvoCash.Application.Seedwork.DateConverters;
 
 namespace VolvoCash.Application.MainContext.DTO.Clients
 {
@@ -20,6 +23,9 @@ namespace VolvoCash.Application.MainContext.DTO.Clients
         public string Email { get; set; }
 
         public string TPCode { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
     }
 }
