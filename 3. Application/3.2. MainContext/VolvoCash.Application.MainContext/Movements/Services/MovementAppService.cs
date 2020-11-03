@@ -28,7 +28,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region ApiWeb Public Methods
         public async Task<List<MovementDTO>> GetMovementsByCardId(int cardId)
         {
-            var movements = (await _movementRepository.FilterAsync(filter: m => m.CardId == cardId));
+            var movements = (await _movementRepository.FilterAsync(
+                filter: m => m.CardId == cardId,
+                includeProperties:"Charge.Cashier,Transfer"));
 
             if (movements != null && movements.Any())
             {

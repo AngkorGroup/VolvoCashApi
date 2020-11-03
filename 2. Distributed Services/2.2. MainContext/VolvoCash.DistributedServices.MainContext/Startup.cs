@@ -38,6 +38,7 @@ using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
 using VolvoCash.Application.MainContext.Movements.Services;
+using VolvoCash.Application.MainContext.CardTypes.Services;
 
 namespace VolvoCash.DistributedServices.MainContext
 {
@@ -108,6 +109,7 @@ namespace VolvoCash.DistributedServices.MainContext
             // Application Services
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
             services.AddScoped<ICardAppService, CardAppService>();
+            services.AddScoped<ICardTypeAppService, CardTypeAppService>();
             services.AddScoped<IContactAppService, ContactAppService>();
             services.AddScoped<ITransferAppService, TransferAppService>();
             services.AddScoped<IMovementAppService, MovementAppService>();

@@ -32,7 +32,7 @@ namespace VolvoCash.DistributedServices.Seedwork.Controllers
         }
 
         // GET api/Entity/id
-        [HttpGet("GetById/{id}")]
+        [HttpGet("{id}")]
         public virtual async Task<TEntityDTO> GetById(int id)
         {
             return await _service.GetDTOAsync(id);
@@ -60,7 +60,7 @@ namespace VolvoCash.DistributedServices.Seedwork.Controllers
         }
 
         // PUT api/Entity/PutWithId/5
-        [HttpPut("PutWithId/{id}")]
+        [HttpPut("{id}")]
         public virtual async Task<TEntityDTO> PutWithId(int id, [FromBody] TEntityDTO entityDTO)
         {
             return await _service.ModifyAsync(id, entityDTO);
