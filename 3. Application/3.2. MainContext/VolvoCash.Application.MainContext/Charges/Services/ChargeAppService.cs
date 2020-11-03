@@ -78,7 +78,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             return charges.ProjectedAsCollection<ChargeDTO>();
         }
 
-        public async Task<ChargeDTO> AddChargeRemote(ChargeDTO chargeDTO)
+        public async Task<ChargeDTO> AddCharge(ChargeDTO chargeDTO)
         {
             var charge = new Charge(
                 chargeDTO.CashierId,
@@ -92,24 +92,6 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             _chargeRepository.Add(charge);
             await _chargeRepository.UnitOfWork.CommitAsync();
             //TODO enviar push notification
-            return charge.ProjectedAs<ChargeDTO>();
-        }
-
-        public async Task<ChargeDTO> AddChargeFaceToFace(ChargeDTO chargeDTO)
-        {
-            var charge = new Charge(
-                chargeDTO.CashierId,
-                _cardRepository.Filter(filter: c => c.Id == chargeDTO.CardId,
-                                        includeProperties: "Contact.Client,CardBatches.Batch,CardType").FirstOrDefault(),
-                chargeDTO.ChargeType,
-                new Money(chargeDTO.Amount.Currency, chargeDTO.Amount.Value),
-                _resources.GetStringResource(LocalizationKeys.Application.messages_CreateChargeDisplayName),
-                chargeDTO.Description
-            );
-            _cardChargeService.PerformCharge(charge);
-            _chargeRepository.Add(charge);
-            await _chargeRepository.UnitOfWork.CommitAsync();
-            //TODO enviar push notification pero solo informativo
             return charge.ProjectedAs<ChargeDTO>();
         }
         #endregion

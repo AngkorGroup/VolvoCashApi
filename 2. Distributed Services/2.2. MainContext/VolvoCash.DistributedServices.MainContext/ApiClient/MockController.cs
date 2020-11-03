@@ -50,8 +50,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
             request.Amount = new MoneyDTO( Currency.USD, 100);
             request.Description = "Esto es una prueba de un consumo";
             request.CashierId = 1;
+            request.ChargeType = ChargeType.FaceToFace;
             request.CardId = JsonConvert.DeserializeObject<CardDTO>(CryptoMethods.DecryptString(request.CardToken)).Id;
-            var charge = await _chargeAppService.AddChargeRemote(request);
+            var charge = await _chargeAppService.AddCharge(request);
             return Ok(charge);
         }
 
