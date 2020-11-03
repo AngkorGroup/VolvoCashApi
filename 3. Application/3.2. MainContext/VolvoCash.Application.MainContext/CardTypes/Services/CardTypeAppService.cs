@@ -16,7 +16,7 @@ namespace VolvoCash.Application.MainContext.CardTypes.Services
 
         #region Constructor
         public CardTypeAppService(ICardTypeRepository cardTypeRepository,
-                                  ILogger<CardTypeAppService> logger)
+                                  ILogger<CardTypeAppService> logger) : base(cardTypeRepository)
         {
             _cardTypeRepository = cardTypeRepository;
             _logger = logger;
