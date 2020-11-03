@@ -9,6 +9,7 @@ namespace VolvoCash.Application.MainContext.DTO.Profiles
         public BatchProfile()
         {
             CreateMap<Batch, BatchDTO>().PreserveReferences();
+            CreateMap<Batch, BatchListDTO>().PreserveReferences();            
         }
     }
 }

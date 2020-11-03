@@ -226,7 +226,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<CardBatchDTO>> GetBatchesByClientId(int clientId)
         {
             var batches = await _batchRepository.FilterAsync(filter: b => b.ClientId == clientId,
-                                                             includeProperties: "CardBatches.Card",
+                                                             includeProperties: "CardBatches.Card.CardType",
                                                              orderBy: b => b.OrderByDescending(b => b.CreatedAt));
             var cardBatches = new List<CardBatchDTO>();
             if (batches != null && batches.Any())

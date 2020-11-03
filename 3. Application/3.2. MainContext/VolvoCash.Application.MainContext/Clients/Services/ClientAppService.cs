@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
@@ -68,7 +69,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
             return new List<ClientListDTO>();
         }
 
-        public async Task<List<CardTypeSummary>> GetClientCardTypesSummary(int id)
+        public async Task<List<CardTypeSummaryDTO>> GetClientCardTypesSummary(int id)
         {
             var client = (await _clientRepository.FilterAsync(
                 filter: c => c.Id == id,
@@ -77,9 +78,10 @@ namespace VolvoCash.Application.MainContext.Clients.Services
 
             if (client != null)
             {
-                return client.GetCardTypesSummary();
+                var summary = client.GetCardTypesSummary();
+                return summary.ProjectedAsCollection<CardTypeSummaryDTO>();
             }
-            return new List<CardTypeSummary>();
+            return new List<CardTypeSummaryDTO>();
         }
         #endregion
 
