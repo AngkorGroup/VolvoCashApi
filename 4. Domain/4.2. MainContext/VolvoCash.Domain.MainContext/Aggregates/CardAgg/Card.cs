@@ -122,8 +122,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             var messages = LocalizationFactory.CreateLocalResources();
             var money = new Money(Balance.Currency, 0);
             AddMovement(money, MovementType.CTA,
-                        messages.GetStringResource(LocalizationKeys.Domain.messages_creationCardMessageDescription),
-                        messages.GetStringResource(LocalizationKeys.Domain.messages_creationCardMessageDisplayName));
+                        messages.GetStringResource(LocalizationKeys.Domain.messages_CreationCardMessageDescription),
+                        messages.GetStringResource(LocalizationKeys.Domain.messages_CreationCardMessageDisplayName));
         }
         #endregion
 

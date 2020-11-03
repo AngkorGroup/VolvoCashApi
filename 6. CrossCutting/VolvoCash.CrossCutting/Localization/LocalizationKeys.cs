@@ -15,44 +15,23 @@
             exception_ContactAlreadyExistsForOtherClient
         };
 
-        public enum Domain
+        public enum DistributedServices
         {
-            validation_PropertyIsEmptyOrNull,
-            validation_PropertyOutOfRange,
-            messages_RechargeMessage,
-            messages_RechargeMessageDescription,
-            messages_RechargeMessageDisplayName,
-            messages_TransferFromMessageDescription,
-            messages_TransferToMessageDisplayName,
-            messages_TransferToMessageDescription,
-            messages_ChargeMessageDescription,
-            messages_ChargeMessageDisplayName,
-            messages_TransferFromMessageDisplayName,
-            messages_creationCardMessageDescription,
-            messages_creationCardMessageDisplayName,
-            exception_PerformRechargeCardIsNull,
-            exception_PerformTransferCardIsNull,
-            exception_PerformChargeCardIsNull,
-            exception_NoEnoughMoneyToWithdraw,
-            exception_NoEnoughMoneyToTransfer,
-            exception_NoEnoughMoneyToCharge,
-            exception_InvalidTransferToSameCard,
-            exception_InvalidTransferDifferentContactClient,
-            exception_InvalidStateForCharge,
-            exception_PerformTransferOriginCardIsNull,
-            exception_PerformTransferDestinyCardIsNull,
+            info_OnExecuted,
+            info_OnExecuting,
+            info_Parameter,
+            messages_RequestCodeMessage,
         }
 
         public enum Application
         {
             validation_No_Records_Found_Error,
             validation_Null_Parameters_Error,
-            validation_Exception,            
+            validation_Exception,
             messages_CreateTransferDisplayName,
             messages_CreateChargeDisplayName,
             exception_SmsCodeEmpty,
             exception_PhoneNotFound,
-            exception_SmsPhoneEmpty,
             exception_CardNotFound,
             exception_ContactNotFound,
             exception_CannotCreateContactForNonExistingClient,
@@ -65,12 +44,31 @@
             exception_CannotUpdateNonExistingContact
         }
 
-        public enum DistributedServices
+        public enum Domain
         {
-            info_OnExecuting,
-            info_Parameter,
-            info_OnExecuted,
-            messages_RequestCodeMessage,
+            validation_PropertyIsEmptyOrNull,
+            validation_PropertyOutOfRange,
+            messages_RechargeMessageDisplayName,
+            messages_RechargeMessageDescription,
+            messages_TransferFromMessageDisplayName,
+            messages_TransferFromMessageDescription,
+            messages_TransferToMessageDisplayName,
+            messages_TransferToMessageDescription,
+            messages_ChargeMessageDisplayName,
+            messages_ChargeMessageDescription,
+            messages_CreationCardMessageDisplayName,
+            messages_CreationCardMessageDescription,
+            exception_PerformRechargeCardIsNull,
+            exception_PerformTransferCardIsNull,
+            exception_PerformChargeCardIsNull,
+            exception_NoEnoughMoneyToWithdraw,
+            exception_NoEnoughMoneyToTransfer,
+            exception_NoEnoughMoneyToCharge,
+            exception_InvalidTransferToSameCard,
+            exception_InvalidTransferDifferentContactClient,
+            exception_InvalidStatusForCharge,
+            exception_PerformTransferOriginCardIsNull,
+            exception_PerformTransferDestinyCardIsNull,
         }
     }
 }
