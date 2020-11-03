@@ -32,7 +32,15 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                 }
                 else
                 {
-                    charge.Status = ChargeStatus.Canceled;
+                    if (charge.Id == 0)
+                    {
+                        throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_NoEnoughMoneyToWithdraw));
+                    }
+                    else
+                    {
+                        //if the charge already exists only cancel it
+                        charge.Status = ChargeStatus.Canceled;
+                    }                    
                 }
             }
             else

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.ComponentModel.DataAnnotations;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.Seedwork.DateConverters;
@@ -38,6 +39,7 @@ namespace VolvoCash.Application.MainContext.DTO.Charges
 
         public string CardToken { get; set; }
 
+        [Required]
         public string Description { get; set; }
         #endregion
     }

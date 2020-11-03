@@ -1,6 +1,9 @@
-﻿using VolvoCash.Application.MainContext.DTO.CardTypes;
+﻿using Newtonsoft.Json;
+using System;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
+using VolvoCash.Application.Seedwork.DateConverters;
 
 namespace VolvoCash.Application.MainContext.DTO.Cards
 {
@@ -24,6 +27,9 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         public int ContactId { get; set; }
 
         public string CardToken { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
 
         #region Public Methods

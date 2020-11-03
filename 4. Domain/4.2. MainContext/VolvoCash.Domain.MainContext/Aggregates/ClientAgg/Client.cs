@@ -47,6 +47,23 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
         #region NotMapped Properties
         [NotMapped]
         public Contact MainContact { get => Contacts.FirstOrDefault(c => c.Type == ContactType.Primary); }
+
+        [NotMapped]
+        public Money Balance 
+        {
+            get
+            {
+                var calculatedBalance = new Money(Currency.USD, 0);                
+                foreach (var contact in Contacts)
+                {
+                    foreach(var card in contact.Cards)
+                    {
+                        calculatedBalance = calculatedBalance.Add(card.Balance);
+                    }
+                }
+                return calculatedBalance;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -95,17 +112,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
                                             Id = ct.First().CardType.Id,
                                             Name = ct.First().CardType.Name,
                                             DisplayName = ct.First().CardType.DisplayName,
-                                            Sum = new Money(ct.First().Balance.Currency, ct.Sum(c => c.Balance.Value))
+                                            Sum = ct.Aggregate(new Money(ct.First().CardType.Currency,0), (acc,c)=> acc.Add(c.Balance))
                                         }).ToList();
-
-            //var cardTypesSummary = from card in cards
-            //                       group card by card.CardTypeId into c
-            //                       select new
-            //                       {
-            //                           Id = c.First().CardType.Id,
-            //                           Name = c.First().CardType.Name,
-            //                           DisplayName = c.First().CardType.DisplayName
-            //                       };
             return cardTypesSummary;
         }
         #endregion

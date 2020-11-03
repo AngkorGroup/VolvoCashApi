@@ -16,15 +16,18 @@ namespace VolvoCash.Application.MainContext.Charges.Services
 
         #region Members
         private readonly IChargeRepository _chargeRepository;
+        private readonly ICardRepository _cardRepository;
         private readonly ICardChargeService _cardChargeService;
         private readonly ILocalization _resources;
         #endregion
 
         #region Constructor
         public ChargeAppService(IChargeRepository chargeRepository,
+                                ICardRepository cardRepository,
                                 ICardChargeService cardChargeService)
         {
             _chargeRepository = chargeRepository;
+            _cardRepository = cardRepository;
             _cardChargeService = cardChargeService;
             _resources = LocalizationFactory.CreateLocalResources();
         }
@@ -45,7 +48,8 @@ namespace VolvoCash.Application.MainContext.Charges.Services
 
         public async Task<ChargeDTO> PerformChargeByPhone(string phone, int chargeId, bool confirmed)
         {
-            var charge = _chargeRepository.Filter(filter: c => c.Id == chargeId && c.Card.Contact.Phone == phone, includeProperties: "Card.Contact.Client,Card.CardBatches.Batch,Card.CardType").FirstOrDefault();
+            var charge = _chargeRepository.Filter(filter: c => c.Id == chargeId && c.Card.Contact.Phone == phone,
+                                    includeProperties: "Card.Contact.Client,Card.CardBatches.Batch,Card.CardType").FirstOrDefault();
             if (charge == null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_ChargeNotFound));
@@ -73,11 +77,12 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             return charges.ProjectedAsCollection<ChargeDTO>();
         }
 
-        public async Task<ChargeDTO> AddCharge(ChargeDTO chargeDTO)
+        public async Task<ChargeDTO> AddChargeRemote(ChargeDTO chargeDTO)
         {
             var charge = new Charge(
                 chargeDTO.CashierId,
-                chargeDTO.CardId,
+                _cardRepository.Filter(filter: c => c.Id == chargeDTO.CardId,
+                                        includeProperties: "Contact.Client,CardBatches.Batch,CardType").FirstOrDefault(),
                 chargeDTO.ChargeType,
                 new Money(chargeDTO.Amount.Currency, chargeDTO.Amount.Value),
                 _resources.GetStringResource(LocalizationKeys.Application.messages_CreateChargeDisplayName),
@@ -85,7 +90,25 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             );
             _chargeRepository.Add(charge);
             await _chargeRepository.UnitOfWork.CommitAsync();
-            //TODO enviar push notification a contacto  indicando que tiene un cobro pendiente
+            //TODO enviar push notification
+            return charge.ProjectedAs<ChargeDTO>();
+        }
+
+        public async Task<ChargeDTO> AddChargeFaceToFace(ChargeDTO chargeDTO)
+        {
+            var charge = new Charge(
+                chargeDTO.CashierId,
+                _cardRepository.Filter(filter: c => c.Id == chargeDTO.CardId,
+                                        includeProperties: "Contact.Client,CardBatches.Batch,CardType").FirstOrDefault(),
+                chargeDTO.ChargeType,
+                new Money(chargeDTO.Amount.Currency, chargeDTO.Amount.Value),
+                _resources.GetStringResource(LocalizationKeys.Application.messages_CreateChargeDisplayName),
+                chargeDTO.Description
+            );
+            _cardChargeService.PerformCharge(charge);
+            _chargeRepository.Add(charge);
+            await _chargeRepository.UnitOfWork.CommitAsync();
+            //TODO enviar push notification pero solo informativo
             return charge.ProjectedAs<ChargeDTO>();
         }
         #endregion

@@ -60,15 +60,6 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
             return Ok(transfer);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("mock_charge")]
-        public async Task<ActionResult> MockCharge(ChargeDTO request)
-        {
-            var consumption = await _chargeAppService.AddCharge(request);
-            return Ok(consumption);
-        }
-
         [HttpGet]
         [AllowAnonymous]
         [Route("mock_confirm_charge")]

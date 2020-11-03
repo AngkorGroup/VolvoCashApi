@@ -1,3 +1,7 @@
+using Newtonsoft.Json;
+using System;
+using VolvoCash.Application.Seedwork.DateConverters;
+
 namespace VolvoCash.Application.MainContext.DTO.Admins
 {
     public class AdminDTO
@@ -20,6 +24,9 @@ namespace VolvoCash.Application.MainContext.DTO.Admins
         public string Password { get; set; }
 
         public int UserId { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
     }
 }

@@ -45,7 +45,15 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
         {
             request.CashierId = int.Parse(_applicationUser.GetUserName());
             request.CardId = JsonConvert.DeserializeObject<CardDTO>(CryptoMethods.DecryptString(request.CardToken)).Id;
-            var charge = await _chargeAppService.AddCharge(request);
+            ChargeDTO charge;
+            if (request.ChargeType == ChargeType.FaceToFace)
+            {
+                charge = await _chargeAppService.AddChargeFaceToFace(request);
+            }
+            else
+            {
+                charge = await _chargeAppService.AddChargeRemote(request);
+            }
             return Ok(charge);
         }
         #endregion

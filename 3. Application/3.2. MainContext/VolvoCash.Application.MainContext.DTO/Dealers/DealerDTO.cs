@@ -1,4 +1,6 @@
 using System;
+using System.Text.Json.Serialization;
+using VolvoCash.Application.Seedwork.DateConverters;
 
 namespace VolvoCash.Application.MainContext.DTO.Dealers
 {
@@ -17,7 +19,12 @@ namespace VolvoCash.Application.MainContext.DTO.Dealers
 
         public string TPCode { get; set; }
 
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
         public DateTime? ArchiveAt { get; set; }
+
+        [JsonConverter(typeof(DefaultShortLiterallyDateConverter))]
+        public DateTime CreatedAt { get; set; }
+
         #endregion
     }
 }

@@ -1,4 +1,7 @@
+using Newtonsoft.Json;
+using System;
 using VolvoCash.Application.MainContext.DTO.Dealers;
+using VolvoCash.Application.Seedwork.DateConverters;
 
 namespace VolvoCash.Application.MainContext.DTO.Cashiers
 {
@@ -26,6 +29,9 @@ namespace VolvoCash.Application.MainContext.DTO.Cashiers
         public virtual DealerDTO Dealer { get; set; }
 
         public int UserId { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
         #endregion
     }
 }
