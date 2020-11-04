@@ -1,15 +1,17 @@
 using System;
 using VolvoCash.Domain.Seedwork;
-using System.Text.Json.Serialization;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
 
 namespace VolvoCash.Application.MainContext.DTO.Dealers
 {
     public class DealerDTO : AuditableEntity
     {
         #region Properties
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public string Ruc { get; set; }

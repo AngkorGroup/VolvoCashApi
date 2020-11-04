@@ -41,9 +41,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region ApiClient Public Methods
         public async Task<List<CardListDTO>> GetCardsByPhone(string phone)
         {
-            var contactChildrenCards = (await _cardRepository.FilterAsync(c => c.Contact.ContactParent.Phone == phone)).ToList();
-            var contact = (await _contactRepository.FilterAsync(filter: c => c.Phone == phone, includeProperties: "Cards.CardType")).FirstOrDefault();
-            contactChildrenCards.AddRange(contact.Cards);
+            var contactChildrenCards = (await _cardRepository.FilterAsync(filter : c => c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone,
+                includeProperties: "CardType,Contact")).ToList();
             if (contactChildrenCards != null && contactChildrenCards.Any())
             {
                 var cardsDTO = contactChildrenCards.ProjectedAsCollection<CardListDTO>();
@@ -73,7 +72,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region ApiWeb Public Methods
         public async Task<List<CardListDTO>> GetCardsByFilter(string query)
         {
-            query?.Trim().ToUpper();
+            query= query?.Trim().ToUpper();
             var cards = await _cardRepository.FilterAsync(
                 filter: c => c.Code.Trim().ToUpper().Contains(query)
                   || c.Contact.FirstName.ToUpper().Contains(query)

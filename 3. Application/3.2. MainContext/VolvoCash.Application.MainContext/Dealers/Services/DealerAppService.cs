@@ -31,6 +31,14 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         #endregion
 
         #region ApiWeb Public Methods
+        public async Task<List<DealerDTO>> GetDealers(string query,int maxRecords)
+        {
+            query = query?.Trim().ToUpper();
+            var dealers = await _repository.FilterAsync(filter: d => d.Name.Trim().ToUpper().Contains(query) || d.Ruc.Trim().ToUpper().Contains(query));
+            dealers = dealers.Take(Math.Min(dealers.Count(), maxRecords));
+            return dealers.ProjectedAsCollection<DealerDTO>();
+        }
+
         public async Task<List<CashierDTO>> GetDealerCashiers(int id)
         {
             var cashiers = await _cashierRepository.FilterAsync(filter: c => c.DealerId == id);
@@ -41,10 +49,10 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         {
             var charges = await _chargeRepository.FilterAsync(filter: c => c.Cashier.DealerId == id
                     && (beginDate == null || c.CreatedAt >= beginDate)
-                    && (endDate == null || c.CreatedAt <= endDate)
+                    && (endDate == null   || c.CreatedAt <= endDate)
                     && (cashierId == null || c.Cashier.Id == cashierId)
                     && (cardTypes == null || cardTypes.Count == 0 || cardTypes.Contains(c.Card.CardTypeId))
-                    , includeProperties: "Cashier.Dealer,Card.CardType"
+                    , includeProperties: "Cashier.Dealer,Card.CardType,Card.Contact.Client"
                     , orderBy: qc => qc.OrderByDescending(c => c.CreatedAt));
             return charges.ProjectedAsCollection<ChargeListDTO>();
         }

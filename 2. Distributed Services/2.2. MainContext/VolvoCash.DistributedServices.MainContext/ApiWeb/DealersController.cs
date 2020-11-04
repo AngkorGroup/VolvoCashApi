@@ -31,6 +31,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Public Methods
+        [HttpGet("by_filter")]
+        public async Task<ActionResult> GetDealers([FromQuery] string query = "", int maxRecords = 5 )
+        {
+            var charges = await _dealerAppService.GetDealers(query, maxRecords);
+            return Ok(charges);
+        }
+
         [HttpGet("{id}/cashiers")]
         public async Task<ActionResult> GetDealerCashiers([FromRoute] int id)
         {
