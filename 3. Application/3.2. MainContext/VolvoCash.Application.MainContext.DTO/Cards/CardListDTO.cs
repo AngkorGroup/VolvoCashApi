@@ -4,6 +4,7 @@ using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.Seedwork.DateConverters;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Cards
 {
@@ -27,6 +28,10 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         public int ContactId { get; set; }
 
         public string CardToken { get; set; }
+
+        public string TPCode { get; set; }
+
+        public Status Status { get; set; }
 
         [JsonConverter(typeof(DefaultDateTimeConverter))]
         public DateTime CreatedAt { get; set; }

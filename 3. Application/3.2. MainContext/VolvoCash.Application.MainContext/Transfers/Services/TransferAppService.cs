@@ -56,7 +56,9 @@ namespace VolvoCash.Application.MainContext.Transfers.Services
             {
                 destinyCard = new Card(destinyContact, originCard.CardType.Currency, originCard.CardTypeId);
             }
-            var transfer = new Transfer(originCard, destinyCard, new Money(transferDTO.Amount.Currency, transferDTO.Amount.Value), _resources.GetStringResource(LocalizationKeys.Application.messages_CreateTransferDisplayName));
+            var displayName = _resources.GetStringResource(LocalizationKeys.Application.messages_CreateTransferDisplayName);
+            displayName = string.Format(displayName, originCard.Contact.Phone, destinyCard.Contact.Phone);
+            var transfer = new Transfer(originCard, destinyCard, new Money(transferDTO.Amount.Currency, transferDTO.Amount.Value), displayName);
             destinyCard.DestinyTransfers.Add(transfer);
             _transferService.PerformTransfer(transfer);          
             if (destinyCard.Id == 0)

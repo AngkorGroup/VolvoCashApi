@@ -11,8 +11,6 @@ namespace VolvoCash.DistributedServices.MainContext
             context.Database.EnsureCreated();
 
             //Seeders
-            DbClientSeeder.Initialize(context);
-            DbContactSeeder.Initialize(context);
             DbCardTypeSeeder.Initialize(context);
             DbCashierSeeder.Initialize(context);
             DbAdminSeeder.Initialize(context);

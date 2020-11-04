@@ -12,6 +12,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public string DisplayName { get; set; }
 
         public Money Sum { get; set; }
+
+        public string Color { get; set; }
         #endregion
     }
 }

@@ -1,11 +1,12 @@
 using Newtonsoft.Json;
 using System;
+using VolvoCash.Domain.Seedwork;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.Application.Seedwork.DateConverters;
 
 namespace VolvoCash.Application.MainContext.DTO.Cashiers
 {
-    public class CashierDTO
+    public class CashierDTO : AuditableEntity
     {
         #region Properties
         public int Id { get; set; }

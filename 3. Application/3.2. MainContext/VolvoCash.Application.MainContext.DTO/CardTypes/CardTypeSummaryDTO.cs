@@ -12,6 +12,8 @@ namespace VolvoCash.Application.MainContext.DTO.CardTypes
         public string DisplayName { get; set; }
 
         public MoneyDTO Sum { get; set; }
+
+        public string Color { get; set; }
         #endregion
     }
 }

@@ -32,9 +32,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpGet("by_client")]
-        public async Task<ActionResult> GetCardsByClientId([FromQuery] int clientId)
+        public async Task<ActionResult> GetCardsByClientId([FromQuery] int? clientId = null, [FromQuery] int? contactId = null)
         {
-            var cards = await _cardAppService.GetCardsByClientId(clientId);
+            var cards = await _cardAppService.GetCardsByClientId(clientId, contactId);
             return Ok(cards);
         }
 
@@ -42,6 +42,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         public async Task<ActionResult> GetCardsByClientIdAndCardTypeId([FromQuery] int clientId, [FromQuery] int cardTypeId)
         {
             var cards = await _cardAppService.GetCardsByClientIdAndCardTypeId(clientId, cardTypeId);
+            return Ok(cards);
+        }
+
+        [HttpGet("{id}/batchs/{batchId}/movements")]
+        public async Task<ActionResult> GetCardBatchMovements([FromRoute] int id, [FromRoute] int batchId)
+        {
+            var cards = await _cardAppService.GetCardBatchMovements(id, batchId);
             return Ok(cards);
         }
         #endregion

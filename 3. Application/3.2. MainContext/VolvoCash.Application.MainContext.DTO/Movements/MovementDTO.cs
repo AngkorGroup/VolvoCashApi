@@ -23,9 +23,9 @@ namespace VolvoCash.Application.MainContext.DTO.Movements
 
         public string Description { get; set; }
 
-        public ChargeDTO Charge { get; set; }
+        public ChargeListDTO Charge { get; set; }
 
-        public TransferDTO Transfer { get; set; }
+        public TransferListDTO Transfer { get; set; }
 
         [JsonConverter(typeof(DefaultLiterallyDateConverter))]
         public DateTime CreatedAt { get; set; }

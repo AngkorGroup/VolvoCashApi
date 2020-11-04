@@ -9,6 +9,7 @@ namespace VolvoCash.Application.MainContext.DTO.Profiles
         public CashierProfile()
         {
             CreateMap<Cashier, CashierDTO>().PreserveReferences();
+            CreateMap<CashierDTO, Cashier>().PreserveReferences();
         }
     }
 }

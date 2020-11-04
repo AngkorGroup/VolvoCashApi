@@ -1,13 +1,13 @@
 using Newtonsoft.Json;
-using System;
 using Newtonsoft.Json.Converters;
-using VolvoCash.Domain.Seedwork;
+using System;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Application.MainContext.DTO.CardTypes
 {
-    public class CardTypeDTO :  AuditableEntity
+    public class CardTypeDTO : AuditableEntity
     {
         #region Properties
         public int Id { get; set; }
@@ -16,15 +16,25 @@ namespace VolvoCash.Application.MainContext.DTO.CardTypes
 
         public string DisplayName { get; set; }
 
+        public int Term { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public Currency Currency { get; set; }
+
+        public string TPCode { get; set; }
 
         public string Color { get; set; }
 
         public string ImageUrl { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Status Status { get; set; }
+
         [JsonConverter(typeof(DefaultDateTimeConverter))]
-        public DateTime CreatedAt { get; set; }
+        public new DateTime CreatedAt { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime? ArchiveAt { get; set; }
         #endregion
     }
 }

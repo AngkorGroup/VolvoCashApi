@@ -10,8 +10,8 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20201030035957_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20201103234051_AddZoneToDealer")]
+    partial class AddZoneToDealer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -658,6 +658,10 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
+
+                    b.Property<string>("Zone")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 

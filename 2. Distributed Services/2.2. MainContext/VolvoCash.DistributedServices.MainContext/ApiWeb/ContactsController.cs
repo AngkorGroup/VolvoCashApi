@@ -32,6 +32,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(contacts);
         }
 
+        [HttpGet("by_filter")]
+        public async Task<ActionResult> GetContactsByFilter([FromQuery] string query, [FromQuery] int maxRecords = 8)
+        {
+            var contacts = await _contactAppService.GetContactsByFilter(query, maxRecords);
+            return Ok(contacts);
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateContact([FromBody] ContactDTO contactDTO)
         {

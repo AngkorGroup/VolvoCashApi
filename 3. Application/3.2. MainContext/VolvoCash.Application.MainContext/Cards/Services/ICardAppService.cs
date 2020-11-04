@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VolvoCash.Application.MainContext.DTO.Batches;
 using VolvoCash.Application.MainContext.DTO.Cards;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
@@ -14,8 +15,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
         #region ApiWeb
         Task<List<CardListDTO>> GetCardsByFilter(string query);
-        Task<List<CardListDTO>> GetCardsByClientId(int clientId);
+        Task<List<CardListDTO>> GetCardsByClientId(int? clientId, int? contactId);
         Task<List<CardListDTO>> GetCardsByClientIdAndCardTypeId(int clientId, int cardTypeId);
+        Task<List<BatchMovementDTO>> GetCardBatchMovements(int cardId, int batchId);
         #endregion
     }
 }

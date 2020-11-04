@@ -125,6 +125,22 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
             return new List<ContactListDTO>();
         }
 
+        public async Task<List<ContactListDTO>> GetContactsByFilter(string query,int maxRecords)
+        {
+            var contacts = await _contactRepository.FilterAsync(filter: c => c.FirstName.ToUpper().Contains(query.Trim().ToUpper())
+                || c.LastName.ToUpper().Contains(query.Trim().ToUpper())
+                || c.Phone.Contains(query.Trim())
+                || c.DocumentNumber.Contains(query.Trim()),
+                includeProperties:"Client");
+
+            contacts = contacts.Take(Math.Min(contacts.Count(), maxRecords));
+            if (contacts != null && contacts.Any())
+            {
+                return contacts.ProjectedAsCollection<ContactListDTO>();
+            }
+            return new List<ContactListDTO>();
+        }
+
         public async Task<ContactDTO> UpdateContact(ContactDTO contactDTO)
         {
             if (contactDTO == null)

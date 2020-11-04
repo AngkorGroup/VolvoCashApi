@@ -54,8 +54,6 @@
             messages_TransferFromMessageDescription,
             messages_TransferToMessageDisplayName,
             messages_TransferToMessageDescription,
-            messages_ChargeMessageDisplayName,
-            messages_ChargeMessageDescription,
             messages_CreationCardMessageDisplayName,
             messages_CreationCardMessageDescription,
             exception_PerformRechargeCardIsNull,
