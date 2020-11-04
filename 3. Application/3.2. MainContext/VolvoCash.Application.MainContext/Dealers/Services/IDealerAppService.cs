@@ -12,6 +12,7 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
     public interface IDealerAppService : IService<Dealer, DealerDTO>, IDisposable
     {
         #region ApiWeb Public Methods
+        Task<List<DealerDTO>> GetDealers(string query, int maxRecords);
         Task<List<CashierDTO>> GetDealerCashiers(int id);
         Task<List<ChargeListDTO>> GetDealerCharges(int id, DateTime? beginDate, DateTime? endDate, int? cashierId, List<int> cardTypes);
         Task Delete(int id);
