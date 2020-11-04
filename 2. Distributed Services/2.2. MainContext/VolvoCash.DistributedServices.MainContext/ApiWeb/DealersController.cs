@@ -7,6 +7,9 @@ using VolvoCash.DistributedServices.Seedwork.Controllers;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using System.Threading.Tasks;
 using VolvoCash.Domain.MainContext.Enums;
+using System.Collections.Generic;
+using VolvoCash.CrossCutting.Utils;
+using System;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -28,16 +31,37 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Public Methods
+        [HttpGet("{id}/cashiers")]
+        public async Task<ActionResult> GetDealerCashiers([FromRoute] int id)
+        {
+            var charges = await _dealerAppService.GetDealerCashiers(id);
+            return Ok(charges);
+        }
+
+        [HttpGet("{id}/charges")]
+        public async Task<ActionResult> GetDealerCharges([FromRoute] int id,[FromQuery] string beginDate = "", [FromQuery] string endDate = "",
+                                                        [FromQuery] int? cashierId =null, [FromQuery] List<int> cardTypes = null
+                                                    )
+        {
+            DateTime? bDate;
+            bDate=  DateTime.ParseExact(beginDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            DateTime? eDate;
+            eDate = DateTime.ParseExact(endDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            var charges = await _dealerAppService.GetDealerCharges(id, bDate, eDate, cashierId, cardTypes);
+            return Ok(charges);
+        }
+
         [HttpPost]
         public override async Task<DealerDTO> Post([FromBody] DealerDTO entityDTO)
         {
             entityDTO.Status = Status.Active;
             return await _service.AddAsync(entityDTO);
         }
+
         [HttpDelete("{id}")]
         public override async Task Delete([FromRoute] int id)
         {
-            await (_service as IDealerAppService).Delete(id);
+            await _dealerAppService.Delete(id);
         }
         #endregion
     }

@@ -3,6 +3,7 @@ using VolvoCash.Domain.Seedwork;
 using System.Text.Json.Serialization;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
+using Newtonsoft.Json.Converters;
 
 namespace VolvoCash.Application.MainContext.DTO.Dealers
 {
@@ -15,8 +16,10 @@ namespace VolvoCash.Application.MainContext.DTO.Dealers
 
         public string ContactName { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public DealerType Type { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }
 
         public string Zone { get; set; }
