@@ -44,7 +44,7 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
                     && (endDate == null || c.CreatedAt <= endDate)
                     && (cashierId == null || c.Cashier.Id == cashierId)
                     && (cardTypes == null || cardTypes.Count == 0 || cardTypes.Contains(c.Card.CardTypeId))
-                    , includeProperties: "Charge.Cashier.Dealer"
+                    , includeProperties: "Cashier.Dealer,Card.CardType"
                     , orderBy: qc => qc.OrderByDescending(c => c.CreatedAt));
             return charges.ProjectedAsCollection<ChargeListDTO>();
         }

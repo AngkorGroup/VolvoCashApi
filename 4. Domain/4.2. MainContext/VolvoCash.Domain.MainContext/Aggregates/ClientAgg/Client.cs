@@ -112,6 +112,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
                                             Id = ct.First().CardType.Id,
                                             Name = ct.First().CardType.Name,
                                             DisplayName = ct.First().CardType.DisplayName,
+                                            Color = ct.First().CardType.Color,
                                             Sum = ct.Aggregate(new Money(ct.First().CardType.Currency,0), (acc,c)=> acc.Add(c.Balance))
                                         }).ToList();
             return cardTypesSummary;

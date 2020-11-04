@@ -43,10 +43,16 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
                                                         [FromQuery] int? cashierId =null, [FromQuery] List<int> cardTypes = null
                                                     )
         {
-            DateTime? bDate;
-            bDate=  DateTime.ParseExact(beginDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            DateTime? eDate;
-            eDate = DateTime.ParseExact(endDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            DateTime? bDate = null;
+            if (!string.IsNullOrEmpty(beginDate))
+            {
+                bDate =  DateTime.ParseExact(beginDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            }
+            DateTime? eDate = null;
+            if (!string.IsNullOrEmpty(endDate))
+            {
+                eDate = DateTime.ParseExact(endDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            }         
             var charges = await _dealerAppService.GetDealerCharges(id, bDate, eDate, cashierId, cardTypes);
             return Ok(charges);
         }
