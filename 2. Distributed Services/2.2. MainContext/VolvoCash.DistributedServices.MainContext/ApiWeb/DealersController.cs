@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using VolvoCash.DistributedServices.Seedwork.Filters;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DTO.Dealers;
-using VolvoCash.DistributedServices.Seedwork.Controllers;
-using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using System.Threading.Tasks;
-using VolvoCash.Domain.MainContext.Enums;
-using System.Collections.Generic;
 using VolvoCash.CrossCutting.Utils;
-using System;
+using VolvoCash.DistributedServices.Seedwork.Controllers;
+using VolvoCash.DistributedServices.Seedwork.Filters;
+using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -47,7 +48,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         [HttpGet("{id}/charges")]
         public async Task<ActionResult> GetDealerCharges([FromRoute] int id,[FromQuery] string beginDate = "", [FromQuery] string endDate = "",
-                                                        [FromQuery] int? cashierId =null, [FromQuery] List<int> cardTypes = null
+                                                        [FromQuery] int? cashierId =null, [FromQuery] string cardTypes = ""
                                                     )
         {
             DateTime? bDate = null;
@@ -59,8 +60,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             if (!string.IsNullOrEmpty(endDate))
             {
                 eDate = DateTime.ParseExact(endDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            }         
-            var charges = await _dealerAppService.GetDealerCharges(id, bDate, eDate, cashierId, cardTypes);
+            }
+            var cardTypesList = string.IsNullOrEmpty(cardTypes) ? new List<int>() : cardTypes.Split(",").Select(s => int.Parse(s)).ToList();
+            var charges = await _dealerAppService.GetDealerCharges(id, bDate, eDate, cashierId, cardTypesList);
             return Ok(charges);
         }
 

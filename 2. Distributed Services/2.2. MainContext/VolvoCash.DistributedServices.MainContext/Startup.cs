@@ -1,4 +1,4 @@
-using System.Text;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,13 +10,17 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using FluentValidation.AspNetCore;
+using System.Text;
 using VolvoCash.Application.MainContext.Authentication.Services;
+using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.MainContext.Cards.Services;
+using VolvoCash.Application.MainContext.CardTypes.Services;
+using VolvoCash.Application.MainContext.Cashiers.Services;
 using VolvoCash.Application.MainContext.Charges.Services;
 using VolvoCash.Application.MainContext.Clients.Services;
 using VolvoCash.Application.MainContext.Contacts.Services;
-using VolvoCash.Application.MainContext.Batches.Services;
+using VolvoCash.Application.MainContext.Dealers.Services;
+using VolvoCash.Application.MainContext.Movements.Services;
 using VolvoCash.Application.MainContext.Transfers.Services;
 using VolvoCash.CrossCutting.Adapter;
 using VolvoCash.CrossCutting.Localization;
@@ -34,20 +38,15 @@ using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
-using VolvoCash.Application.MainContext.Movements.Services;
-using VolvoCash.Application.MainContext.CardTypes.Services;
-using VolvoCash.Application.MainContext.Cashiers.Services;
-using VolvoCash.Application.MainContext.Dealers.Services;
-using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 
 namespace VolvoCash.DistributedServices.MainContext
 {
     public class Startup
     {
-        //TODO PASAR QUALITY TEST SONARQUBE
         public IConfiguration Configuration { get; }
 
         public Startup(IWebHostEnvironment env)

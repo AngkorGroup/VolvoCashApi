@@ -71,11 +71,11 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #endregion
 
         #region ApiPOS Public Methods
-        public async Task<List<ChargeDTO>> GetChargesByCashierId(int id, ChargeType chargeType, int pageIndex, int pageLength)
+        public async Task<List<ChargeListDTO>> GetChargesByCashierId(int id, ChargeType chargeType, int pageIndex, int pageLength)
         {
             var charges = await _chargeRepository.GetFilteredAsync(
                 c => c.Cashier.Id == id && c.ChargeType == chargeType, pageIndex, pageLength, c => c.CreatedAt, false);
-            return charges.ProjectedAsCollection<ChargeDTO>();
+            return charges.ProjectedAsCollection<ChargeListDTO>();
         }
 
         public async Task<ChargeDTO> AddCharge(ChargeDTO chargeDTO)
@@ -99,7 +99,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region Common Public Method
         public async Task<ChargeDTO> GetChargeById(int id)
         {
-            var charge = (await _chargeRepository.FilterAsync(filter: c => c.Id == id, includeProperties: "Cashier")).FirstOrDefault();
+            var charge = (await _chargeRepository.FilterAsync(filter: c => c.Id == id, includeProperties: "Cashier,Card.Contact")).FirstOrDefault();
             return charge.ProjectedAs<ChargeDTO>();
         }
         #endregion

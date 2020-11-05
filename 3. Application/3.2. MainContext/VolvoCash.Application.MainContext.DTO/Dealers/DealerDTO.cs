@@ -1,9 +1,9 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
-using VolvoCash.Domain.Seedwork;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json;
+using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Application.MainContext.DTO.Dealers
 {

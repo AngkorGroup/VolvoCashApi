@@ -15,7 +15,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #endregion
 
         #region ApiPOS
-        Task<List<ChargeDTO>> GetChargesByCashierId(int id, ChargeType chargeType, int pageIndex, int pageLength);
+        Task<List<ChargeListDTO>> GetChargesByCashierId(int id, ChargeType chargeType, int pageIndex, int pageLength);
         Task<ChargeDTO> AddCharge(ChargeDTO chargeDTO);
         Task<ChargeDTO> GetChargeById(int id);
         #endregion

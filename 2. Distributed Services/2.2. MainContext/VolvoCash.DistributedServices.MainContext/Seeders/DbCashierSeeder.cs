@@ -23,7 +23,7 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
                 "MI NOMBRE",
                 "12345678901",
                 4,
-                DealerType.Internal
+                DealerType.Internal                
             );
             dealer.CreatedBy = "ADMIN";
             dealer.CreatedAt = DateTime.Now;
