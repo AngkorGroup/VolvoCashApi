@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using VolvoCash.DistributedServices.Seedwork.Filters;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Cashiers.Services;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.DistributedServices.Seedwork.Controllers;
+using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
@@ -25,6 +26,12 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
         #endregion
 
-
+        #region Public Methods   
+        [HttpDelete("{id}")]
+        public override async Task Delete([FromRoute] int id)
+        {
+            await _cashierAppService.Delete(id);
+        }
+        #endregion
     }
 }

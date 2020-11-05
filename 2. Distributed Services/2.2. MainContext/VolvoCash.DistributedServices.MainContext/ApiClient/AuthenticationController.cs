@@ -41,6 +41,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         public async Task<ActionResult> RequestSmsCode([FromBody] RequestSmsCodeRequest request)
         {
             //TODO EVITAR ENVIAR MENSAJES MUY RAPIDOS QUIZAS HABILITADO SOLO EN PRODUCCION
+            //TODO VALIDAR QUE CUANDO BUSQUE NO BUSQUE EN LOS QUE ESTEN ELIMINADOS ARCHIVEAT != null
             var code = await _authenticationAppService.RequestSmsCodeAsync(request.Phone);
             var message = $"{_resources.GetStringResource(LocalizationKeys.DistributedServices.messages_RequestCodeMessage)} {code}";
             _smsManager.Send(request.Phone, message);

@@ -16,6 +16,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
 
         #region Members
         private readonly IChargeRepository _chargeRepository;
+        private readonly ICardBatchRepository _cardBatchRepository;
         private readonly ICardRepository _cardRepository;
         private readonly ICardChargeService _cardChargeService;
         private readonly ILocalization _resources;
@@ -23,10 +24,12 @@ namespace VolvoCash.Application.MainContext.Charges.Services
 
         #region Constructor
         public ChargeAppService(IChargeRepository chargeRepository,
+            ICardBatchRepository cardBatchRepository,
                                 ICardRepository cardRepository,
                                 ICardChargeService cardChargeService)
         {
             _chargeRepository = chargeRepository;
+            _cardBatchRepository = cardBatchRepository;
             _cardRepository = cardRepository;
             _cardChargeService = cardChargeService;
             _resources = LocalizationFactory.CreateLocalResources();
@@ -50,7 +53,8 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         public async Task<ChargeDTO> PerformChargeByPhone(string phone, int chargeId, bool confirmed)
         {
             var charge = _chargeRepository.Filter(filter: c => c.Id == chargeId && c.Card.Contact.Phone == phone,
-                                    includeProperties: "Card.Contact.Client,Card.CardBatches.Batch,Card.CardType,Movements").FirstOrDefault();
+                                    includeProperties: "Card.Contact.Client,Card.CardType,Movements,Cashier").FirstOrDefault();
+            charge.Card.CardBatches = _cardBatchRepository.Filter(filter: c => c.CardId == charge.CardId, includeProperties: "Batch").ToList();
             if (charge == null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_ChargeNotFound));

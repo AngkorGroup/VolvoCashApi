@@ -22,6 +22,7 @@ using VolvoCash.Application.MainContext.Contacts.Services;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.Movements.Services;
 using VolvoCash.Application.MainContext.Transfers.Services;
+using VolvoCash.Application.MainContext.Users.Services;
 using VolvoCash.CrossCutting.Adapter;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.NetFramework.Adapter;
@@ -120,6 +121,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBatchAppService, BatchAppService>();
             services.AddScoped<ICashierAppService, CashierAppService>();
             services.AddScoped<IDealerAppService, DealerAppService>();
+            services.AddScoped<IUserAppService, UserAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();
@@ -137,10 +139,12 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IChargeRepository, ChargeRepository>();
             services.AddScoped<ICashierRepository, CashierRepository>();
             services.AddScoped<IDealerRepository, DealerRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IBatchRepository, BatchRepository>();
             services.AddScoped<IBatchErrorRepository, BatchErrorRepository>();
             services.AddScoped<IBatchMovementRepository, BatchMovementRepository>();
+            services.AddScoped<ICardBatchRepository, CardBatchRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

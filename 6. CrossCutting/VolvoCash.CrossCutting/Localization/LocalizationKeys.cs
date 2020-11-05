@@ -41,7 +41,10 @@
             exception_InvalidCardTypeCode,
             exception_BatchFileIsNull,
             exception_CannotUpdateContactWithEmptyInformation,
-            exception_CannotUpdateNonExistingContact
+            exception_CannotUpdateNonExistingContact,
+            exception_InvalidDealerForCashier,
+            exception_CashierAlreadyExistsEmail,
+            exception_CashierNotFound
         }
 
         public enum Domain

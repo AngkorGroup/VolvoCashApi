@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -35,6 +36,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         [MaxLength(100)]
         public string TPCode { get; set; }
 
+        public string Imei { get; set; }
+
         [Required]
         public int DealerId { get; set; }
 
@@ -49,11 +52,16 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
 
         public virtual User User { get; set; }
 
+        [Required]
+        public Status Status { get; set; }
+
+        public DateTime? ArchiveAt { get; set; }
+
         #endregion
 
         #region NotMapped Properties
         [NotMapped]
-        public string FullName { get => $"{FirstName} {LastName}"; }
+        public string FullName { get => $"{FirstName} {LastName}"; }       
         #endregion
 
         #region Constructor
@@ -62,7 +70,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         }
 
         public Cashier(Dealer dealer, string firstName, string lastName, string password,
-                    string phone, string tpCode, string email)
+                    string phone, string tpCode, string email,string imei)
         {
             Dealer = dealer;
             FirstName = firstName;
@@ -71,6 +79,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             Phone = phone;
             TPCode = tpCode;
             Email = email;
+            Imei = imei;
+            Status = Status.Active;
             User = new User(UserType.Cashier);
         }
         #endregion

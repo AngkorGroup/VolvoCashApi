@@ -10,6 +10,7 @@ using VolvoCash.Application.Seedwork.Common;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.Dealers.Services
 {
@@ -61,11 +62,10 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         {
             var dealer = await _repository.GetAsync(id);
             dealer.ArchiveAt = DateTime.Now;
-            dealer.Status = Domain.MainContext.Enums.Status.Inactive;
+            dealer.Status = Status.Inactive;
             _repository.Modify(dealer);
             await _repository.UnitOfWork.CommitAsync();
         }        
         #endregion
-
     }
 }

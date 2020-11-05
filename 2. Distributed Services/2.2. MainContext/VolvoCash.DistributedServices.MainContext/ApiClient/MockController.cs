@@ -2,13 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.MainContext.Charges.Services;
-using VolvoCash.Application.MainContext.Contacts.Services;
 using VolvoCash.Application.MainContext.DTO.Cards;
 using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Common;
-using VolvoCash.Application.MainContext.Transfers.Services;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Domain.MainContext.Enums;
@@ -22,21 +19,12 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
     public class MockController : ControllerBase
     {
         #region Members
-        private readonly IBatchAppService _loadAppService;
-        private readonly IContactAppService _contactAppService;
-        private readonly ITransferAppService _transferAppService;
         private readonly IChargeAppService _chargeAppService;
         #endregion
 
         #region Constructor
-        public MockController(IBatchAppService loadAppService,
-                              IContactAppService contactAppService,
-                              ITransferAppService transferAppService,
-                              IChargeAppService chargeAppService)
+        public MockController(IChargeAppService chargeAppService)
         {
-            _loadAppService = loadAppService;
-            _contactAppService = contactAppService;
-            _transferAppService = transferAppService;
             _chargeAppService = chargeAppService;
         }
         #endregion

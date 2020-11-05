@@ -45,7 +45,8 @@ namespace VolvoCash.Application.MainContext.Transfers.Services
 
         public async Task<TransferListDTO> PerformTransfer(string phone, TransferDTO transferDTO)
         {
-            var originCard = (await _cardRepository.FilterAsync(filter: c => c.Id == transferDTO.OriginCardId && c.Contact.Phone == phone, includeProperties: "Contact.Client,CardBatches.Batch,CardType")).FirstOrDefault();           
+            var originCard = (await _cardRepository.FilterAsync(filter: c => c.Id == transferDTO.OriginCardId && c.Contact.Phone == phone,
+                                    includeProperties: "Contact.Client,CardBatches.Batch,CardType")).FirstOrDefault();           
             if (originCard == null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CardNotFound));

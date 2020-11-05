@@ -3,6 +3,8 @@ using System;
 using VolvoCash.Domain.Seedwork;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.Application.Seedwork.DateConverters;
+using VolvoCash.Domain.MainContext.Enums;
+using Newtonsoft.Json.Converters;
 
 namespace VolvoCash.Application.MainContext.DTO.Cashiers
 {
@@ -23,6 +25,11 @@ namespace VolvoCash.Application.MainContext.DTO.Cashiers
 
         public string Password { get; set; }
 
+        [JsonIgnore]
+        public string PasswordHash { get; set; }
+
+        public string Imei { get; set; }
+
         public string TPCode { get; set; }
 
         public int DealerId { get; set; }
@@ -32,7 +39,14 @@ namespace VolvoCash.Application.MainContext.DTO.Cashiers
         public int UserId { get; set; }
 
         [JsonConverter(typeof(DefaultDateTimeConverter))]
-        public DateTime CreatedAt { get; set; }
+        public new DateTime CreatedAt { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime? ArchiveAt { get; set; }
+        
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Status Status { get; set; }       
         #endregion
     }
 }
