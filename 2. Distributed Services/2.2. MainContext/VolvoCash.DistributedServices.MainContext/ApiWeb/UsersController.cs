@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using VolvoCash.DistributedServices.Seedwork.Filters;
-using VolvoCash.Application.MainContext.Cashiers.Services;
-using VolvoCash.Application.MainContext.DTO.Cashiers;
+using VolvoCash.Application.MainContext.Users.Services;
+using VolvoCash.Application.MainContext.DTO.Users;
 using VolvoCash.DistributedServices.Seedwork.Controllers;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 
@@ -12,16 +12,16 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
-    public class CashiersController : AsyncBaseApiController<Cashier, CashierDTO>
+    public class UsersController : AsyncBaseApiController<User, UserDTO>
     {
         #region Members
-        private readonly ICashierAppService _cashierAppService;
+        private readonly IUserAppService _userAppService;
         #endregion
 
         #region Constructor
-        public CashiersController(ICashierAppService cashierAppService) : base(cashierAppService)
+        public UsersController(IUserAppService userAppService) : base(userAppService)
         {
-            _cashierAppService = cashierAppService;
+            _userAppService = userAppService;
         }
         #endregion
     }
