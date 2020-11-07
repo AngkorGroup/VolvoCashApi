@@ -1,8 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using VolvoCash.Application.Seedwork.Common;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using System.Threading.Tasks;
 
 namespace VolvoCash.Application.MainContext.Cashiers.Services
 {
