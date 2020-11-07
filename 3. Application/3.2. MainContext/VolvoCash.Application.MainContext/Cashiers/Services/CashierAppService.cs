@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.Application.Seedwork.Common;
