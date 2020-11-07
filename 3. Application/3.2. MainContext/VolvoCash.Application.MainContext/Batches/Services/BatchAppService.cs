@@ -305,7 +305,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 card = new Card(mainContact, cardType.Currency, carDTO.CardTypeId, carDTO.TPCode);
             }
             batchDTO.TPContractReason += " " + batchReason;
-            var expire = DateTime.Now.AddDays(cardType.Term);
+            var expire = DateTime.Now.AddMonths(cardType.Term);
             var batch = new Batch(
                 batchDTO.TPContractBatchNumber,
                 new Money(batchDTO.Amount.Currency, batchDTO.Amount.Value),

@@ -46,7 +46,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public virtual ICollection<Movement> Movements { get; } = new List<Movement>();
 
-        public virtual ICollection<CardBatch> CardBatches { get; } = new List<CardBatch>();
+        public virtual ICollection<CardBatch> CardBatches { get; set; } = new List<CardBatch>();
 
         public virtual ICollection<Transfer> OriginTransfers { get; } = new List<Transfer>();
 
@@ -179,10 +179,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             return batchMovements;
         }
 
-        public List<BatchMovement> WithdrawMoney(Movement movement,Money amountNeeded)
+        public void WithdrawMoney(Movement movement,Money amountNeeded)
         {
             var batchMovements = CalculateBatchesMoney(amountNeeded, movement);
-            return batchMovements;
+            movement.BatchMovements = batchMovements;
+            Balance = Balance.Add(amountNeeded.Opposite());
         }
 
         public List<BatchMovement> WithdrawMoney(MovementType movementType,Money amountNeeded, string description, string displayName,Transfer transfer)

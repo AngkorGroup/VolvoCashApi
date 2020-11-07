@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.Seedwork;
-using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 
 namespace VolvoCash.Application.MainContext.Clients.Services
@@ -14,18 +13,13 @@ namespace VolvoCash.Application.MainContext.Clients.Services
     public class ClientAppService : IClientAppService
     {
         #region Members
-        private IClientRepository _clientRepository;
-        private readonly ILogger _logger;
-        private readonly ILocalization _resources;
+        private readonly IClientRepository _clientRepository;
         #endregion
 
         #region Constructor
-        public ClientAppService(IClientRepository clientRepository,
-                                ILogger<ClientAppService> logger)
+        public ClientAppService(IClientRepository clientRepository)
         {
             _clientRepository = clientRepository;
-            _logger = logger;
-            _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
 
@@ -37,9 +31,9 @@ namespace VolvoCash.Application.MainContext.Clients.Services
                 filter: c => c.Name.Trim().ToUpper().Contains(query)
                           || c.Ruc.Trim().Contains(query)
                           || c.Address.Trim().ToUpper().Contains(query)
-                          || c.Phone.Trim().Contains(query),
-                includeProperties : "Contacts.Cards"
-            );
+                          || c.Phone.Trim().Contains(query)
+                          || string.IsNullOrEmpty(query),
+                includeProperties : "Contacts.Cards");
             clients = clients.Take(Math.Min(clients.Count(), maxRecords));
             if (clients != null && clients.Any())
             {
@@ -55,7 +49,8 @@ namespace VolvoCash.Application.MainContext.Clients.Services
                 c => c.Name.Trim().ToUpper().Contains(query)
                   || c.Ruc.Trim().Contains(query)
                   || c.Address.Trim().ToUpper().Contains(query)
-                  || c.Phone.Trim().Contains(query),
+                  || c.Phone.Trim().Contains(query)
+                  || string.IsNullOrEmpty(query),
                 pageIndex,
                 pageLength,
                 c => c.Name,

@@ -40,6 +40,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
             return Ok(charges);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetCharge([FromRoute] int id)
+        {
+            var charge = await _chargeAppService.GetChargeById( id);
+            return Ok(charge);
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddCharge([FromBody] ChargeDTO request)
         {
