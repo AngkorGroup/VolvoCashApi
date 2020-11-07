@@ -1,6 +1,6 @@
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -36,7 +36,6 @@ namespace VolvoCash.Application.MainContext.DTO.Dealers
 
         [JsonConverter(typeof(DefaultDateTimeConverter))]
         public DateTime? ArchiveAt { get; set; }
-
         #endregion
     }
 }
