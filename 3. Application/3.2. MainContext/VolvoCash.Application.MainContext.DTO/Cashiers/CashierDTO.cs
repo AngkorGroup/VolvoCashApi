@@ -1,5 +1,5 @@
-using Newtonsoft.Json;
 using System;
+using Newtonsoft.Json;
 using VolvoCash.Domain.Seedwork;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.Application.Seedwork.DateConverters;
@@ -43,7 +43,6 @@ namespace VolvoCash.Application.MainContext.DTO.Cashiers
 
         [JsonConverter(typeof(DefaultDateTimeConverter))]
         public DateTime? ArchiveAt { get; set; }
-        
 
         [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }       
