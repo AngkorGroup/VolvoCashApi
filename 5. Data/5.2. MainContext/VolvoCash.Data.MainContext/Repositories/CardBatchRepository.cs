@@ -8,7 +8,7 @@ namespace VolvoCash.Data.MainContext.Repositories
     {
         #region Constructor
         public CardBatchRepository(MainDbContext dbContext,
-                                  ILogger<Repository<CardBatch, MainDbContext>> logger) : base(dbContext, logger)
+                                   ILogger<Repository<CardBatch, MainDbContext>> logger) : base(dbContext, logger)
         {
         }
         #endregion
