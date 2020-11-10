@@ -21,6 +21,7 @@ using VolvoCash.Application.MainContext.Clients.Services;
 using VolvoCash.Application.MainContext.Contacts.Services;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.Movements.Services;
+using VolvoCash.Application.MainContext.Tests.Services;
 using VolvoCash.Application.MainContext.Transfers.Services;
 using VolvoCash.Application.MainContext.Users.Services;
 using VolvoCash.CrossCutting.Adapter;
@@ -153,6 +154,9 @@ namespace VolvoCash.DistributedServices.MainContext
             // Adapters
             services.AddScoped<ITypeAdapterFactory, AutomapperTypeAdapterFactory>();
             TypeAdapterFactory.SetCurrent(new AutomapperTypeAdapterFactory());
+
+            // Tests
+            services.AddScoped<CardTypeAppServiceTests>();
 
             // Configure JWTToken Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

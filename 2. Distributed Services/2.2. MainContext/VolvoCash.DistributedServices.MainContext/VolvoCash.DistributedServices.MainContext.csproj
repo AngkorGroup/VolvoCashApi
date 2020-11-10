@@ -52,6 +52,7 @@
     <ProjectReference Include="..\..\..\4. Domain\4.2. MainContext\VolvoCash.Domain.MainContext\VolvoCash.Domain.MainContext.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\3. Application\3.2. MainContext\VolvoCash.Application.MainContext.Tests\VolvoCash.Application.MainContext.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

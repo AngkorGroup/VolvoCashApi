@@ -8,9 +8,19 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Moq" Version="4.14.7" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VolvoCash.Application.MainContext.DTO\VolvoCash.Application.MainContext.DTO.csproj" />
+    <ProjectReference Include="..\..\..\6. CrossCutting\VolvoCash.CrossCutting\VolvoCash.CrossCutting.csproj" />
+    <ProjectReference Include="..\..\..\6. CrossCutting\VolvoCash.CrossCutting.NetFramework\VolvoCash.CrossCutting.NetFramework.csproj" />
+    <ProjectReference Include="..\VolvoCash.Application.MainContext\VolvoCash.Application.MainContext.csproj" />
+    <ProjectReference Include="..\..\..\4. Domain\4.2. MainContext\VolvoCash.Domain.MainContext\VolvoCash.Domain.MainContext.csproj" />
+    <ProjectReference Include="..\..\..\5. Data\5.2. MainContext\VolvoCash.Data.MainContext\VolvoCash.Data.MainContext.csproj" />
   </ItemGroup>
 
 </Project>
