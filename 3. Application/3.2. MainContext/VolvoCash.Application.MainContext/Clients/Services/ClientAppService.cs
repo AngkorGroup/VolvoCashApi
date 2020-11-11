@@ -1,7 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.Seedwork;

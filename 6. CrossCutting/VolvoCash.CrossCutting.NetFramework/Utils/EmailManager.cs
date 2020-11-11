@@ -24,7 +24,7 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
             try
             {
                 var message = new MimeMessage();
-
+                
                 var from = new MailboxAddress("Volvo Cash", _configuration["Mail:From"]);
                 message.From.Add(from);
 
@@ -37,7 +37,6 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
                 {
                     HtmlBody = bodyStr
                 };
-
                 message.Body = bodyBuilder.ToMessageBody();
 
                 var client = new SmtpClient();

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
@@ -49,8 +49,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region ApiClient Public Methods
         public async Task<List<ChargeDTO>> GetChargesByPhone(string phone)
         {
-            var charges = await _chargeRepository.FilterAsync(c => c.Card.Contact.Phone == phone && c.Status == ChargeStatus.Pending 
-                        , includeProperties: "Cashier");
+            var charges = await _chargeRepository.FilterAsync(c => c.Card.Contact.Phone == phone && c.Status == ChargeStatus.Pending, includeProperties: "Cashier");
             return charges.ProjectedAsCollection<ChargeDTO>();
         }
 
@@ -62,8 +61,9 @@ namespace VolvoCash.Application.MainContext.Charges.Services
 
         public async Task<ChargeDTO> PerformChargeByPhone(string phone, int chargeId, bool confirmed)
         {
-            var charge = _chargeRepository.Filter(filter: c => c.Id == chargeId && c.Card.Contact.Phone == phone,
-                                    includeProperties: "Card.Contact.Client,Card.CardType,Movements,Cashier").FirstOrDefault();
+            var charge = _chargeRepository.Filter(
+                filter: c => c.Id == chargeId && c.Card.Contact.Phone == phone,
+                includeProperties: "Card.Contact.Client,Card.CardType,Movements,Cashier").FirstOrDefault();
             charge.Card.CardBatches = _cardBatchRepository.Filter(filter: c => c.CardId == charge.CardId, includeProperties: "Batch").ToList();
             if (charge == null)
             {
@@ -98,8 +98,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region ApiPOS Public Methods
         public async Task<List<ChargeListDTO>> GetChargesByCashierId(int id, ChargeType chargeType, int pageIndex, int pageLength)
         {
-            var charges = await _chargeRepository.GetFilteredAsync(
-                c => c.Cashier.Id == id && c.ChargeType == chargeType, pageIndex, pageLength, c => c.CreatedAt, false);
+            var charges = await _chargeRepository.GetFilteredAsync(c => c.Cashier.Id == id && c.ChargeType == chargeType, pageIndex, pageLength, c => c.CreatedAt, false);
             return charges.ProjectedAsCollection<ChargeListDTO>();
         }
 
