@@ -84,10 +84,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         {
         }
 
-        public Batch(Contact contact, Card card, string tpContractBatchNumber,Money amount, DateTime expire, string tpChasis, DateTime? tpContractDate, string tpInvoiceCode,
+        public Batch(Contact contact, Card card, string tpContractBatchNumber, Money amount, DateTime expire, string tpChasis, DateTime? tpContractDate, string tpInvoiceCode,
                     DateTime? tpInvoiceDate, TPContractType tpContractType, string tpContractNumber, string tpContractReason,
                     string dealerCode, string dealerName, string businessCode, string businessDescription,
-                    int cardTypeId,string lineContent)
+                    int cardTypeId, string lineContent)
         {
             Contact = contact;
             Card = card;

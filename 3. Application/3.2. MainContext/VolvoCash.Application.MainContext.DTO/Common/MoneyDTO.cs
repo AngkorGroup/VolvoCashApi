@@ -17,7 +17,6 @@ namespace VolvoCash.Application.MainContext.DTO.Common
         public string CurrencySymbol { get => Currency == Currency.PEN ? "S/." : "US$"; }
 
         public string Label { get => CurrencySymbol + " " + string.Format("{0:#,0.00}", Value); }
-
         #endregion
 
         #region Constructor

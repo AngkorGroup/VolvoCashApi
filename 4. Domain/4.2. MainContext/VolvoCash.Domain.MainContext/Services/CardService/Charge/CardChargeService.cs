@@ -20,7 +20,7 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                 }
                 if (card.CanWithdraw(charge.Amount))
                 {
-                    card.WithdrawMoney(charge.Movements.FirstOrDefault(),charge.Amount);
+                    card.WithdrawMoney(charge.Movements.FirstOrDefault(), charge.Amount);
                     charge.Status = ChargeStatus.Accepted;
                     charge.GenerateOperationCode();
                     //charge.ImageUrl = GenerateChargeUrl();
@@ -36,14 +36,14 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                         throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_NoEnoughMoneyToWithdraw));
                         //if the charge already exists only cancel it
                         //charge.Status = ChargeStatus.Canceled;
-                    }                    
+                    }
                 }
             }
             else
             {
                 throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_PerformChargeCardIsNull));
             }
-        }        
+        }
         private string GenerateChargeUrl()
         {
             return "https://s3-us-east-2.amazonaws.com/volvocashbucket/charges/f7356fff-effb-4080-a95c-fb4f1b7300c7.jpg";
