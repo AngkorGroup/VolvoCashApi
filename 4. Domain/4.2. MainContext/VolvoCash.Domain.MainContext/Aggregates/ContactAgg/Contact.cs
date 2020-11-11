@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
@@ -53,7 +54,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
 
         public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
 
-        public virtual ICollection<Contact> ContactChildren { get; set; }
+        public virtual ICollection<Batch> Batches { get; } = new List<Batch>();
+
+        public virtual ICollection<Contact> ContactChildren { get; set; } = new List<Contact>();
 
         [Required]
         [ForeignKey("User")]
@@ -66,6 +69,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
         #region NotMapped Properties
         [NotMapped]
         public string FullName { get => $"{FirstName} {LastName}"; }
+
+        [NotMapped]
+        public bool IsActive { get => Status == Status.Active; }
         #endregion
 
         #region Constructor
@@ -73,7 +79,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
         {
         }
 
-        public Contact(Client client,ContactType type, DocumentType documentType,
+        public Contact(Client client, ContactType type, DocumentType documentType,
                         string documentNumber, string phone, string firstName,
                         string lastName, string email, int? contactParentId = null)
         {
@@ -90,23 +96,13 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
             Cards = new List<Card>();
             User = new User(UserType.Contact);
         }
+        #endregion
 
-        public Contact(Client client, ContactType type, DocumentType documentType, 
-                        string documentNumber, string phone, string firstName, 
-                        string lastName, string email, ICollection<Contact> contactChildren)
+        #region Public Methods
+        public void Delete()
         {
-            Client = client;
-            DocumentType = documentType;
-            DocumentNumber = documentNumber;
-            Phone = phone;
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            ContactChildren = contactChildren;
-            Type = type;
-            Status = Status.Active;
-            Cards = new List<Card>();
-            User = new User(UserType.Contact);
+            Status = Status.Inactive;
+            ArchiveAt = DateTime.Now;
         }
         #endregion
     }

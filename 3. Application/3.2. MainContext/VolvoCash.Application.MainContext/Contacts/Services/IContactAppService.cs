@@ -19,9 +19,10 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         #endregion
 
         #region ApiWeb
-        Task<List<ContactListDTO>> GetContactsByClientId(int clientId);
-        Task<List<ContactListDTO>> GetContactsByFilter(string query, int maxRecords);
+        Task<List<ContactListDTO>> GetContactsByClientId(int clientId, bool onlyActive);
+        Task<List<ContactListDTO>> GetContactsByFilter(string query, int maxRecords,bool onlyActive);
         Task<ContactDTO> UpdateContact(ContactDTO contactDTO);
+        Task MakeContactAsPrimary(int id);
         #endregion
     }
 }

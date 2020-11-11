@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Authentication.Services;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.CrossCutting.NetFramework.Identity;
+using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.DistributedServices.MainContext.ApiClient.Requests.Authentication;
 using VolvoCash.DistributedServices.MainContext.ApiClient.Responses.Authentication;
 using VolvoCash.DistributedServices.Seedwork.Filters;
@@ -20,17 +21,22 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
     {
         #region Members
         private readonly IAuthenticationAppService _authenticationAppService;
-        private readonly SMSManager _smsManager;
-        private readonly TokenManager _tokenManager;
+        private readonly ISMSManager _smsManager;
+        private readonly ITokenManager _tokenManager;
+        private readonly IApplicationUser _applicationUser;
         private readonly ILocalization _resources;
         #endregion
 
         #region Constructor
-        public AuthenticationController(IAuthenticationAppService authenticationAppService, IConfiguration configuration)
+        public AuthenticationController(IAuthenticationAppService authenticationAppService,
+                                        ISMSManager smsManager,
+                                        ITokenManager tokenManager,
+                                        IApplicationUser applicationUser)
         {
             _authenticationAppService = authenticationAppService;
-            _smsManager = new SMSManager(configuration);
-            _tokenManager = new TokenManager(configuration);
+            _smsManager = smsManager;
+            _tokenManager = tokenManager;
+            _applicationUser = applicationUser;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
@@ -42,9 +48,20 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         {
             //TODO EVITAR ENVIAR MENSAJES MUY RAPIDOS QUIZAS HABILITADO SOLO EN PRODUCCION
             //TODO VALIDAR QUE CUANDO BUSQUE NO BUSQUE EN LOS QUE ESTEN ELIMINADOS ARCHIVEAT != null
+            //TODO EN LAS APPS VALIDAR CIERRE DE SESION
+            //TODO WEB CONFIGURAR OLVIDE CONTRASE;A 
+            //TODO WEB PANTALLA DE PERFIL Y CAMBIO DE CONTRASE;A
+            //TODO CASHIER CONFIGURAR OLVIDE CONTRASE;A 
+            //TODO CASHIER PANTALLA DE PERFIL Y CAMBIO DE CONTRASE;A
+            //TODO WEB PONER FILTROS EN LAS VISTAS QUE DIGA MOSTRAR SOLO ACTIVOS
+            //AL MOMENTO DE HACER DELETE PONER EN EL STATUS = 0 A LOS QUE DEPENDAN DE EL
+            //Check if all repositorys are dispose including the ones that are invoke in the services
+            // mostrar en la creacion de usuarios solo los dealers activos
+            // ver como mostrar los consumos rechazados de alguna manera
+            // validar telefono de un contacto que sea valido siempre
             var code = await _authenticationAppService.RequestSmsCodeAsync(request.Phone);
             var message = $"{_resources.GetStringResource(LocalizationKeys.DistributedServices.messages_RequestCodeMessage)} {code}";
-            _smsManager.Send(request.Phone, message);
+            _smsManager.SendSMS(request.Phone, message);
             return Ok(new RequestSmsCodeResponse { IsValidPhoneNumber = true });
         }
 
@@ -53,7 +70,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         public async Task<ActionResult> VerifySmsCode([FromBody] VerifySmsCodeRequest request)
         {
             var contact = await _authenticationAppService.VerifySmsCodeAsync(request.Phone, int.Parse(request.Code));
-            var authToken = _tokenManager.GenerateTokenJWT(contact.UserId,contact.Phone, contact.FullName, contact.Email, UserType.Contact.ToString());
+            var session = await _authenticationAppService.CreateSessionAsync(contact.UserId, request.DeviceToken);
+            var authToken = _tokenManager.GenerateTokenJWT(session.Id, contact.UserId, contact.Phone, contact.FullName, contact.Email, UserType.Contact.ToString());
+            contact.Type = ContactType.Primary;
             return Ok(new VerifySmsCodeResponse { AuthToken = authToken, Contact = contact });
         }
 
@@ -61,7 +80,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         [Route("logout")]
         public async Task<ActionResult> Logout()
         {
-            //TODO Delete FCM TOKEN FROM SESSION
+            await _authenticationAppService.DestroySessionAsync(_applicationUser.GetSessionId());
             return Ok();
         }
         #endregion

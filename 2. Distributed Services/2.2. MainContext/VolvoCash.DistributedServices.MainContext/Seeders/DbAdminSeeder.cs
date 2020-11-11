@@ -15,7 +15,6 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             var admin = new Admin(
                 "Admin",
                 "Prueba",
-                "Admin Web App",
                 "Holi1234$",
                 "912456783",
                 "admin@volvo.com"

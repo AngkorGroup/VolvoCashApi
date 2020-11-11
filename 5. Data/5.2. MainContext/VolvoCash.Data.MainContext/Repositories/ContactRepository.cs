@@ -25,14 +25,15 @@ namespace VolvoCash.Data.MainContext.Repositories
         #region Public Methods
         public async Task<Contact> GetByPhoneAsync(string phone)
         {
-            var contact = await _context.Contacts.FirstOrDefaultAsync(x => x.Phone == phone);
+            var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Phone == phone && c.Status == Status.Active);
             return contact;
         }
+
         public async Task<Contact> CreateOrUpdateMainContact(Client client, string phone, DocumentType documentType,
             string documentNumber, string firstName, string lastName, string email)
         {
-            var mainContact = client.Contacts.FirstOrDefault(c => c.Type == ContactType.Primary);
-            var existingContactInOtherClient = (await FilterAsync(c => c.ClientId != client.Id && c.Phone == phone)).FirstOrDefault();
+            var mainContact = client.Contacts.FirstOrDefault(c => c.Type == ContactType.Primary && c.Status == Status.Active);
+            var existingContactInOtherClient = (await FilterAsync(c => c.ClientId != client.Id && c.Phone == phone && c.Status == Status.Active)).FirstOrDefault();
             if (mainContact == null)
             {
                 if (existingContactInOtherClient != null)
@@ -64,7 +65,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                 {
                     if (existingContactInOtherClient == null)
                     {
-                        var existingContact = client.Contacts.Where(c => c.Phone == phone).FirstOrDefault();
+                        var existingContact = client.Contacts.Where(c => c.Phone == phone && c.Status == Status.Active).FirstOrDefault();
                         if (existingContact == null)
                         {
                             var newContact = new Contact(
@@ -91,6 +92,21 @@ namespace VolvoCash.Data.MainContext.Repositories
                 }
             }
             return mainContact;
+        }
+
+        public async Task<Contact> GetContactById(int id)
+        {
+            return (await FilterAsync(filter: (c) => c.Id == id)).FirstOrDefault();
+        }
+
+        public async Task<Contact> GetContactByIdWithCards(int id)
+        {
+            return (await FilterAsync(filter: (c) => c.Id == id, includeProperties: "Cards")).FirstOrDefault();
+        }
+
+        public async Task<Contact> GetPrimaryByClientId(int clientId)
+        {
+            return (await FilterAsync(filter: (c) => c.ClientId == clientId && c.Type == ContactType.Primary)).FirstOrDefault();
         }
         #endregion
     }

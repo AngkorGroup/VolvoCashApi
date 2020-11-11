@@ -218,7 +218,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
             if (card != null && card.CardBatches.Any())
             {
-                return card.CardBatches.ProjectedAsCollection<CardBatchDTO>();
+                return card.CardBatches.Where(cb => cb.Balance.Value > 0).ProjectedAsCollection<CardBatchDTO>();
             }
             return new List<CardBatchDTO>();
         }
@@ -226,14 +226,14 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<CardBatchDTO>> GetBatchesByClientId(int clientId)
         {
             var batches = await _batchRepository.FilterAsync(filter: b => b.ClientId == clientId,
-                                                             includeProperties: "CardBatches.Card.CardType",
+                                                             includeProperties: "CardBatches.Card.CardType,CardBatches.Card.Contact",
                                                              orderBy: b => b.OrderByDescending(b => b.CreatedAt));
             var cardBatches = new List<CardBatchDTO>();
             if (batches != null && batches.Any())
             {
                 foreach (var batch in batches)
                 {
-                    cardBatches.AddRange(batch.CardBatches.ProjectedAsCollection<CardBatchDTO>());
+                    cardBatches.AddRange(batch.CardBatches.Where(cb=>cb.Balance.Value > 0).ProjectedAsCollection<CardBatchDTO>());
                 }
             }
             return cardBatches;
@@ -283,7 +283,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
         public async Task<BatchDTO> PerformLoadAsync(ClientDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO)
         {
-            var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc,
+            var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc && c.Status == Status.Active,
                                                               includeProperties: "Contacts.Cards")).FirstOrDefault();
             if (client == null)
             {
@@ -296,7 +296,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             var mainContact = await _contactRepository.CreateOrUpdateMainContact(client, contactDTO.Phone, contactDTO.DocumentType,
                                                                                  contactDTO.DocumentNumber, contactDTO.FirstName,
                                                                                  contactDTO.LastName, contactDTO.Email);
-            var card = mainContact.Cards.FirstOrDefault(c => c.CardTypeId == carDTO.CardTypeId);
+            var card = mainContact.Cards.FirstOrDefault(c => c.CardTypeId == carDTO.CardTypeId && c.Status == Status.Active);
             var cardType = _cardTypeRepository.Get(carDTO.CardTypeId);
             var batchReason = "Recarga de saldo";
             if (card == null)
@@ -307,6 +307,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             batchDTO.TPContractReason += " " + batchReason;
             var expire = DateTime.Now.AddMonths(cardType.Term);
             var batch = new Batch(
+                mainContact,
+                card,
                 batchDTO.TPContractBatchNumber,
                 new Money(batchDTO.Amount.Currency, batchDTO.Amount.Value),
                 expire,

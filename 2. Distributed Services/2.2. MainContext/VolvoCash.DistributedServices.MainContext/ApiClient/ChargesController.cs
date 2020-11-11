@@ -55,18 +55,17 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
 
         [AllowAnonymous]
         [HttpGet("{id}/voucher")]
-        public async Task<ActionResult> GetChargeVoucher([FromRoute] int id, [FromQuery] string operationCode)
+        public async Task<ActionResult> GetChargeVoucher([FromRoute] int id)
         {
             var charge = await _chargeAppService.GetChargeById(id);
-            charge.OperationCode = operationCode;
             return View("Voucher", charge);
         }
 
         [AllowAnonymous]
         [HttpGet("{id}/voucher_image")]
-        public ActionResult GetChargeVoucherImage([FromRoute] int id, [FromQuery] string operationCode)
+        public ActionResult GetChargeVoucherImage([FromRoute] int id)
         {
-            var url = _urlManager.GetChargeVoucherHtmlUrl(id, operationCode);
+            var url = _urlManager.GetChargeVoucherHtmlUrl(id);
             var image = UrlToImage.DownloadContentAsImage(url);
             return File(image, "image/jpeg");
         }

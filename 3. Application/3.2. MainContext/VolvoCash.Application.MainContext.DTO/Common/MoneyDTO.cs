@@ -12,7 +12,11 @@ namespace VolvoCash.Application.MainContext.DTO.Common
         [JsonConverter(typeof(StringEnumConverter))]
         public Currency Currency { get; set; }
 
-        public string Label { get => Currency.ToString() + " " + Value; }
+        public string CurrencyLabel { get => Currency == Currency.PEN ? "Soles" : "Dólares" ; }
+
+        public string CurrencySymbol { get => Currency == Currency.PEN ? "S/." : "US$"; }
+
+        public string Label { get => CurrencySymbol + " " + string.Format("{0:#,0.00}", Value); }
 
         #endregion
 

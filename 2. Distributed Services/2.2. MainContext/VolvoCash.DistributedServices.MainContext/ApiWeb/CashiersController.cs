@@ -9,7 +9,7 @@ using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "WebAdmin")]
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]

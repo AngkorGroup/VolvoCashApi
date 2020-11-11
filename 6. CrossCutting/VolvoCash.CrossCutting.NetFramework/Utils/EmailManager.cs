@@ -5,7 +5,7 @@ using MimeKit;
 
 namespace VolvoCash.CrossCutting.NetFramework.Utils
 {
-    public class EmailManager
+    public class EmailManager : IEmailManager
     {
         #region Members
         private readonly IConfiguration _configuration;

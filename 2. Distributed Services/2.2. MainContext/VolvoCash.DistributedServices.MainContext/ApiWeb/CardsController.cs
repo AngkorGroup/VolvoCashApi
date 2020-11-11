@@ -6,7 +6,7 @@ using VolvoCash.Application.MainContext.Cards.Services;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "WebAdmin")]
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
@@ -25,9 +25,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet("by_filter")]
-        public async Task<ActionResult> GetCardsByFilter([FromQuery] string query = "")
+        public async Task<ActionResult> GetCardsByFilter([FromQuery] string query = "", [FromQuery] int maxRecords = 5)
         {
-            var cards = await _cardAppService.GetCardsByFilter(query);
+            var cards = await _cardAppService.GetCardsByFilter(query, maxRecords);
             return Ok(cards);
         }
 

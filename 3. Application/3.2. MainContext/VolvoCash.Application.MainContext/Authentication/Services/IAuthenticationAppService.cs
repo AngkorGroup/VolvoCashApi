@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Application.MainContext.DTO.Contacts;
+using VolvoCash.Application.MainContext.DTO.Sessions;
 
 namespace VolvoCash.Application.MainContext.Authentication.Services
 {
@@ -19,6 +20,11 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
 
         #region ApiWeb
         Task<AdminDTO> LoginAdminAsync(string email, string password);
+        #endregion
+
+        #region Common
+        Task<SessionDTO> CreateSessionAsync(int userId, string deviceToken = "");
+        Task DestroySessionAsync(Guid sessionId);
         #endregion
     }
 }

@@ -2,7 +2,7 @@ namespace VolvoCash.Domain.MainContext.Enums
 {
     public enum UserType
     {
-        Admin,
+        WebAdmin,
         Contact,
         Cashier
     }
