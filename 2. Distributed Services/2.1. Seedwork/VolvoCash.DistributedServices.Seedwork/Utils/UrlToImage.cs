@@ -1,7 +1,6 @@
-﻿using System.IO;
-using SelectPdf;
+﻿using SelectPdf;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.IO;
 
 namespace VolvoCash.DistributedServices.Seedwork.Utils
 {
@@ -17,10 +16,9 @@ namespace VolvoCash.DistributedServices.Seedwork.Utils
         }
         public static byte[] DownloadContentAsImage(string url)
         {
-            ImageFormat imageFormat = ImageFormat.Jpeg;
             var imgConverter = new HtmlToImage();
             imgConverter.WebPageWidth = 430;
-            imgConverter.WebPageHeight = 488;
+            imgConverter.WebPageHeight = 665;
             var image = imgConverter.ConvertUrl(url);
             return image.ImageToByteArray();
         }

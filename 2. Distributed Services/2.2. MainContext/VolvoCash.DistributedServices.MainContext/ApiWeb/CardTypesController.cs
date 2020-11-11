@@ -10,7 +10,7 @@ using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "WebAdmin")]
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]

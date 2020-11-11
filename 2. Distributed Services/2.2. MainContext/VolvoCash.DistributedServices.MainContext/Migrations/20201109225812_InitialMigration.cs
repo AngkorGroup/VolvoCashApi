@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Oracle.EntityFrameworkCore.Metadata;
 
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
@@ -12,7 +13,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -32,7 +33,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -57,7 +58,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -81,7 +82,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -92,6 +93,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     ContactName = table.Column<string>(maxLength: 100, nullable: true),
                     Address = table.Column<string>(maxLength: 100, nullable: true),
                     Phone = table.Column<string>(maxLength: 20, nullable: true),
+                    Zone = table.Column<string>(maxLength: 100, nullable: true),
                     MaxCashiers = table.Column<int>(nullable: false),
                     TPCode = table.Column<string>(maxLength: 100, nullable: true),
                     Status = table.Column<int>(nullable: false),
@@ -107,7 +109,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     Code = table.Column<int>(nullable: false),
                     Phone = table.Column<string>(maxLength: 20, nullable: false),
                     ExpiresAt = table.Column<DateTime>(nullable: true),
@@ -124,7 +126,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -137,73 +139,34 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Batches",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedAt = table.Column<DateTime>(nullable: true),
-                    Amount_Currency = table.Column<int>(nullable: true),
-                    Amount_Value = table.Column<double>(nullable: true),
-                    ExpiresAt = table.Column<DateTime>(nullable: false),
-                    ExpiresAtExtent = table.Column<DateTime>(nullable: false),
-                    TPContractDate = table.Column<DateTime>(nullable: true),
-                    TPChasis = table.Column<string>(maxLength: 20, nullable: true),
-                    TPInvoiceDate = table.Column<DateTime>(nullable: true),
-                    TPInvoiceCode = table.Column<string>(nullable: true),
-                    TPContractNumber = table.Column<string>(nullable: true),
-                    TPContractBatchNumber = table.Column<string>(nullable: true),
-                    TPReason = table.Column<string>(nullable: true),
-                    TPContractType = table.Column<int>(nullable: false),
-                    DealerCode = table.Column<string>(nullable: true),
-                    DealerName = table.Column<string>(nullable: true),
-                    BusinessCode = table.Column<string>(nullable: true),
-                    BusinessDescription = table.Column<string>(nullable: true),
-                    ClientId = table.Column<int>(nullable: false),
-                    CardTypeId = table.Column<int>(nullable: true),
-                    LineContent = table.Column<string>(maxLength: 4000, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Batches", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Batches_CardTypes_CardTypeId",
-                        column: x => x.CardTypeId,
-                        principalTable: "CardTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Batches_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Admins",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModifiedAt = table.Column<DateTime>(nullable: true),
                     FirstName = table.Column<string>(maxLength: 100, nullable: false),
                     LastName = table.Column<string>(maxLength: 100, nullable: false),
-                    UserName = table.Column<string>(maxLength: 50, nullable: false),
                     Phone = table.Column<string>(maxLength: 20, nullable: true),
                     Email = table.Column<string>(maxLength: 100, nullable: false),
                     PasswordHash = table.Column<string>(maxLength: 400, nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    DealerId = table.Column<int>(nullable: true),
+                    ArchiveAt = table.Column<DateTime>(nullable: true),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Admins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Admins_Dealers_DealerId",
+                        column: x => x.DealerId,
+                        principalTable: "Dealers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Admins_Users_UserId",
                         column: x => x.UserId,
@@ -217,7 +180,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -228,8 +191,11 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     Phone = table.Column<string>(maxLength: 20, nullable: false),
                     PasswordHash = table.Column<string>(maxLength: 400, nullable: false),
                     TPCode = table.Column<string>(maxLength: 100, nullable: true),
+                    Imei = table.Column<string>(nullable: true),
                     DealerId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    ArchiveAt = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -253,7 +219,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -295,11 +261,31 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sessions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    PushDeviceToken = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sessions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sessions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Cards",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -331,33 +317,64 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CardBatches",
+                name: "Batches",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModifiedAt = table.Column<DateTime>(nullable: true),
+                    Amount_Currency = table.Column<int>(nullable: true),
+                    Amount_Value = table.Column<double>(nullable: true),
                     Balance_Currency = table.Column<int>(nullable: true),
                     Balance_Value = table.Column<double>(nullable: true),
+                    ExpiresAt = table.Column<DateTime>(nullable: false),
+                    ExpiresAtExtent = table.Column<DateTime>(nullable: false),
+                    TPContractDate = table.Column<DateTime>(nullable: true),
+                    TPChasis = table.Column<string>(maxLength: 20, nullable: true),
+                    TPInvoiceDate = table.Column<DateTime>(nullable: true),
+                    TPInvoiceCode = table.Column<string>(nullable: true),
+                    TPContractNumber = table.Column<string>(nullable: true),
+                    TPContractBatchNumber = table.Column<string>(nullable: true),
+                    TPReason = table.Column<string>(nullable: true),
+                    TPContractType = table.Column<int>(nullable: false),
+                    DealerCode = table.Column<string>(nullable: true),
+                    DealerName = table.Column<string>(nullable: true),
+                    BusinessCode = table.Column<string>(nullable: true),
+                    BusinessDescription = table.Column<string>(nullable: true),
+                    ClientId = table.Column<int>(nullable: false),
+                    CardTypeId = table.Column<int>(nullable: true),
+                    ContactId = table.Column<int>(nullable: false),
                     CardId = table.Column<int>(nullable: false),
-                    BatchId = table.Column<int>(nullable: false)
+                    LineContent = table.Column<string>(maxLength: 4000, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CardBatches", x => x.Id);
+                    table.PrimaryKey("PK_Batches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CardBatches_Batches_BatchId",
-                        column: x => x.BatchId,
-                        principalTable: "Batches",
+                        name: "FK_Batches_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CardBatches_Cards_CardId",
-                        column: x => x.CardId,
-                        principalTable: "Cards",
+                        name: "FK_Batches_CardTypes_CardTypeId",
+                        column: x => x.CardTypeId,
+                        principalTable: "CardTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Batches_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Batches_Contacts_ContactId",
+                        column: x => x.ContactId,
+                        principalTable: "Contacts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -367,7 +384,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -406,7 +423,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -438,11 +455,43 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CardBatches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedAt = table.Column<DateTime>(nullable: true),
+                    Balance_Currency = table.Column<int>(nullable: true),
+                    Balance_Value = table.Column<double>(nullable: true),
+                    CardId = table.Column<int>(nullable: false),
+                    BatchId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CardBatches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CardBatches_Batches_BatchId",
+                        column: x => x.BatchId,
+                        principalTable: "Batches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CardBatches_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movements",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -484,7 +533,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     LastModifiedBy = table.Column<string>(nullable: true),
@@ -512,9 +561,19 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Admins_DealerId",
+                table: "Admins",
+                column: "DealerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Admins_UserId",
                 table: "Admins",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Batches_CardId",
+                table: "Batches",
+                column: "CardId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Batches_CardTypeId",
@@ -525,6 +584,11 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 name: "IX_Batches_ClientId",
                 table: "Batches",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Batches_ContactId",
+                table: "Batches",
+                column: "ContactId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BatchMovements_BatchId",
@@ -607,6 +671,11 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 column: "TransferId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sessions_UserId",
+                table: "Sessions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transfers_DestinyCardId",
                 table: "Transfers",
                 column: "DestinyCardId");
@@ -630,6 +699,9 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
             migrationBuilder.DropTable(
                 name: "CardBatches");
+
+            migrationBuilder.DropTable(
+                name: "Sessions");
 
             migrationBuilder.DropTable(
                 name: "SMSCodes");

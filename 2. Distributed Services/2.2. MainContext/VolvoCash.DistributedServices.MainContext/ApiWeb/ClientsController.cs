@@ -6,7 +6,7 @@ using VolvoCash.Application.MainContext.Clients.Services;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "WebAdmin")]
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
@@ -25,7 +25,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet("by_filter")]
-        public async Task<ActionResult> GetClientsByFilter([FromQuery] string query = "", [FromQuery] int maxRecords = 8)
+        public async Task<ActionResult> GetClientsByFilter([FromQuery] string query = "", [FromQuery] int maxRecords = 5)
         {
             var clients = await _clientAppService.GetClientsByFilter(query, maxRecords);
             return Ok(clients);
