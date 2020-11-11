@@ -207,7 +207,7 @@ namespace VolvoCash.DistributedServices.MainContext
 
             app.UseStaticFiles();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
