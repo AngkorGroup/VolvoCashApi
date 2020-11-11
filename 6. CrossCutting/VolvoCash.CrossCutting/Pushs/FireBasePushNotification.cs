@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Net;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Net;
-using System.Text;
 
 namespace VolvoCash.CrossCutting.Pushs
 {

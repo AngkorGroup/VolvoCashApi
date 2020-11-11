@@ -85,8 +85,7 @@ namespace VolvoCash.DistributedServices.MainContext
             // Controllers
             services.AddControllers();
 
-            // Configure EntityFramework to use SQLServer or Oracle.
-
+            // Configure EntityFramework to use SQLServer.
             //services.AddDbContext<MainDbContext>(options =>
             //    options.UseSqlServer(
             //        Configuration["DatabaseSettings:SqlServerConnection"],
@@ -94,6 +93,7 @@ namespace VolvoCash.DistributedServices.MainContext
             //    )
             //);
 
+            // Configure EntityFramework to use Oracle.
             services.AddDbContext<MainDbContext>(options =>
                 options.UseOracle(
                     Configuration["DatabaseSettings:OracleConnection"],

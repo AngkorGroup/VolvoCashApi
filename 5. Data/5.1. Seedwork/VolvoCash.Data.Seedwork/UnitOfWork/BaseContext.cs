@@ -32,7 +32,7 @@ namespace VolvoCash.Data.Seedwork.UnitOfWork
             // Get the authenticated user name 
             var connectedUser = _applicationUser.GetName();
 
-            string userName = string.IsNullOrEmpty(connectedUser) ? "Anonymous" : connectedUser; 
+            string userName = string.IsNullOrEmpty(connectedUser) ? "Anonymous" : connectedUser;
 
             foreach (var auditedEntity in ChangeTracker.Entries<IAuditableEntity>())
             {
@@ -64,7 +64,7 @@ namespace VolvoCash.Data.Seedwork.UnitOfWork
         private async Task<int> SaveAndAuditChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Audit();
-            return await base.SaveChangesAsync();                    
+            return await base.SaveChangesAsync();
         }
         #endregion
 

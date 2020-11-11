@@ -1,7 +1,7 @@
-﻿using IdentityModel;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Linq;
+using IdentityModel;
+using Microsoft.AspNetCore.Http;
 
 namespace VolvoCash.CrossCutting.NetFramework.Identity
 {
@@ -24,8 +24,8 @@ namespace VolvoCash.CrossCutting.NetFramework.Identity
             try
             {
                 var subject = _httpContextAccessor.HttpContext
-                             .User.Claims
-                             .FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+                    .User.Claims
+                    .FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
                 return int.TryParse(subject.Value, out var id) ? id : 0;
             }

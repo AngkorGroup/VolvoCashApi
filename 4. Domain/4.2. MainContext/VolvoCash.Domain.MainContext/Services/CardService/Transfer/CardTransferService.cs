@@ -21,13 +21,6 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
         }
         #endregion
 
-        #region Private Methods
-        private string GenerateTransferUrl()
-        {
-            return "https://s3-us-east-2.amazonaws.com/volvocashbucket/charges/f7356fff-effb-4080-a95c-fb4f1b7300c7.jpg";
-        }
-        #endregion
-
         #region Public Methods
         public async Task<Transfer> PerformTransfer(Card originCard, Contact destinyContact, Money Amount)
         {
@@ -91,7 +84,6 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
             {
                 throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_NoEnoughMoneyToTransfer));
             }
-            transfer.ImageUrl = GenerateTransferUrl();
             return transfer;
         }
         #endregion      

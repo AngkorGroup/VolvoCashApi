@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace VolvoCash.CrossCutting.Pushs
 {
@@ -52,15 +51,15 @@ namespace VolvoCash.CrossCutting.Pushs
             request.KeepAlive = true;
             request.Method = "POST";
             request.ContentType = "application/json; charset=utf-8";
-            request.Headers.Add("authorization", "Basic "+ _configuration["OneSignal:"+ appType.ToString()+ "ApiKey"]);
+            request.Headers.Add("authorization", "Basic " + _configuration["OneSignal:" + appType.ToString() + "ApiKey"]);
 
             var oneSignalMessage = new OneSignalMessage()
             {
                 AppId = _configuration["OneSignal:" + appType.ToString() + "ApplicationId"],
-                Contents= new OneSignalContent{ Es =content ,En = content},
+                Contents = new OneSignalContent { Es = content, En = content },
                 Headings = new OneSignalContent { Es = heading, En = content },
                 ChannelForExternalUserIds = "push",
-                IncludePlayerIds = new List<string> { deviceToken},
+                IncludePlayerIds = new List<string> { deviceToken },
                 Data = data
             };
 
@@ -74,17 +73,17 @@ namespace VolvoCash.CrossCutting.Pushs
                 var response = request.GetResponse();
             }
             catch
-            {               
+            {
             }
             return false;
         }
-        
+
         public bool SendNotifications(AppType appType, List<string> deviceTokens, string heading, string content, object data = null)
         {
-           foreach(var deviceToken in deviceTokens)
-           {
+            foreach (var deviceToken in deviceTokens)
+            {
                 SendNotification(appType, deviceToken, heading, content, data);
-           }
+            }
             return true;
         }
         #endregion
