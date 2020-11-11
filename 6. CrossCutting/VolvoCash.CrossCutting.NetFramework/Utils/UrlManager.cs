@@ -7,14 +7,14 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
     {
         #region Members
         private readonly IConfiguration _configuration;
-        private readonly string _baseUrl;
+        private readonly string _baseApiUrl;
         #endregion
 
         #region Constructor
         public UrlManager(IConfiguration configuration)
         {
             _configuration = configuration;
-            _baseUrl = _configuration["Application:BaseUrl"];
+            _baseApiUrl = _configuration["Application:BaseApiUrl"];
         }
         #endregion
 
@@ -23,7 +23,7 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
         {
             try
             {
-                return _baseUrl + _configuration["Application:QrUrl"] + CardTokenizer.GetCardToken(obj);
+                return _baseApiUrl + _configuration["Application:QrUrl"] + CardTokenizer.GetCardToken(obj);
             }
             catch(Exception e)
             {
@@ -31,11 +31,11 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
             }
         }
 
-        public string GetChargeVoucherHtmlUrl(int id, string operationCode)
+        public string GetChargeVoucherHtmlUrl(int id)
         {
             try
             {
-                return _baseUrl + string.Format( _configuration["Application:ChargeHtmlUrl"] , id, operationCode);
+                return _baseApiUrl + string.Format( _configuration["Application:ChargeHtmlUrl"] , id);
             }
             catch (Exception e)
             {
@@ -43,11 +43,11 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
             }
         }
 
-        public string GetTransferVoucherHtmlUrl(int id, string operationCode)
+        public string GetTransferVoucherHtmlUrl(int id)
         {
             try
             {
-                return _baseUrl + string.Format(_configuration["Application:TransferHtmlUrl"], id, operationCode);
+                return _baseApiUrl + string.Format(_configuration["Application:TransferHtmlUrl"], id);
             }
             catch (Exception e)
             {
@@ -55,11 +55,11 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
             }
         }
 
-        public string GetChargeVoucherImageUrl(int id,string operationCode)
+        public string GetChargeVoucherImageUrl(int id)
         {
             try
             {
-                return _baseUrl + string.Format(_configuration["Application:ChargeImageUrl"], id, operationCode);
+                return _baseApiUrl + string.Format(_configuration["Application:ChargeImageUrl"], id);
             }
             catch (Exception e)
             {
@@ -67,11 +67,11 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
             }
         }
 
-        public string GetTransferVoucherImageUrl(int id,string operationCode)
+        public string GetTransferVoucherImageUrl(int id)
         {
             try
             {
-                return _baseUrl + string.Format(_configuration["Application:TransferImageUrl"], id, operationCode);
+                return _baseApiUrl + string.Format(_configuration["Application:TransferImageUrl"], id);
             }
             catch (Exception e)
             {

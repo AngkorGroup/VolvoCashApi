@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
@@ -36,7 +35,7 @@ namespace VolvoCash.Application.MainContext.DTO.Contacts
 
         public int ClientId { get; set; }
 
-        public ICollection<ContactListDTO> ContactChildren { get; set; }
+        public List<ContactListDTO> ContactChildren { get; set; }
 
         public int? ContactParentId { get; set; }
 
@@ -47,6 +46,8 @@ namespace VolvoCash.Application.MainContext.DTO.Contacts
         [JsonConverter(typeof(DefaultShortLiterallyDateConverter))]
         public DateTime CreatedAt { get; set; }
 
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime? ArchiveAt { get; set; }
         #endregion
     }
 }

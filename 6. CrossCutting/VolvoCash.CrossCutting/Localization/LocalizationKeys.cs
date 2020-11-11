@@ -44,7 +44,18 @@
             exception_CannotUpdateNonExistingContact,
             exception_InvalidDealerForCashier,
             exception_CashierAlreadyExistsEmail,
-            exception_CashierNotFound
+            exception_CashierNotFound,
+            exception_CashierAlreadyExists,
+            messages_NewCashierEmailBody,
+            messages_NewCashierEmailSubject,
+            messages_NewContactMessage,
+            exception_AdminAlreadyExists,
+            messages_ResetCashierPasswordEmailSubject,
+            messages_ResetCashierPasswordEmailBody,
+            messages_ResetAdminPasswordEmailSubject,
+            messages_ResetAdminPasswordEmailBody,
+            exception_NullContactIdToTransferFounds,
+            exception_NullContactToTransferFounds
         }
 
         public enum Domain
@@ -70,6 +81,15 @@
             exception_InvalidStatusForCharge,
             exception_PerformTransferOriginCardIsNull,
             exception_PerformTransferDestinyCardIsNull,
+            messages_SuccessChargeHeadingToCashier,
+            messages_AcceptedChargeHeadingToCashier,
+            messages_AcceptedChargeContentToCashier,
+            messages_RejectedChargeHeadingToCashier,
+            messages_RejectedChargeContentToCashier,
+            messages_CanceledChargeHeadingToCashier,
+            messages_CanceledChargeContentToCashier,
+            messages_OnCreatingChargeHeadingToContact,
+            messages_OnCreatingChargeContentToContact,
         }
     }
 }

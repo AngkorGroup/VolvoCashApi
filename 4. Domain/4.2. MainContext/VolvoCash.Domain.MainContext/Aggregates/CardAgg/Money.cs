@@ -22,6 +22,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             Currency = currency;
             Value = value;
         }
+
+        public Money(Money amount)
+        {
+            Currency = amount.Currency;
+            Value = amount.Value;
+        }
         #endregion
 
         #region Public Methods
@@ -102,6 +108,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
                 var exchangeRate = 1;
                 return Value <= other.Value * exchangeRate;
             }
+        }
+
+        public string GetLabel() {
+            return Currency.ToString() + " " + string.Format("{0:#,0.00}", Value); 
         }
         #endregion
     }

@@ -1,25 +1,24 @@
 ﻿using IdentityModel;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Linq;
 
 namespace VolvoCash.CrossCutting.NetFramework.Identity
 {
-    public interface IApplicationUser
-    {
-        int GetUserId();
-        string GetUserName();
-        string GetName();
-    }
-
     public class ApplicationUser : IApplicationUser
     {
+        #region Members
         private readonly IHttpContextAccessor _httpContextAccessor;
+        #endregion
 
+        #region Constructor
         public ApplicationUser(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
+        #endregion
 
+        #region Public Methods
         public int GetUserId()
         {
             try
@@ -63,5 +62,14 @@ namespace VolvoCash.CrossCutting.NetFramework.Identity
                 return "";
             }
         }
+
+        public Guid GetSessionId()
+        {
+            var sessionId = _httpContextAccessor.HttpContext
+                         .User.Claims
+                         .FirstOrDefault(claim => claim.Type == JwtClaimTypes.JwtId).Value;
+            return Guid.Parse(sessionId);
+        }
+        #endregion
     }
 }

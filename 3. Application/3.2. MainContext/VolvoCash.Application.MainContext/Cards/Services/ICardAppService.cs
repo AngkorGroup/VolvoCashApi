@@ -14,7 +14,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiWeb
-        Task<List<CardListDTO>> GetCardsByFilter(string query);
+        Task<List<CardListDTO>> GetCardsByFilter(string query, int maxRecords);
         Task<List<CardListDTO>> GetCardsByClientId(int? clientId, int? contactId);
         Task<List<CardListDTO>> GetCardsByClientIdAndCardTypeId(int clientId, int cardTypeId);
         Task<List<BatchMovementDTO>> GetCardBatchMovements(int cardId, int batchId);

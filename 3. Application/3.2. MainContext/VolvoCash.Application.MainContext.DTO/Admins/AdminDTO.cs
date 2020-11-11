@@ -1,10 +1,13 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using VolvoCash.Application.Seedwork.DateConverters;
+using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Application.MainContext.DTO.Admins
 {
-    public class AdminDTO
+    public class AdminDTO : AuditableEntity
     {
         #region Properties
         public int Id { get; set; }
@@ -25,8 +28,16 @@ namespace VolvoCash.Application.MainContext.DTO.Admins
 
         public int UserId { get; set; }
 
+        public int? DealerId { get; set; }
+
         [JsonConverter(typeof(DefaultDateTimeConverter))]
-        public DateTime CreatedAt { get; set; }
+        public new DateTime CreatedAt { get; set; }
+
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime? ArchiveAt { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Status Status { get; set; }
         #endregion
     }
 }

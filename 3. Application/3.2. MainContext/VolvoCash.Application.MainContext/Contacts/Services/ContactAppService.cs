@@ -7,6 +7,7 @@ using VolvoCash.Application.MainContext.DTO.Cards;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
@@ -15,18 +16,26 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
     public class ContactAppService : IContactAppService
     {
         #region Members
-        private IContactRepository _contactRepository;
-        private readonly ILogger _logger;
+        private readonly IContactRepository _contactRepository;
+        private readonly ISMSManager _smsManager;
         private readonly ILocalization _resources;
         #endregion
 
         #region Constructor
         public ContactAppService(IContactRepository contactRepository,
-                                 ILogger<ContactAppService> logger)
+                                 ISMSManager smsManager)
         {
             _contactRepository = contactRepository;
-            _logger = logger;
+            _smsManager = smsManager;
             _resources = LocalizationFactory.CreateLocalResources();
+        }
+        #endregion
+
+        #region Private Methods
+        private void SendWelcomeMessageToContact(ContactDTO contactDTO)
+        {
+            var body = _resources.GetStringResource(LocalizationKeys.Application.messages_NewContactMessage);
+            _smsManager.SendSMS(contactDTO.Phone, body);            
         }
         #endregion
 
@@ -34,13 +43,10 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         public async Task<List<ContactListDTO>> GetContactsByPhone(string phone)
         {
             var currentContact = (await _contactRepository.FilterAsync(
-                filter: c => c.Phone == phone
+                filter: c => c.Phone == phone && c.Status == Status.Active
             )).FirstOrDefault();
 
-            var contacts = await _contactRepository.FilterAsync(
-                filter: (c => c.ClientId == currentContact.ClientId &&
-                              c.Id != currentContact.Id)
-            );
+            var contacts = await _contactRepository.FilterAsync( filter: c => c.ClientId == currentContact.ClientId &&  c.Id != currentContact.Id && c.Status == Status.Active );
 
             if (contacts != null && contacts.Any())
             {
@@ -52,7 +58,7 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         public async Task<ContactListDTO> AddContact(ContactDTO contactDTO)
         {
             var currentContact = (await _contactRepository.FilterAsync(filter: c => c.Phone == contactDTO.ContactParent.Phone, includeProperties: "Client")).FirstOrDefault();
-            var existingContact = _contactRepository.Filter(c => c.Phone == contactDTO.Phone).FirstOrDefault();
+            var existingContact = _contactRepository.Filter(c => c.Phone == contactDTO.Phone && c.Status == Status.Active).FirstOrDefault();
             if (existingContact != null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_ContactAlreadyExists));
@@ -72,23 +78,25 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
                 );
                 _contactRepository.Add(contact);
                 await _contactRepository.UnitOfWork.CommitAsync();
+                SendWelcomeMessageToContact(contactDTO);                
                 return contact.ProjectedAs<ContactListDTO>();
             }
             else
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CannotCreateContactForNonExistingClient));
             }
-        }
+        }       
         #endregion
 
         #region ApiPOS Public Methods
         public async Task<List<ContactListDTO>> GetContacts(string query, int pageIndex, int pageLength)
         {
+            query = query.Trim().ToUpper();
             var contacts = await _contactRepository.GetFilteredAsync(
-                c => c.FirstName.ToUpper().Contains(query.Trim().ToUpper())
-                  || c.LastName.ToUpper().Contains(query.Trim().ToUpper())
-                  || c.Phone.Contains(query.Trim())
-                  || c.DocumentNumber.Contains(query.Trim()),
+                c => (c.FirstName.ToUpper().Contains(query)
+                  || c.LastName.ToUpper().Contains(query)
+                  || c.Phone.Contains(query)
+                  || c.DocumentNumber.Contains(query)) && c.Status == Status.Active,
                 pageIndex,
                 pageLength,
                 c => c.LastName,
@@ -103,7 +111,7 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
 
         public async Task<List<CardListDTO>> GetContactCards(int id)
         {
-            var cards = (await _contactRepository.FilterAsync(c => c.Id == id, includeProperties: "Cards.CardType,Cards.CardBatches.Batch")).FirstOrDefault().Cards;
+            var cards = (await _contactRepository.FilterAsync(c => c.Id == id && c.Status == Status.Active, includeProperties: "Cards.CardType,Cards.CardBatches.Batch")).FirstOrDefault().Cards;
 
             if (cards != null && cards.Any())
             {
@@ -114,9 +122,9 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<ContactListDTO>> GetContactsByClientId(int clientId)
+        public async Task<List<ContactListDTO>> GetContactsByClientId(int clientId, bool onlyActive)
         {
-            var contacts = await _contactRepository.FilterAsync(filter: c => c.ClientId == clientId);
+            var contacts = await _contactRepository.FilterAsync(filter: c => c.ClientId == clientId && (!onlyActive || c.Status == Status.Active));
 
             if (contacts != null && contacts.Any())
             {
@@ -125,12 +133,14 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
             return new List<ContactListDTO>();
         }
 
-        public async Task<List<ContactListDTO>> GetContactsByFilter(string query,int maxRecords)
+        public async Task<List<ContactListDTO>> GetContactsByFilter(string query,int maxRecords,bool onlyActive)
         {
-            var contacts = await _contactRepository.FilterAsync(filter: c => c.FirstName.ToUpper().Contains(query.Trim().ToUpper())
-                || c.LastName.ToUpper().Contains(query.Trim().ToUpper())
-                || c.Phone.Contains(query.Trim())
-                || c.DocumentNumber.Contains(query.Trim()),
+            query = query.Trim().ToUpper();
+            var contacts = await _contactRepository.FilterAsync(
+                filter: c => (c.FirstName.ToUpper().Contains(query)
+                || c.LastName.ToUpper().Contains(query)
+                || c.Phone.Contains(query)
+                || c.DocumentNumber.Contains(query)) && (!onlyActive || c.Status == Status.Active),
                 includeProperties:"Client");
 
             contacts = contacts.Take(Math.Min(contacts.Count(), maxRecords));
@@ -167,6 +177,19 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
                 throw new ArgumentException(_resources.GetStringResource(LocalizationKeys.Application.exception_CannotUpdateNonExistingContact));
             }
             return contactPersisted.ProjectedAs<ContactDTO>();
+        }
+
+        public async Task MakeContactAsPrimary(int id)
+        {
+            var contactToBePrimary = await _contactRepository.GetAsync(id);
+            var currentPrimary = await _contactRepository.GetPrimaryByClientId(contactToBePrimary.ClientId);
+
+            if (currentPrimary != null){
+                currentPrimary.Type = ContactType.Secondary;
+            }
+            contactToBePrimary.Type = ContactType.Primary;
+
+            await _contactRepository.UnitOfWork.CommitAsync();
         }
         #endregion
 

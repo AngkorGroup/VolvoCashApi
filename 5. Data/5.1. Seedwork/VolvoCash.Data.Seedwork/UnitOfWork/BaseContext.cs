@@ -64,7 +64,7 @@ namespace VolvoCash.Data.Seedwork.UnitOfWork
         private async Task<int> SaveAndAuditChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.Audit();
-            return await base.SaveChangesAsync();
+            return await base.SaveChangesAsync();                    
         }
         #endregion
 

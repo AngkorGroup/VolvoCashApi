@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +5,7 @@ using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.Application.Seedwork.Common;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
@@ -18,59 +18,76 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
         #region Members
         private readonly ICashierRepository _cashierRepository;
         private readonly IDealerRepository _dealerRepository;
+        private readonly IEmailManager _emailManager;
         #endregion
 
         #region Constructor
         public CashierAppService(ICashierRepository cashierRepository,
-                                 IDealerRepository dealerRepository) : base(cashierRepository)
+                                 IDealerRepository dealerRepository,
+                                 IEmailManager emailManager) : base(cashierRepository)
         {
             _cashierRepository = cashierRepository;
             _dealerRepository = dealerRepository;
+            _emailManager = emailManager;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
 
-        #region ApiWeb Public Methods
-        public override async Task<CashierDTO> AddAsync(CashierDTO item)
+        #region Private Methods
+        private void SendEmailToCashier(CashierDTO cashierDTO)
         {
-            var dealer = await _dealerRepository.GetAsync(item.DealerId);
+            var subject = _resources.GetStringResource(LocalizationKeys.Application.messages_NewCashierEmailSubject);
+            var body = _resources.GetStringResource(LocalizationKeys.Application.messages_NewCashierEmailBody);
+            body = string.Format(body, cashierDTO.Password);
+            _emailManager.SendEmail(cashierDTO.Email, subject, body);
+        }
+        #endregion
+
+        #region ApiWeb Public Methods
+        public override async Task<CashierDTO> AddAsync(CashierDTO cashierDTO)
+        {
+            var dealer = await _dealerRepository.GetAsync(cashierDTO.DealerId);
             if (dealer == null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidDealerForCashier));
             }
-            var existingCashier =  _cashierRepository.Filter(c => (c.Email == item.Email || c.Phone == item.Phone) && c.ArchiveAt == null).FirstOrDefault();
+            var existingCashier =  _cashierRepository.Filter(c => (c.Email == cashierDTO.Email || c.Phone == cashierDTO.Phone) && c.ArchiveAt == null).FirstOrDefault();
             if (existingCashier != null)
             {
-                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierAlreadyExistsEmail));
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierAlreadyExists));
             }
-            item.Password = RandomGenerator.RandomDigits(6);
-            var cashier = new Cashier(dealer,item.FirstName,item.LastName,item.Password,item.Phone,item.TPCode,item.Email,item.Imei);
+            cashierDTO.Password = RandomGenerator.RandomDigits(6);
+            var cashier = new Cashier(dealer, cashierDTO.FirstName, cashierDTO.LastName, cashierDTO.Password, cashierDTO.Phone, cashierDTO.TPCode, cashierDTO.Email, cashierDTO.Imei);
             _repository.Add(cashier);
             await _repository.UnitOfWork.CommitAsync();
-            //TODO enviar correo con credenciales
+            SendEmailToCashier(cashierDTO);
             return cashier.ProjectedAs<CashierDTO>();
         }
 
-        public override async Task<CashierDTO> ModifyAsync(CashierDTO item)
+        public override async Task<CashierDTO> ModifyAsync(CashierDTO cashierDTO)
         {
-            var cashier = await _repository.GetAsync(item.Id);
+            var cashier = await _repository.GetAsync(cashierDTO.Id);
             if (cashier == null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierNotFound));
             }
 
-            var existingCashier = _cashierRepository.Filter(c => (c.Email == item.Email || c.Phone == item.Phone) && c.ArchiveAt == null).FirstOrDefault();
-            if (existingCashier.Id != item.Id)
+            var existingCashier = _cashierRepository.Filter(c => (c.Email == cashierDTO.Email || c.Phone == cashierDTO.Phone) && c.ArchiveAt == null).FirstOrDefault();
+            if (existingCashier.Id != cashierDTO.Id)
             {
-                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierAlreadyExistsEmail));
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierAlreadyExists));
             }
-            
-            item.Status = Status.Active;
-            item.PasswordHash = cashier.PasswordHash;
-            item.DealerId = cashier.DealerId;
-            _repository.Modify(item.ProjectedAs<Cashier>());
+
+            cashier.Email = cashierDTO.Email;
+            cashier.FirstName = cashierDTO.FirstName;
+            cashier.Imei = cashierDTO.Imei;
+            cashier.LastName = cashierDTO.LastName;
+            cashier.Phone = cashierDTO.Phone;
+            cashier.TPCode = cashierDTO.TPCode;
+
+            _repository.Modify(cashier);
             await _repository.UnitOfWork.CommitAsync();
-            return item;
+            return cashier.ProjectedAs<CashierDTO>();
         }
 
         public async Task Delete(int id)

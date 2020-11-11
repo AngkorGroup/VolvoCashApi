@@ -1,11 +1,17 @@
 using System;
-using VolvoCash.Application.Seedwork.Common;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.DTO.Users;
-using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 
 namespace VolvoCash.Application.MainContext.Users.Services
 {
-    public interface IUserAppService : IService<User, UserDTO>, IDisposable
+    public interface IUserAppService : IDisposable
     {
+        Task<IList<UserDTO>> GetAllDTOAsync();
+        Task<AdminDTO> AddAdminAsync(AdminDTO adminDTO);
+        Task<AdminDTO> ModifyAdminAsync(AdminDTO adminDTO);
+        Task ResetUserPasswordAsync(int id);
+        Task DeleteUserAsync(int id, int? contactId);
     }
 }

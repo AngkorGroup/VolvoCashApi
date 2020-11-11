@@ -42,6 +42,8 @@ namespace VolvoCash.Application.MainContext.DTO.Contacts
         [JsonConverter(typeof(DefaultShortLiterallyDateConverter))]
         public DateTime CreatedAt { get; set; }
 
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime? ArchiveAt { get; set; }
         #endregion
     }
 }
