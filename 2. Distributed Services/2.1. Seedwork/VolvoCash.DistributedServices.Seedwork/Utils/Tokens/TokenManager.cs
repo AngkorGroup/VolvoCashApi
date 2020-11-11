@@ -8,7 +8,7 @@ using IdentityModel;
 
 namespace VolvoCash.DistributedServices.Seedwork.Utils
 {
-    public class TokenManager
+    public class TokenManager : ITokenManager
     {
         #region Members
         private readonly IConfiguration _configuration;
@@ -22,7 +22,7 @@ namespace VolvoCash.DistributedServices.Seedwork.Utils
         #endregion
 
         #region Public Methods
-        public string GenerateTokenJWT(int id,string username, string names, string email, string role)
+        public string GenerateTokenJWT(Guid sessionId, int userId, string username, string names, string email, string role)
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"])
@@ -32,8 +32,8 @@ namespace VolvoCash.DistributedServices.Seedwork.Utils
                 );
             var header = new JwtHeader(signingCredentials);
             var claims = new[] {
-                 new Claim(JwtClaimTypes.JwtId, Guid.NewGuid().ToString()),
-                 new Claim(JwtClaimTypes.Subject, id.ToString()),
+                 new Claim(JwtClaimTypes.JwtId, sessionId.ToString()),
+                 new Claim(JwtClaimTypes.Subject, userId.ToString()),
                  new Claim(JwtClaimTypes.PreferredUserName, username),
                  new Claim(JwtClaimTypes.GivenName, names),
                  new Claim(JwtClaimTypes.Email, email),

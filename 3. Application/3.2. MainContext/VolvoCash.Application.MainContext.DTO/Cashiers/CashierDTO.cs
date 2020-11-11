@@ -45,7 +45,7 @@ namespace VolvoCash.Application.MainContext.DTO.Cashiers
         public DateTime? ArchiveAt { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public Status Status { get; set; }       
+        public Status Status { get; set; }
         #endregion
     }
 }

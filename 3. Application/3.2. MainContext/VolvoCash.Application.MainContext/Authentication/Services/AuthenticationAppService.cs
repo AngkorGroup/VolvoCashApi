@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Application.MainContext.DTO.Contacts;
+using VolvoCash.Application.MainContext.DTO.Sessions;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
@@ -22,7 +23,7 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         private readonly ISMSCodeRepository _smsCodeRepository;
         private readonly ICashierRepository _cashierRepository;
         private readonly IAdminRepository _adminRepository;
-        private readonly ILogger _logger;
+        private readonly ISessionRepository _sessionRepository;
         private readonly ILocalization _resources;
         #endregion
 
@@ -31,14 +32,13 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
                                         ISMSCodeRepository smsCodeRepository,
                                         ICashierRepository cashierRepository,
                                         IAdminRepository adminRepository,
-                                        IConfiguration configuration,
-                                        ILogger<AuthenticationAppService> logger)
+                                        ISessionRepository sessionRepository)
         {
             _contactRepository = contactRepository;
             _smsCodeRepository = smsCodeRepository;
             _cashierRepository = cashierRepository;
             _adminRepository = adminRepository;
-            _logger = logger;
+            _sessionRepository = sessionRepository;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
@@ -103,12 +103,32 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         }
         #endregion
 
+        #region Common Public Methods
+        public async Task<SessionDTO> CreateSessionAsync(int userId, string deviceToken = "")
+        {
+            var session = new Session(userId, deviceToken);
+            _sessionRepository.Add(session);
+            await _sessionRepository.UnitOfWork.CommitAsync();
+            return session.ProjectedAs<SessionDTO>();
+        }
+
+        public async Task DestroySessionAsync(Guid sessionId)
+        {
+            var session = _sessionRepository.Get(sessionId);
+            session.Status = Status.Inactive;
+            await _sessionRepository.UnitOfWork.CommitAsync();
+        }
+        #endregion
+
         #region IDisposable Members
         public void Dispose()
         {
             //dispose all resources
             _contactRepository.Dispose();
             _smsCodeRepository.Dispose();
+            _cashierRepository.Dispose();
+            _adminRepository.Dispose();
+            _sessionRepository.Dispose();
         }
         #endregion
     }

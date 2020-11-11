@@ -24,7 +24,6 @@ namespace VolvoCash.CrossCutting.Tests
                 Name = "Name",
                 Rating = 0,
                 Url = "Url"
-
             };
 
             //act

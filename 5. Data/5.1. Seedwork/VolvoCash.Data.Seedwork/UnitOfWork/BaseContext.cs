@@ -32,7 +32,7 @@ namespace VolvoCash.Data.Seedwork.UnitOfWork
             // Get the authenticated user name 
             var connectedUser = _applicationUser.GetName();
 
-            string userName = string.IsNullOrEmpty(connectedUser) ? "Anonymous" : connectedUser; 
+            string userName = string.IsNullOrEmpty(connectedUser) ? "Anonymous" : connectedUser;
 
             foreach (var auditedEntity in ChangeTracker.Entries<IAuditableEntity>())
             {

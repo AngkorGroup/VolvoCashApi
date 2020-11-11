@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
+using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
@@ -14,6 +15,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         #region Properties
         [Required]
         public Money Amount { get; set; }
+
+        public Money Balance { get; set; }
 
         [Required]
         public DateTime ExpiresAt { get; set; }
@@ -58,6 +61,16 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
 
         public virtual CardType CardType { get; set; }
 
+        [ForeignKey("Contact")]
+        public int ContactId { get; set; }
+
+        public virtual Contact Contact { get; set; }
+
+        [ForeignKey("Card")]
+        public int CardId { get; set; }
+
+        public virtual Card Card { get; set; }
+
         public virtual ICollection<BatchMovement> BatchMovements { get; } = new List<BatchMovement>();
 
         public virtual ICollection<CardBatch> CardBatches { get; } = new List<CardBatch>();
@@ -71,13 +84,16 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         {
         }
 
-        public Batch(string tpContractBatchNumber,Money amount, DateTime expire, string tpChasis, DateTime? tpContractDate, string tpInvoiceCode,
+        public Batch(Contact contact, Card card, string tpContractBatchNumber, Money amount, DateTime expire, string tpChasis, DateTime? tpContractDate, string tpInvoiceCode,
                     DateTime? tpInvoiceDate, TPContractType tpContractType, string tpContractNumber, string tpContractReason,
                     string dealerCode, string dealerName, string businessCode, string businessDescription,
-                    int cardTypeId,string lineContent)
+                    int cardTypeId, string lineContent)
         {
+            Contact = contact;
+            Card = card;
             TPContractBatchNumber = tpContractBatchNumber;
-            Amount = amount;
+            Amount = new Money(amount);
+            Balance = new Money(amount);
             ExpiresAt = expire.Date.AddDays(1);
             ExpiresAtExtent = ExpiresAt;
             TPChasis = tpChasis;

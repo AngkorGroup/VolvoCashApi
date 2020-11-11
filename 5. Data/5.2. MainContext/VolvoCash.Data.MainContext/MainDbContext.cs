@@ -30,6 +30,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<User> Users { get; set; }
         public DbSet<SMSCode> SMSCodes { get; set; }
         public DbSet<BatchError> BatchErrors { get; set; }
+        public DbSet<Session> Sessions { get; set; }
         #endregion
 
         #region Constructor
@@ -87,6 +88,24 @@ namespace VolvoCash.Data.MainContext
                 .HasForeignKey(bm => bm.MovementId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Card>()
+                .HasMany(c => c.Batches)
+                .WithOne(b => b.Card)
+                .HasForeignKey(b => b.CardId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Contact>()
+                .HasMany(c => c.Batches)
+                .WithOne(b => b.Contact)
+                .HasForeignKey(b => b.ContactId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Cashier>()
+                .HasMany(cashier => cashier.Charges)
+                .WithOne(charge => charge.Cashier)
+                .HasForeignKey(charge => charge.CashierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Movement>()
                 .OwnsOne(m => m.Amount);
 
@@ -108,11 +127,8 @@ namespace VolvoCash.Data.MainContext
             modelBuilder.Entity<Charge>()
                 .OwnsOne(t => t.Amount);
 
-            modelBuilder.Entity<Cashier>()
-                .HasMany(cashier => cashier.Charges)
-                .WithOne(charge => charge.Cashier)
-                .HasForeignKey(charge => charge.CashierId)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Batch>()
+                .OwnsOne(b => b.Balance);            
         }
         #endregion
     }

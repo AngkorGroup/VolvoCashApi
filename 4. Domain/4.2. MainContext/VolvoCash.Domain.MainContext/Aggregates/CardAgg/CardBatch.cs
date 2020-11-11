@@ -23,5 +23,39 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public virtual Batch Batch { get; set; }
         #endregion
+
+        #region Constructor
+        public CardBatch()
+        {
+        }
+
+        public CardBatch(int batchId, int cardId, Money amount)
+        {
+            BatchId = batchId;
+            CardId = cardId;
+            Balance = amount;
+        }
+
+        public CardBatch(Batch batch, Card card, Money amount)
+        {
+            Batch = batch;
+            Card = card;
+            Balance = amount;
+        }
+        #endregion         
+
+        #region Public Methods
+        public void SubstractToBalance(Money amount)
+        {
+            Balance = Balance.Substract(amount);
+            Batch.Balance = Batch.Balance.Substract(amount);
+        }
+
+        public void AddToBalance(Money amount)
+        {
+            Balance = Balance.Add(amount);
+            Batch.Balance = Batch.Balance.Add(amount);
+        }
+        #endregion
     }
 }

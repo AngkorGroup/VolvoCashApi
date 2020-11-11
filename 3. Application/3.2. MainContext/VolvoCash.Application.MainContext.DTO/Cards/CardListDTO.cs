@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Common;
@@ -31,6 +32,7 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
 
         public string TPCode { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }
 
         [JsonConverter(typeof(DefaultDateTimeConverter))]

@@ -1,17 +1,41 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
+using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Domain.MainContext.Services.CardService
 {
     public class CardTransferService : ICardTransferService
     {
-        public void PerformTransfer(Transfer transfer)
+        #region Members
+        private readonly ICardRepository _cardRepository;
+        #endregion
+
+        #region Constructor
+        public CardTransferService(ICardRepository cardRepository)
         {
+            _cardRepository = cardRepository;
+        }
+        #endregion
+
+        #region Public Methods
+        public async Task<Transfer> PerformTransfer(Card originCard, Contact destinyContact, Money Amount)
+        {
+            var destinyContactCards = await _cardRepository.GetCardsByContactId(destinyContact.Id);
+            var destinyCard = destinyContactCards.FirstOrDefault((c) => c.CardTypeId == originCard.CardTypeId);
+            if (destinyCard == null)
+            {
+                destinyCard = new Card(destinyContact, originCard.CardType.Currency, originCard.CardTypeId);
+            }
+            else
+            {
+                destinyCard = await _cardRepository.GetCardByIdWithBatchesAsync(destinyCard.Id);
+            }
+
             var messages = LocalizationFactory.CreateLocalResources();
-            var originCard = transfer.OriginCard;
-            var destinyCard = transfer.DestinyCard;
 
             if (originCard is null)
                 throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_PerformTransferOriginCardIsNull));
@@ -24,6 +48,12 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
 
             if (originCard.Contact.ClientId != destinyCard.Contact.ClientId)
                 throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_InvalidTransferDifferentContactClient));
+
+            var displayName = messages.GetStringResource(LocalizationKeys.Application.messages_CreateTransferDisplayName);
+            displayName = string.Format(displayName, originCard.Contact.Phone, destinyCard.Contact.Phone);
+
+            var transfer = new Transfer(originCard, destinyCard, Amount, displayName);
+            destinyCard.DestinyTransfers.Add(transfer);
 
             if (originCard.CanWithdraw(transfer.Amount))
             {
@@ -54,12 +84,8 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
             {
                 throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_NoEnoughMoneyToTransfer));
             }
-            transfer.ImageUrl =  GenerateTransferUrl();
+            return transfer;
         }
-
-        private string GenerateTransferUrl()
-        {
-            return "https://s3-us-east-2.amazonaws.com/volvocashbucket/charges/f7356fff-effb-4080-a95c-fb4f1b7300c7.jpg";
-        }
+        #endregion      
     }
 }

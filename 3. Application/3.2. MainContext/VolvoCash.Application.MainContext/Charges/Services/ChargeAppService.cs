@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
@@ -19,6 +20,9 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         private readonly ICardBatchRepository _cardBatchRepository;
         private readonly ICardRepository _cardRepository;
         private readonly ICardChargeService _cardChargeService;
+        private readonly INotificationChargeService _notificationChargeService;
+        private readonly IAmazonBucketService _amazonService;
+        private readonly IUrlManager _urlManager;
         private readonly ILocalization _resources;
         #endregion
 
@@ -26,12 +30,18 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         public ChargeAppService(IChargeRepository chargeRepository,
                                 ICardBatchRepository cardBatchRepository,
                                 ICardRepository cardRepository,
-                                ICardChargeService cardChargeService)
+                                ICardChargeService cardChargeService,
+                                INotificationChargeService notificationChargeService,
+                                IAmazonBucketService amazonService,
+                                IUrlManager urlManager)
         {
             _chargeRepository = chargeRepository;
             _cardBatchRepository = cardBatchRepository;
             _cardRepository = cardRepository;
             _cardChargeService = cardChargeService;
+            _notificationChargeService = notificationChargeService;
+            _amazonService = amazonService;
+            _urlManager = urlManager;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
@@ -69,8 +79,19 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             }
             _chargeRepository.Modify(charge);
             await _chargeRepository.UnitOfWork.CommitAsync();
-            //TODO enviar push notification a el cajero indicando el estado de la transaccion
+            await GenerateChargeImageUrl(charge);
+            await _notificationChargeService.SendNotificationToCashier(charge);
             return charge.ProjectedAs<ChargeDTO>();
+        }
+
+        private async Task GenerateChargeImageUrl(Charge charge)
+        {
+            if (charge.Status == ChargeStatus.Accepted)
+            {
+                var url = _urlManager.GetChargeVoucherImageUrl(charge.Id);
+                charge.ImageUrl = await _amazonService.UploadImageUrlToS3(url, ".png", "charges");
+                await _chargeRepository.UnitOfWork.CommitAsync();
+            }           
         }
         #endregion
 
@@ -83,18 +104,20 @@ namespace VolvoCash.Application.MainContext.Charges.Services
 
         public async Task<ChargeDTO> AddCharge(ChargeDTO chargeDTO)
         {
+            var card = _cardRepository.Filter(filter: c => c.Id == chargeDTO.CardId, includeProperties: "Contact.Client,CardBatches.Batch,CardType").FirstOrDefault();
+            var displayName = _resources.GetStringResource(LocalizationKeys.Application.messages_CreateChargeDisplayName);
+            displayName = string.Format(displayName, card.Contact.Client.Ruc, card.Contact.FullName);
             var charge = new Charge(
                 chargeDTO.CashierId,
-                _cardRepository.Filter(filter: c => c.Id == chargeDTO.CardId,
-                                       includeProperties: "Contact.Client,CardBatches.Batch,CardType").FirstOrDefault(),
+                card,
                 chargeDTO.ChargeType,
                 new Money(chargeDTO.Amount.Currency, chargeDTO.Amount.Value),
-                _resources.GetStringResource(LocalizationKeys.Application.messages_CreateChargeDisplayName),
+                displayName,
                 chargeDTO.Description
             );
             _chargeRepository.Add(charge);
             await _chargeRepository.UnitOfWork.CommitAsync();
-            //TODO enviar push notification
+            await _notificationChargeService.SendNotificationToContact(charge);
             return charge.ProjectedAs<ChargeDTO>();
         }
         #endregion

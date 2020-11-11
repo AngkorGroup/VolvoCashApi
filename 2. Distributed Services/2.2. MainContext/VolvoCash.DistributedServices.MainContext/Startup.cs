@@ -30,11 +30,13 @@ using VolvoCash.CrossCutting.NetFramework.Identity;
 using VolvoCash.CrossCutting.NetFramework.Localization;
 using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.CrossCutting.NetFramework.Validator;
+using VolvoCash.CrossCutting.Pushs;
 using VolvoCash.CrossCutting.Validator;
 using VolvoCash.Data.MainContext;
 using VolvoCash.Data.MainContext.Repositories;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Settings;
+using VolvoCash.DistributedServices.Seedwork.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
@@ -83,12 +85,21 @@ namespace VolvoCash.DistributedServices.MainContext
             // Controllers
             services.AddControllers();
 
-            // Configure EntityFramework to use an InMemory database.
+            // Configure EntityFramework to use SQLServer.
+            //services.AddDbContext<MainDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration["DatabaseSettings:SqlServerConnection"],
+            //        x => x.MigrationsAssembly("VolvoCash.DistributedServices.MainContext")
+            //    )
+            //);
+
+            // Configure EntityFramework to use Oracle.
             services.AddDbContext<MainDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration["DatabaseSettings:SqlServerConnection"],
+                options.UseOracle(
+                    Configuration["DatabaseSettings:OracleConnection"],
                     x => x.MigrationsAssembly("VolvoCash.DistributedServices.MainContext")
-            ));
+                )
+            );
 
             // Add framework services.
             services.AddMvc(options =>
@@ -127,6 +138,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICardTransferService, CardTransferService>();
             services.AddScoped<ICardRechargeService, CardRechargeService>();
             services.AddScoped<ICardChargeService, CardChargeService>();
+            services.AddScoped<INotificationChargeService, NotificationChargeService>();
 
             // Repositories
             services.AddScoped<ISMSCodeRepository, SMSCodeRepository>();
@@ -145,10 +157,15 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBatchErrorRepository, BatchErrorRepository>();
             services.AddScoped<IBatchMovementRepository, BatchMovementRepository>();
             services.AddScoped<ICardBatchRepository, CardBatchRepository>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();
-            services.AddScoped<IUrlManager, UrlManager>();          
+            services.AddScoped<IUrlManager, UrlManager>();
+            services.AddScoped<IEmailManager, EmailManager>();
+            services.AddScoped<ISMSManager, SMSManager>();
+            services.AddScoped<ITokenManager, TokenManager>();
+            services.AddScoped<IPushNotificationManager, OneSignalPushNotification>();
 
             // Adapters
             services.AddScoped<ITypeAdapterFactory, AutomapperTypeAdapterFactory>();
@@ -190,7 +207,7 @@ namespace VolvoCash.DistributedServices.MainContext
 
             app.UseStaticFiles();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

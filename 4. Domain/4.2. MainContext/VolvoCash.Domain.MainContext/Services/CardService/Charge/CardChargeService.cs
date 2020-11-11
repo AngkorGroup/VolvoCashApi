@@ -20,10 +20,10 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                 }
                 if (card.CanWithdraw(charge.Amount))
                 {
-                    card.WithdrawMoney(charge.Movements.FirstOrDefault(),charge.Amount);
+                    card.WithdrawMoney(charge.Movements.FirstOrDefault(), charge.Amount);
                     charge.Status = ChargeStatus.Accepted;
                     charge.GenerateOperationCode();
-                    charge.ImageUrl = GenerateChargeUrl();
+                    //charge.ImageUrl = GenerateChargeUrl();
                 }
                 else
                 {
@@ -33,9 +33,10 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                     }
                     else
                     {
+                        throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_NoEnoughMoneyToWithdraw));
                         //if the charge already exists only cancel it
-                        charge.Status = ChargeStatus.Canceled;
-                    }                    
+                        //charge.Status = ChargeStatus.Canceled;
+                    }
                 }
             }
             else

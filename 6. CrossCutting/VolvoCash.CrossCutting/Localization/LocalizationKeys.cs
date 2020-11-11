@@ -30,6 +30,13 @@
             validation_Exception,
             messages_CreateTransferDisplayName,
             messages_CreateChargeDisplayName,
+            messages_NewCashierEmailBody,
+            messages_NewCashierEmailSubject,
+            messages_NewContactMessage,
+            messages_ResetCashierPasswordEmailSubject,
+            messages_ResetCashierPasswordEmailBody,
+            messages_ResetAdminPasswordEmailSubject,
+            messages_ResetAdminPasswordEmailBody,
             exception_SmsCodeEmpty,
             exception_PhoneNotFound,
             exception_CardNotFound,
@@ -44,7 +51,11 @@
             exception_CannotUpdateNonExistingContact,
             exception_InvalidDealerForCashier,
             exception_CashierAlreadyExistsEmail,
-            exception_CashierNotFound
+            exception_AdminAlreadyExists,
+            exception_CashierNotFound,
+            exception_CashierAlreadyExists,
+            exception_NullContactIdToTransferFounds,
+            exception_NullContactToTransferFounds
         }
 
         public enum Domain
@@ -59,6 +70,15 @@
             messages_TransferToMessageDescription,
             messages_CreationCardMessageDisplayName,
             messages_CreationCardMessageDescription,
+            messages_SuccessChargeHeadingToCashier,
+            messages_AcceptedChargeHeadingToCashier,
+            messages_AcceptedChargeContentToCashier,
+            messages_RejectedChargeHeadingToCashier,
+            messages_RejectedChargeContentToCashier,
+            messages_CanceledChargeHeadingToCashier,
+            messages_CanceledChargeContentToCashier,
+            messages_OnCreatingChargeHeadingToContact,
+            messages_OnCreatingChargeContentToContact,
             exception_PerformRechargeCardIsNull,
             exception_PerformTransferCardIsNull,
             exception_PerformChargeCardIsNull,
@@ -69,7 +89,7 @@
             exception_InvalidTransferDifferentContactClient,
             exception_InvalidStatusForCharge,
             exception_PerformTransferOriginCardIsNull,
-            exception_PerformTransferDestinyCardIsNull,
+            exception_PerformTransferDestinyCardIsNull
         }
     }
 }

@@ -83,6 +83,17 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             Status = Status.Active;
             User = new User(UserType.Cashier);
         }
+
+        public void SetPasswordHash(string password)
+        {
+            PasswordHash = CryptoMethods.HashText(password);
+        }
+
+        public void Delete()
+        {
+            Status = Status.Inactive;
+            ArchiveAt = DateTime.Now;
+        }
         #endregion
     }
 }
