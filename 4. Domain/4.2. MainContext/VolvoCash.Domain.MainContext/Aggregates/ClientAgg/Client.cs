@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
+using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
@@ -33,6 +34,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
 
         [MaxLength(20)]
         public string TPCode { get; set; }
+
+        [ForeignKey("Sector")]
+        public int? SectorId { get; set; }
+
+        public virtual Sector Sector { get; set; }
 
         [Required]
         public Status Status { get; set; }
