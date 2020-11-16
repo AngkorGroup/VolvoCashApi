@@ -327,4 +327,10 @@
   <data name="Domain_messages_RejectedChargeHeadingToCashier" xml:space="preserve">
     <value>Cobro rechazado</value>
   </data>
+  <data name="Application_messages_NewAdminEmailBody" xml:space="preserve">
+    <value>Se ha generado su usuario admin para la aplicación Volvo Cash Web. Para ingresar puede entrar al siguiente enlace {0}, usando su correo electrónico y la siguiente contraseña: {1} para ingresar al sistema..</value>
+  </data>
+  <data name="Application_messages_NewAdminEmailSubject" xml:space="preserve">
+    <value>Se ha dado de alta como administrador en Volvo Cash.</value>
+  </data>
 </root>

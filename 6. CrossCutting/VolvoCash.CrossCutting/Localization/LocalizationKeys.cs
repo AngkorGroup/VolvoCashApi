@@ -55,7 +55,9 @@
             exception_CashierNotFound,
             exception_CashierAlreadyExists,
             exception_NullContactIdToTransferFounds,
-            exception_NullContactToTransferFounds
+            exception_NullContactToTransferFounds,
+            messages_NewAdminEmailSubject,
+            messages_NewAdminEmailBody
         }
 
         public enum Domain

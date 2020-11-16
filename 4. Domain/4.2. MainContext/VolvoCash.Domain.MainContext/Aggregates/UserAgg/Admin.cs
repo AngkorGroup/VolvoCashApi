@@ -63,8 +63,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             PasswordHash = CryptoMethods.HashText(password);
             Phone = phone;
             Email = email;
+            Status = Status.Active;
             User = new User(UserType.WebAdmin);
-            Dealer = dealer;
+            Dealer = dealer;          
         }
         #endregion
 
