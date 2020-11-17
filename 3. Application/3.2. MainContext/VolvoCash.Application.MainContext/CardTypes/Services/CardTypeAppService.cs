@@ -4,6 +4,7 @@ using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.Application.Seedwork.Common;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.CardTypes.Services

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
@@ -97,7 +97,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         {
             Contact = contact;
             Balance = new Money(currency, 0);
-            Status = Status.Active;
+            Status = new Status(1);
             CardTypeId = cardTypeId;
             Code = RandomGenerator.RandomDigits(20);
             TPCode = tpCode;
@@ -137,7 +137,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         {
             var messages = LocalizationFactory.CreateLocalResources();
             var money = new Money(Balance.Currency, 0);
-            AddMovement(money, MovementType.CTA,
+            var movementType = new MovementType("CTA", "Creación de tarjeta");
+            AddMovement(money, movementType,
                         messages.GetStringResource(LocalizationKeys.Domain.messages_CreationCardMessageDescription),
                         messages.GetStringResource(LocalizationKeys.Domain.messages_CreationCardMessageDisplayName));
         }
@@ -166,7 +167,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
                     Batch = batch
                 }
             };
-            AddMovement(batch.Amount, MovementType.REC, description, displayName, batchMovements);
+            var movementType = new MovementType("REC", "Recarga");
+            AddMovement(batch.Amount, movementType, description, displayName, batchMovements);
         }
         public List<BatchMovement> CalculateBatchesMoney(Money amountNeeded, Movement movement = null)
         {
@@ -228,8 +230,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
                     existingBatch.AddToBalance(batchMovement.Amount.Abs());
                 }
             }
-
-            AddMovement(money, MovementType.ITR, description, displayName, GetBatchMovementsList(batchMovements), transfer);
+            var movementType = new MovementType("ITR","Ingreso por transferencia");
+            AddMovement(money, movementType, description, displayName, GetBatchMovementsList(batchMovements), transfer);
         }
         #endregion
     }

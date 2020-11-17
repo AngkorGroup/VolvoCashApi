@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
@@ -80,8 +80,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             TPCode = tpCode;
             Email = email;
             Imei = imei;
-            Status = Status.Active;
-            User = new User(UserType.Cashier);
+            Status = new Status(1);
+            var userType = new UserType("Cashier","###");
+            User = new User(userType);
         }
 
         public void SetPasswordHash(string password)
@@ -91,7 +92,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
 
         public void Delete()
         {
-            Status = Status.Inactive;
+            Status = new Status(0);
             ArchiveAt = DateTime.Now;
         }
         #endregion

@@ -2,7 +2,7 @@
 using System.Linq;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Domain.MainContext.Services.CardService
 {
@@ -14,14 +14,14 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
             var messages = LocalizationFactory.CreateLocalResources();
             if (card != null)
             {
-                if (charge.Status != ChargeStatus.Pending)
+                if (charge.Status.Weight != 1)
                 {
                     throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_InvalidStatusForCharge));
                 }
                 if (card.CanWithdraw(charge.Amount))
                 {
                     card.WithdrawMoney(charge.Movements.FirstOrDefault(), charge.Amount);
-                    charge.Status = ChargeStatus.Accepted;
+                    charge.Status =new ChargeStatus("Accepted","###",2);
                     charge.GenerateOperationCode();
                     //charge.ImageUrl = GenerateChargeUrl();
                 }

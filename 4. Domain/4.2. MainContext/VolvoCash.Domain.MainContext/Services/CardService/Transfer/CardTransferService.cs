@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Domain.MainContext.Services.CardService
 {
@@ -61,8 +61,9 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                 displayNameFrom = string.Format(displayNameFrom, destinyCard.Contact.Phone);
                 var descriptionFrom = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferFromMessageDescription);
                 descriptionFrom = string.Format(descriptionFrom, destinyCard.Contact.Phone);
+                var movementType = new MovementType("STR","Salida por transferencia");
                 var movementBatchs = originCard.WithdrawMoney(
-                    MovementType.STR,
+                    movementType,
                     transfer.Amount,
                     displayNameFrom,
                     descriptionFrom,

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
@@ -34,7 +34,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         public virtual Contact Contact { get => Contacts.FirstOrDefault(); }
 
         [NotMapped]
-        public virtual ICollection<Session> OpenSessions { get => Sessions.Where(s => s.Status == Status.Active).ToList(); }
+        public virtual ICollection<Session> OpenSessions { get => Sessions.Where(s => s.Status.Active == 1).ToList(); }
         #endregion
 
         #region Constructor

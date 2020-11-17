@@ -6,7 +6,7 @@ using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.DistributedServices.Seedwork.Controllers;
 using System.Threading.Tasks;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -27,7 +27,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         [HttpPost]
         public override async Task<CardTypeDTO> Post([FromBody] CardTypeDTO entityDTO)
         {
-            entityDTO.Status = Status.Active;
+            entityDTO.Status=new Status(1) ;
             return await _service.AddAsync(entityDTO);
         }
         [HttpDelete("{id}")]

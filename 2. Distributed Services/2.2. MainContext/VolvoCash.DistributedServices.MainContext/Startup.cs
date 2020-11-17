@@ -44,6 +44,7 @@ using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
 
 namespace VolvoCash.DistributedServices.MainContext
@@ -158,6 +159,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBatchMovementRepository, BatchMovementRepository>();
             services.AddScoped<ICardBatchRepository, CardBatchRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<ITPContractTypeRepository, TPContractType>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

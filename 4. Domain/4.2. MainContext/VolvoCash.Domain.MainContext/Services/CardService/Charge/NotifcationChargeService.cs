@@ -3,6 +3,7 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Pushs;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Domain.MainContext.Services.CardService
@@ -31,17 +32,17 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
             var deviceTokens = await _sessionRepository.GetActivePushDeviceTokensAsync(charge.Cashier.UserId);
             var heading = "";
             var content = "";
-            switch (charge.Status)
+            switch (charge.Status.Weight)
             {
-                case ChargeStatus.Accepted:
+                case 2:
                     heading = _resources.GetStringResource(LocalizationKeys.Domain.messages_AcceptedChargeHeadingToCashier);
                     content = _resources.GetStringResource(LocalizationKeys.Domain.messages_AcceptedChargeContentToCashier);
                     break;
-                case ChargeStatus.Rejected:
+                case 3:
                     heading = _resources.GetStringResource(LocalizationKeys.Domain.messages_RejectedChargeHeadingToCashier);
                     content = _resources.GetStringResource(LocalizationKeys.Domain.messages_RejectedChargeContentToCashier);
                     break;
-                case ChargeStatus.Canceled:
+                case 4:
                     heading = _resources.GetStringResource(LocalizationKeys.Domain.messages_CanceledChargeHeadingToCashier);
                     content = _resources.GetStringResource(LocalizationKeys.Domain.messages_CanceledChargeContentToCashier);
                     break;

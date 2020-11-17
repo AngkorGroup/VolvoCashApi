@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg

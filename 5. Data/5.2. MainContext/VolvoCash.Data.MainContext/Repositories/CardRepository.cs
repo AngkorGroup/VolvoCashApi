@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VolvoCash.Data.Seedwork;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Data.MainContext.Repositories

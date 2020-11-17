@@ -17,10 +17,10 @@ using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -36,6 +36,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         private readonly IBatchErrorRepository _batchErrorRepository;
         private readonly ICardRechargeService _rechargeService;
         private readonly ILocalization _resources;
+        private readonly ITPContractTypeRepository _tPContractTypeRepository;
         #endregion
 
         #region Constructor
@@ -44,6 +45,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                                ICardRepository cardRepository,
                                ICardTypeRepository cardTypeRepository,
                                IBatchRepository batchRepository,
+                               ITPContractTypeRepository tPContractTypeRepository,
                                IBatchErrorRepository batchErrorRepository,
                                ICardRechargeService rechargeService)
         {
@@ -54,6 +56,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             _batchRepository = batchRepository;
             _batchErrorRepository = batchErrorRepository;
             _rechargeService = rechargeService;
+            _tPContractTypeRepository = tPContractTypeRepository;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion

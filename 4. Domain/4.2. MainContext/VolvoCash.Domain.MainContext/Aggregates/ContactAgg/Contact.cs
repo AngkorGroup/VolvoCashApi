@@ -6,7 +6,7 @@ using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
@@ -71,7 +71,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
         public string FullName { get => $"{FirstName} {LastName}"; }
 
         [NotMapped]
-        public bool IsActive { get => Status == Status.Active; }
+        public bool IsActive { get => Status.Active == 1; }
         #endregion
 
         #region Constructor
@@ -92,16 +92,17 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
             Email = email;
             ContactParentId = contactParentId;
             Type = type;
-            Status = Status.Active;
+            Status = new Status(1);
             Cards = new List<Card>();
-            User = new User(UserType.Contact);
+            var userType=new UserType("Contact","User of type Contact");
+            User = new User(userType);
         }
         #endregion
 
         #region Public Methods
         public void Delete()
         {
-            Status = Status.Inactive;
+            Status = new Status(0);
             ArchiveAt = DateTime.Now;
         }
         #endregion

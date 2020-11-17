@@ -1,7 +1,6 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
@@ -28,7 +27,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         public Session(int userId, string pushDeviceToken)
         {
             UserId = userId;
-            Status = Status.Active;
+            Status = new Status(1);
             PushDeviceToken = pushDeviceToken;
         }
         #endregion

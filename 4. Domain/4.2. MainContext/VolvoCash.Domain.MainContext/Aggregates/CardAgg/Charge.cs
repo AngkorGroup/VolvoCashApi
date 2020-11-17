@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
@@ -63,8 +63,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             DisplayName = displayName;
             ChargeType = chargeType;
             Description = description;
-            Status = ChargeStatus.Pending;
-            var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON,this);
+            Status = new ChargeStatus("Pending","Pending confirmation",1);
+            var movementType = new MovementType("CON","Consumo");
+            var movement = new Movement(amount.Opposite(), displayName, displayName, movementType,this);
             movement.CardId = card.Id;
             Movements.Add(movement);
             if (!card.CanWithdraw(amount))

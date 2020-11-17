@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
@@ -63,7 +63,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             PasswordHash = CryptoMethods.HashText(password);
             Phone = phone;
             Email = email;
-            User = new User(UserType.WebAdmin);
+            var userType = new UserType("WebAdmin", "###");
+            User = new User(userType);
             Dealer = dealer;
         }
         #endregion
@@ -76,7 +77,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
 
         public void Delete()
         {
-            Status = Status.Inactive;
+            Status = new Status(0);
             ArchiveAt = DateTime.Now;
         }
         #endregion

@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
 {
@@ -46,14 +46,15 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
 
         #region NotMapped Properties
         [NotMapped]
-        public Contact MainContact { get => Contacts.FirstOrDefault(c => c.Type == ContactType.Primary); }
+        public Contact MainContact { get => Contacts.FirstOrDefault(c => c.Type.Name == "Primary"); }
 
         [NotMapped]
         public Money Balance 
         {
             get
             {
-                var calculatedBalance = new Money(Currency.USD, 0);                
+                var currency = new Currency("Dolar Americano", '$', "USD","###");
+                var calculatedBalance = new Money(currency, 0);                
                 foreach (var contact in Contacts)
                 {
                     foreach(var card in contact.Cards)
@@ -78,7 +79,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
             Email = email;
             Name = name;
             Phone = phone;
-            Status = Status.Active;
+            Status = new Status(1);
             Contacts = new List<Contact>();
         }
         #endregion
