@@ -26,7 +26,7 @@ namespace VolvoCash.Data.MainContext.Repositories
 
         public async Task<Card> GetCardByIdWithBatchesAsync(int id, string phone)
         {
-            return (await FilterAsync(filter: c => c.Id == id && c.Contact.Phone == phone && c.Contact.Status == Status.Active, includeProperties: "Contact.Client,CardBatches.Batch,CardType")).FirstOrDefault(); 
+            return (await FilterAsync(filter: c => c.Id == id && c.Contact.Phone == phone && c.Contact.Status.Active == 1, includeProperties: "Contact.Client,CardBatches.Batch,CardType")).FirstOrDefault(); 
         }
 
         public async Task<IEnumerable<Card>> GetCardsByContactId(int contactId)

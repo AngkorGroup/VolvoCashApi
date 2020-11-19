@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Application.MainContext.DTO.Common
 {
@@ -12,9 +12,9 @@ namespace VolvoCash.Application.MainContext.DTO.Common
         [JsonConverter(typeof(StringEnumConverter))]
         public Currency Currency { get; set; }
 
-        public string CurrencyLabel { get => Currency == Currency.PEN ? "Soles" : "Dólares" ; }
+        public string CurrencyLabel { get => Currency.Name; }
 
-        public string CurrencySymbol { get => Currency == Currency.PEN ? "S/." : "US$"; }
+        public string CurrencySymbol { get => Currency.Name; }
 
         public string Label { get => CurrencySymbol + " " + string.Format("{0:#,0.00}", Value); }
         #endregion

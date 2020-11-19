@@ -10,7 +10,7 @@ using VolvoCash.CrossCutting.Utils;
 using VolvoCash.DistributedServices.Seedwork.Controllers;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -69,7 +69,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         [HttpPost]
         public override async Task<DealerDTO> Post([FromBody] DealerDTO entityDTO)
         {
-            entityDTO.Status = Status.Active;
+            entityDTO.Status = new Status(1);
             return await _service.AddAsync(entityDTO);
         }
 

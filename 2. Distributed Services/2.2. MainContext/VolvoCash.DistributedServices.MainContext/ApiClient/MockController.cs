@@ -8,7 +8,7 @@ using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.DistributedServices.Seedwork.Filters;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiClient
 {
@@ -35,10 +35,10 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         [Route("mock_charge")]
         public async Task<ActionResult> MockCharge(ChargeDTO request)
         {
-            request.Amount = new MoneyDTO( Currency.USD, 100);
+            request.Amount = new MoneyDTO(new Currency("Dolar Estadounidense",'$',"USD","###"), 100);
             request.Description = "Esto es una prueba de un consumo";
             request.CashierId = 1;
-            request.ChargeType = ChargeType.FaceToFace;
+            request.ChargeType = new ChargeType("FaceToFace","###",2);
             request.CardId = JsonConvert.DeserializeObject<CardDTO>(CryptoMethods.DecryptString(request.CardToken)).Id;
             var charge = await _chargeAppService.AddCharge(request);
             return Ok(charge);

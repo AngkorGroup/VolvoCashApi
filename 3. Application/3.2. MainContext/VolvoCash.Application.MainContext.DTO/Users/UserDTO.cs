@@ -1,10 +1,9 @@
-using VolvoCash.Domain.Seedwork;
-using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Application.MainContext.DTO.Users
 {

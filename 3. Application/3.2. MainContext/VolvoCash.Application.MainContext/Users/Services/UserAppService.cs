@@ -16,7 +16,6 @@ using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.EnumAgg;
-using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
 
 namespace VolvoCash.Application.MainContext.Users.Services
@@ -99,7 +98,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
                     var transfer = await _cardTransferService.PerformTransfer(card, contactToTransfer, card.CalculatedBalance);
                     transfers.Add(transfer);
                 }
-                _card.Status = Status.Inactive;
+                _card.Status = new Status(0);
             }
             return transfers;
         }
@@ -112,9 +111,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
             var cashiers = (await _cashierRepository.GetAllAsync()).ProjectedAsCollection<CashierDTO>();
             var contacts = (await _contactRepository.GetAllAsync()).ProjectedAsCollection < ContactListDTO>();
             var users = new List<UserDTO>();
-            users.AddRange(admins.Select(a => new UserDTO() { Admin = a, Id = a.UserId, Type = UserType.WebAdmin }));
-            users.AddRange(cashiers.Select(c => new UserDTO() { Cashier = c, Id = c.UserId, Type = UserType.Cashier }));
-            users.AddRange(contacts.Select(c => new UserDTO() { Contact = c, Id = c.UserId, Type = UserType.Contact }));
+            users.AddRange(admins.Select(a => new UserDTO() { Admin = a, Id = a.UserId, Type = new UserType("WebAdmin","###") }));
+            users.AddRange(cashiers.Select(c => new UserDTO() { Cashier = c, Id = c.UserId, Type = new UserType("Cashier","###") }));
+            users.AddRange(contacts.Select(c => new UserDTO() { Contact = c, Id = c.UserId, Type = new UserType("Contact","###")}));
             return users;
         }
 
@@ -153,17 +152,17 @@ namespace VolvoCash.Application.MainContext.Users.Services
         {
             var user = _userRepository.Filter(filter: u => u.Id == id, includeProperties: "Contacts,Admins,Cashiers").FirstOrDefault();
             var password = RandomGenerator.RandomDigits(6);
-            switch (user.Type)
+            switch (user.Type.Name)
             {
-                case UserType.Cashier:
+                case "Cashier":
                     var cashier = user.Cashier;
                     cashier.SetPasswordHash(password);
                     await _cashierRepository.UnitOfWork.CommitAsync();
                     SendEmailToCashier(cashier, password);
                     break;
-                case UserType.Contact:
+                case "Contact":
                     break;
-                case UserType.WebAdmin:
+                case "WebAdmin":
                     var admin = user.Admin;
                     admin.SetPasswordHash(password);
                     await _adminRepository.UnitOfWork.CommitAsync();
@@ -177,15 +176,15 @@ namespace VolvoCash.Application.MainContext.Users.Services
         public async Task DeleteUserAsync(int id, int? contactToTransferId)
         {
             var user = _userRepository.Filter(filter: u => u.Id == id, includeProperties: "Contacts,Admins,Cashiers").FirstOrDefault();
-            switch (user.Type)
+            switch (user.Type.Name)
             {
-                case UserType.Cashier:
+                case "Cashier":
                     var cashier = user.Cashier;
                     cashier.Delete();
                     _cashierRepository.Modify(cashier);
                     await _cashierRepository.UnitOfWork.CommitAsync();
                     break;
-                case UserType.Contact:
+                case "Contact":
                     var contact = user.Contact;
                     var cards = await _cardRepository.GetCardsByContactId(contact.Id);
                     var transfers = await GetTransfersAboutAllFounds(contact, contactToTransferId);
@@ -193,7 +192,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
                     contact.Delete();                    
                     await _transferRepository.UnitOfWork.CommitAsync();
                     break;
-                case UserType.WebAdmin:
+                case "WebAdmin":
                     var admin = user.Admin;
                     admin.Delete();
                     _adminRepository.Modify(admin);

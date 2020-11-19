@@ -7,7 +7,7 @@ using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Authentication;
 using VolvoCash.DistributedServices.MainContext.ApiWeb.Responses.Authentication;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Utils;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -41,7 +41,8 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         {
             var admin = await _authenticationAppService.LoginAdminAsync(request.Email, request.Password);
             var session = await _authenticationAppService.CreateSessionAsync(admin.UserId);
-            var authToken = _tokenManager.GenerateTokenJWT(session.Id, admin.UserId, admin.Id.ToString(), admin.FullName, admin.Email, UserType.WebAdmin.ToString());
+            var userType = new UserType("WebAdmin","###");
+            var authToken = _tokenManager.GenerateTokenJWT(session.Id, admin.UserId, admin.Id.ToString(), admin.FullName, admin.Email, userType.Name);
             return Ok(new LoginResponse { Admin = admin, AuthToken = authToken });
         }
 

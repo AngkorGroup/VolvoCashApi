@@ -8,7 +8,7 @@ using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.CrossCutting.NetFramework.Identity;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.DistributedServices.Seedwork.Filters;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiPOS
 {

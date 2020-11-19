@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
@@ -12,7 +10,6 @@ using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.Authentication.Services
 {
@@ -47,7 +44,7 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         public async Task<int> RequestSmsCodeAsync(string phone)
         {
             var contact = await _contactRepository.GetByPhoneAsync(phone);
-            if (contact != null && contact.Status == Status.Active)
+            if (contact != null && contact.Status.Active == 1)
             {
                 var code = await _smsCodeRepository.GenerateSMSCodeAsync(phone);
                 return code;
@@ -115,7 +112,7 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         public async Task DestroySessionAsync(Guid sessionId)
         {
             var session = _sessionRepository.Get(sessionId);
-            session.Status = Status.Inactive;
+            session.Status.Active = 0;
             await _sessionRepository.UnitOfWork.CommitAsync();
         }
         #endregion

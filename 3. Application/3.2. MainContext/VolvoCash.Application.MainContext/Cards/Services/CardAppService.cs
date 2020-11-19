@@ -11,7 +11,6 @@ using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.EnumAgg;
-using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -44,7 +43,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<CardListDTO>> GetCardsByPhone(string phone)
         {
             var contactAndAdditionalCards = (await _cardRepository.FilterAsync(
-                filter : c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Status == Status.Active,
+                filter : c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Status.Active == 1,
                 includeProperties: "CardType,Contact"))
                 .ToList();
             if (contactAndAdditionalCards != null && contactAndAdditionalCards.Any())
@@ -52,7 +51,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var cardsDTO = contactAndAdditionalCards.ProjectedAsCollection<CardListDTO>();
                 foreach (var cardDTO in cardsDTO)
                 {
-                    cardDTO.Contact.Type = cardDTO.Contact.Phone == phone ? ContactType.Primary : ContactType.Secondary;
+                    cardDTO.Contact.Type = cardDTO.Contact.Phone == phone ? new ContactType("Primary","###") : new ContactType("Secondary","###");
                 }
                 return cardsDTO;
             }
@@ -68,7 +67,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var movements = await _movementRepository.GetMovementsByCard(id);
                 var cardDTO = card.ProjectedAs<CardDTO>();
                 cardDTO.Movements = movements.ProjectedAsCollection<MovementDTO>();
-                cardDTO.Contact.Type = cardDTO.Contact.Phone == phone ? ContactType.Primary : ContactType.Secondary;
+                cardDTO.Contact.Type = cardDTO.Contact.Phone == phone ? new ContactType("Primary","###") : new ContactType("Secondary","###");
                 return cardDTO;
             }
             else

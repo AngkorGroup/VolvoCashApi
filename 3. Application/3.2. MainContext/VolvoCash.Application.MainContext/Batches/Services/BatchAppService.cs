@@ -93,7 +93,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var batchAmount = double.Parse(GetLineSegment(lineSegments, 8));
                 var batchCurrency = GetLineSegment(lineSegments, 9);
                 var contactName = GetLineSegment(lineSegments, 10);
-                var contractType = GetLineSegment(lineSegments, 11) == "A" ? TPContractType.Addendum : TPContractType.Contract;
+                var contractType = GetLineSegment(lineSegments, 11) == "A" ? new TPContractType("Addendum","###") : new TPContractType("Contract","###");
                 var contractNumber = GetLineSegment(lineSegments, 12);
                 var clientRuc = GetLineSegment(lineSegments, 13);
                 var contactPhone = GetLineSegment(lineSegments, 14);
@@ -108,7 +108,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var clientAddress = "Mi direccion 1234";
                 var clientPhone = "987654321";
                 var contactLastName = "Apellidos";
-                var contactDocumentType = DocumentType.DNI;
+                var contactDocumentType = new DocumentType("DNI","Documento Nacional de Identidad");
                 try
                 {
                     var client = new ClientDTO()
@@ -286,7 +286,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
         public async Task<BatchDTO> PerformLoadAsync(ClientDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO)
         {
-            var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc && c.Status == Status.Active,
+            var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc && c.Status.Active == 1,
                                                               includeProperties: "Contacts.Cards")).FirstOrDefault();
             if (client == null)
             {
@@ -299,7 +299,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             var mainContact = await _contactRepository.CreateOrUpdateMainContact(client, contactDTO.Phone, contactDTO.DocumentType,
                                                                                  contactDTO.DocumentNumber, contactDTO.FirstName,
                                                                                  contactDTO.LastName, contactDTO.Email);
-            var card = mainContact.Cards.FirstOrDefault(c => c.CardTypeId == carDTO.CardTypeId && c.Status == Status.Active);
+            var card = mainContact.Cards.FirstOrDefault(c => c.CardTypeId == carDTO.CardTypeId && c.Status.Active == 1);
             var cardType = _cardTypeRepository.Get(carDTO.CardTypeId);
             var batchReason = "Recarga de saldo";
             if (card == null)

@@ -63,7 +63,7 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         {
             var dealer = await _repository.GetAsync(id);
             dealer.ArchiveAt = DateTime.Now;
-            dealer.Status = Status.Inactive;
+            dealer.Status.Active = 0;
             _repository.Modify(dealer);
             await _repository.UnitOfWork.CommitAsync();
         }        

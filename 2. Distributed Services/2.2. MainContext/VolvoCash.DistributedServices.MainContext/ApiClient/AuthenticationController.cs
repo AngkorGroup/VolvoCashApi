@@ -9,7 +9,7 @@ using VolvoCash.DistributedServices.MainContext.ApiClient.Requests.Authenticatio
 using VolvoCash.DistributedServices.MainContext.ApiClient.Responses.Authentication;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Utils;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiClient
 {
@@ -71,8 +71,8 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         {
             var contact = await _authenticationAppService.VerifySmsCodeAsync(request.Phone, int.Parse(request.Code));
             var session = await _authenticationAppService.CreateSessionAsync(contact.UserId, request.DeviceToken);
-            var authToken = _tokenManager.GenerateTokenJWT(session.Id, contact.UserId, contact.Phone, contact.FullName, contact.Email, UserType.Contact.ToString());
-            contact.Type = ContactType.Primary;
+            var authToken = _tokenManager.GenerateTokenJWT(session.Id, contact.UserId, contact.Phone, contact.FullName, contact.Email, "Contact");
+            contact.Type = new ContactType("Primary","###");
             return Ok(new VerifySmsCodeResponse { AuthToken = authToken, Contact = contact });
         }
 

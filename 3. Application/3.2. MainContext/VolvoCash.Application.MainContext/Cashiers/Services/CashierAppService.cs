@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.Application.Seedwork.Common;
@@ -10,7 +9,7 @@ using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Application.MainContext.Cashiers.Services
 {
@@ -95,7 +94,7 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
         {
             var cashier = await _repository.GetAsync(id);
             cashier.ArchiveAt = DateTime.Now;
-            cashier.Status = Status.Inactive;
+            cashier.Status = new Status(0);
             _repository.Modify(cashier);
             await _repository.UnitOfWork.CommitAsync();
         }

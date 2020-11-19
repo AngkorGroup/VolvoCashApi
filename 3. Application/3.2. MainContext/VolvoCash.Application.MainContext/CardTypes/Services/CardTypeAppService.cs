@@ -5,7 +5,6 @@ using VolvoCash.Application.Seedwork;
 using VolvoCash.Application.Seedwork.Common;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.EnumAgg;
-using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.CardTypes.Services
 {
@@ -23,7 +22,7 @@ namespace VolvoCash.Application.MainContext.CardTypes.Services
         #region ApiWeb Public Methods
         public override async Task<CardTypeDTO> ModifyAsync(CardTypeDTO item)
         {
-            item.Status = Status.Active;
+            item.Status = new Status(1);
             _repository.Modify(item.ProjectedAs<CardType>());
             await _repository.UnitOfWork.CommitAsync();
             return item;
@@ -33,7 +32,7 @@ namespace VolvoCash.Application.MainContext.CardTypes.Services
         {
             var cardType = await _repository.GetAsync(id);
             cardType.ArchiveAt = DateTime.Now;
-            cardType.Status = Status.Inactive;
+            cardType.Status = new Status(0);
             _repository.Modify(cardType);
             await _repository.UnitOfWork.CommitAsync();
         }

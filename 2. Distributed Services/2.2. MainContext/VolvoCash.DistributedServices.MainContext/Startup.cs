@@ -159,7 +159,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBatchMovementRepository, BatchMovementRepository>();
             services.AddScoped<ICardBatchRepository, CardBatchRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
-            services.AddScoped<ITPContractTypeRepository, TPContractType>();
+            //services.AddScoped<ITPContractTypeRepository, TPContractType>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

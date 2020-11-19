@@ -7,7 +7,6 @@ using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
-using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
 using VolvoCash.Domain.MainContext.EnumAgg;
 
@@ -50,7 +49,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region ApiClient Public Methods
         public async Task<List<ChargeDTO>> GetChargesByPhone(string phone)
         {
-            var charges = await _chargeRepository.FilterAsync(c => c.Card.Contact.Phone == phone && c.Status == ChargeStatus.Pending, includeProperties: "Cashier");
+            var charges = await _chargeRepository.FilterAsync(c => c.Card.Contact.Phone == phone && c.Status.Weight ==1, includeProperties: "Cashier");
             return charges.ProjectedAsCollection<ChargeDTO>();
         }
 
@@ -76,7 +75,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             }
             else
             {
-                charge.Status = ChargeStatus.Rejected;
+                charge.Status.Weight = 3;
             }
             _chargeRepository.Modify(charge);
             await _chargeRepository.UnitOfWork.CommitAsync();
@@ -87,7 +86,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
 
         private async Task GenerateChargeImageUrl(Charge charge)
         {
-            if (charge.Status == ChargeStatus.Accepted)
+            if (charge.Status.Weight == 2)
             {
                 var url = _urlManager.GetChargeVoucherImageUrl(charge.Id);
                 charge.ImageUrl = await _amazonService.UploadImageUrlToS3(url, ".png", "charges");

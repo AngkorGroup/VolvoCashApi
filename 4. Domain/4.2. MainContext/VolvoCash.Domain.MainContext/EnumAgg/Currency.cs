@@ -3,7 +3,7 @@ using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.EnumAgg
 {
-    public class Currency:Entity
+    public class Currency:AuditableEntityWithKey<int>
     {
         #region Properties
         [Required]
