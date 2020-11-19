@@ -57,7 +57,10 @@
             exception_NullContactIdToTransferFounds,
             exception_NullContactToTransferFounds,
             messages_NewAdminEmailSubject,
-            messages_NewAdminEmailBody
+            messages_NewAdminEmailBody,
+            exception_PasswordAndConfirmNotMatch,
+            exception_InvalidRechargeTypeCode,
+            exception_InvalidBusinessAreaCode
         }
 
         public enum Domain

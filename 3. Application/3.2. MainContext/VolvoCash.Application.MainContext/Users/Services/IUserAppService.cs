@@ -13,5 +13,6 @@ namespace VolvoCash.Application.MainContext.Users.Services
         Task<AdminDTO> ModifyAdminAsync(AdminDTO adminDTO);
         Task ResetUserPasswordAsync(int id);
         Task DeleteUserAsync(int id, int? contactId);
+        Task ChangePassword(int id, string password, string confirmPassword);
     }
 }

@@ -111,9 +111,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
             }
             return transfers;
         }
-        #endregion
+        #endregion        
 
-        #region Public Methods       
+        #region ApiWeb Public Methods       
         public async Task<IList<UserDTO>> GetAllDTOAsync()
         {
             var admins = (await _adminRepository.GetAllAsync()).ProjectedAsCollection<AdminDTO>() ;
@@ -215,7 +215,35 @@ namespace VolvoCash.Application.MainContext.Users.Services
                 default:
                     break;
             }
-        }      
+        }
+        #endregion
+
+        #region Common Public Methods
+        public async Task ChangePassword(int id,string password, string confirmPassword)
+        {
+            if (password!= confirmPassword)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_PasswordAndConfirmNotMatch));
+            }
+            var user = _userRepository.Filter(filter: u => u.Id == id, includeProperties: "Contacts,Admins,Cashiers").FirstOrDefault();
+            switch (user.Type)
+            {
+                case UserType.Cashier:
+                    var cashier = user.Cashier;
+                    cashier.SetPasswordHash(password);
+                    await _cashierRepository.UnitOfWork.CommitAsync();
+                    break;
+                case UserType.Contact:
+                    break;
+                case UserType.WebAdmin:
+                    var admin = user.Admin;
+                    admin.SetPasswordHash(password);
+                    await _adminRepository.UnitOfWork.CommitAsync();
+                    break;
+                default:
+                    break;
+            }
+        }
         #endregion
 
         #region IDisposable Members

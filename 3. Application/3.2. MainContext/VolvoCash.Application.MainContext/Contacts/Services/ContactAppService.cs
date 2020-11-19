@@ -140,7 +140,8 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
                 filter: c => (c.FirstName.ToUpper().Contains(query)
                 || c.LastName.ToUpper().Contains(query)
                 || c.Phone.Contains(query)
-                || c.DocumentNumber.Contains(query)) && (!onlyActive || c.Status == Status.Active),
+                || c.DocumentNumber.Contains(query)
+                || string.IsNullOrEmpty(query)) && (!onlyActive || c.Status == Status.Active),
                 includeProperties:"Client");
 
             contacts = contacts.Take(Math.Min(contacts.Count(), maxRecords));

@@ -43,6 +43,14 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
         }
         #endregion
 
+        #region ApiPOS Public Methods
+        public async Task<CashierDTO> GetByUserId(int userId)
+        {
+            var cashier = (await _repository.FilterAsync(filter: c=> c.UserId == userId)).FirstOrDefault();
+            return cashier.ProjectedAs<CashierDTO>();
+        }
+        #endregion
+
         #region ApiWeb Public Methods
         public override async Task<CashierDTO> AddAsync(CashierDTO cashierDTO)
         {

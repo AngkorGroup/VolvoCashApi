@@ -21,6 +21,8 @@ using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -32,6 +34,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         private readonly IContactRepository _contactRepository;
         private readonly ICardRepository _cardRepository;
         private readonly ICardTypeRepository _cardTypeRepository;
+        private readonly IRechargeTypeRepository _rechargeTypeRepository;
+        private readonly IBusinessAreaRepository _businessAreaRepository;
         private readonly IBatchRepository _batchRepository;
         private readonly IBatchErrorRepository _batchErrorRepository;
         private readonly ICardRechargeService _rechargeService;
@@ -43,6 +47,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                                IContactRepository contactRepository,
                                ICardRepository cardRepository,
                                ICardTypeRepository cardTypeRepository,
+                               IRechargeTypeRepository rechargeTypeRepository,
+                               IBusinessAreaRepository businessAreaRepository,
                                IBatchRepository batchRepository,
                                IBatchErrorRepository batchErrorRepository,
                                ICardRechargeService rechargeService)
@@ -50,6 +56,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             _clientRepository = clientRepository;
             _contactRepository = contactRepository;
             _cardTypeRepository = cardTypeRepository;
+            _rechargeTypeRepository = rechargeTypeRepository;
+            _businessAreaRepository = businessAreaRepository;
             _cardRepository = cardRepository;
             _batchRepository = batchRepository;
             _batchErrorRepository = batchErrorRepository;
@@ -90,7 +98,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var batchAmount = double.Parse(GetLineSegment(lineSegments, 8));
                 var batchCurrency = GetLineSegment(lineSegments, 9);
                 var contactName = GetLineSegment(lineSegments, 10);
-                var contractType = GetLineSegment(lineSegments, 11) == "A" ? TPContractType.Addendum : TPContractType.Contract;
+                var rechargeTypeCode = GetLineSegment(lineSegments, 11);
                 var contractNumber = GetLineSegment(lineSegments, 12);
                 var clientRuc = GetLineSegment(lineSegments, 13);
                 var contactPhone = GetLineSegment(lineSegments, 14);
@@ -128,10 +136,20 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                         DocumentNumber = contactDocumentNumber,
                     };
 
-                    var cardType = _cardTypeRepository.Filter(ct => ct.TPCode == cardTypeCode).FirstOrDefault();
+                    var cardType = _cardTypeRepository.Filter(ct => ct.TPCode == cardTypeCode).FirstOrDefault();                  
 
                     if (cardType == null)
                         throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidCardTypeCode));
+
+                    var rechargeType = _rechargeTypeRepository.Filter(rt => rt.TPCode == rechargeTypeCode).FirstOrDefault();
+
+                    if (rechargeType == null)
+                        throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidRechargeTypeCode));
+
+                    var businessArea = _businessAreaRepository.Filter(ba => ba.TPCode == businessCode).FirstOrDefault();
+
+                    if (businessArea == null)
+                        throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidBusinessAreaCode));
 
                     var card = new CardDTO()
                     {
@@ -146,13 +164,12 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                         TPChasis = chasisNumber,
                         TPInvoiceDate = invoiceDate,
                         TPInvoiceCode = invoiceDocumentNumber,
-                        TPContractType = contractType,
+                        RechargeTypeId = rechargeType.Id,
                         TPContractNumber = contractNumber,
                         TPContractBatchNumber = batchTPCode,
                         DealerCode = dealerCode,
                         DealerName = dealerName,
-                        BusinessCode = businessCode,
-                        BusinessDescription = businessDescription,
+                        BusinessAreaId = businessArea.Id,
                         CardTypeId = cardType.Id,
                         LineContent = line
                     };
@@ -204,7 +221,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region ApiWeb Public Methods
         public async Task<List<BatchDTO>> GetBatches()
         {
-            var batches = await _batchRepository.FilterAsync(includeProperties: "Client.Contacts,CardType",
+            var batches = await _batchRepository.FilterAsync(includeProperties: "Client.Contacts,CardType,RechargeType,BusinessArea",
                                                              orderBy: bq => bq.OrderByDescending(b => b.CreatedAt));
             return batches.ProjectedAsCollection<BatchDTO>();
         }
@@ -316,13 +333,12 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 batchDTO.TPContractDate,
                 batchDTO.TPInvoiceCode,
                 batchDTO.TPInvoiceDate,
-                batchDTO.TPContractType,
+                batchDTO.RechargeTypeId,
                 batchDTO.TPContractNumber,
                 batchDTO.TPContractReason,
                 batchDTO.DealerCode,
                 batchDTO.DealerName,
-                batchDTO.BusinessCode,
-                batchDTO.BusinessDescription,
+                batchDTO.BusinessAreaId.Value,
                 batchDTO.CardTypeId,
                 batchDTO.LineContent
             );
