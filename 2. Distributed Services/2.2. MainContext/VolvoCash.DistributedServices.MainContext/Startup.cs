@@ -182,6 +182,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ISMSManager, SMSManager>();
             services.AddScoped<ITokenManager, TokenManager>();
             services.AddScoped<IPushNotificationManager, OneSignalPushNotification>();
+            services.AddScoped<IReportManager, ReportManager>();
 
             // Adapters
             services.AddScoped<ITypeAdapterFactory, AutomapperTypeAdapterFactory>();
