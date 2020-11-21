@@ -2,8 +2,9 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using VolvoCash.Application.MainContext.DTO.Contacts;
+using VolvoCash.Application.MainContext.DTO.Status;
 using VolvoCash.Application.Seedwork.DateConverters;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 
 namespace VolvoCash.Application.MainContext.DTO.Clients
 {
@@ -20,8 +21,8 @@ namespace VolvoCash.Application.MainContext.DTO.Clients
 
         public string Phone { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Status Status { get; set; }
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public StatusDTO Status { get; set; }
 
         [JsonConverter(typeof(DefaultShortLiterallyDateConverter))]
         public DateTime CreatedAt { get; set; }

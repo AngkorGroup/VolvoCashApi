@@ -16,4 +16,11 @@
     <ProjectReference Include="..\VolvoCash.Application.MainContext.DTO\VolvoCash.Application.MainContext.DTO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ChargeStatus\" />
+    <Folder Include="ChargeTypes\" />
+    <Folder Include="DealerTypes\" />
+    <Folder Include="Status\" />
+  </ItemGroup>
+
 </Project>

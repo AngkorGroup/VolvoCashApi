@@ -2,8 +2,11 @@
 using Newtonsoft.Json.Converters;
 using System;
 using VolvoCash.Application.MainContext.DTO.Clients;
+using VolvoCash.Application.MainContext.DTO.Status;
 using VolvoCash.Application.Seedwork.DateConverters;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 
 namespace VolvoCash.Application.MainContext.DTO.Contacts
 {
@@ -30,8 +33,8 @@ namespace VolvoCash.Application.MainContext.DTO.Contacts
 
         public string DocumentNumber { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Status Status { get; set; }
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public StatusDTO Status { get; set; }
 
         public ClientListDTO Client { get; set; }
 

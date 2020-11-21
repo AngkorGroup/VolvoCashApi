@@ -3,9 +3,11 @@ using Newtonsoft.Json.Converters;
 using System;
 using VolvoCash.Application.MainContext.DTO.Cards;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
+using VolvoCash.Application.MainContext.DTO.ChargeStatus;
+using VolvoCash.Application.MainContext.DTO.ChargeTypes;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.Seedwork.DateConverters;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 
 namespace VolvoCash.Application.MainContext.DTO.Charges
 {
@@ -22,11 +24,11 @@ namespace VolvoCash.Application.MainContext.DTO.Charges
 
         public string ImageUrl { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ChargeStatus Status { get; set; }
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public ChargeStatusDTO Status { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ChargeType ChargeType { get; set; }
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public ChargeTypeDTO ChargeType { get; set; }
 
         public int CardId { get; set; }
 

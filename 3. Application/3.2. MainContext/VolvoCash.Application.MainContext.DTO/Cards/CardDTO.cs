@@ -7,8 +7,8 @@ using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.MainContext.DTO.Movements;
+using VolvoCash.Application.MainContext.DTO.Status;
 using VolvoCash.Application.Seedwork.DateConverters;
-using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Application.MainContext.DTO.Cards
 {
@@ -39,8 +39,8 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
 
         public string TPCode { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Status Status { get; set; }
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public StatusDTO Status { get; set; }
 
         [JsonConverter(typeof(DefaultDateTimeConverter))]
         public DateTime CreatedAt { get; set; }

@@ -1,10 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
+using VolvoCash.Application.MainContext.DTO.Status;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.Application.Seedwork.Common;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 
 namespace VolvoCash.Application.MainContext.CardTypes.Services
 {
@@ -22,7 +23,7 @@ namespace VolvoCash.Application.MainContext.CardTypes.Services
         #region ApiWeb Public Methods
         public override async Task<CardTypeDTO> ModifyAsync(CardTypeDTO item)
         {
-            item.Status = new Status(1);
+            item.Status = new StatusDTO();
             _repository.Modify(item.ProjectedAs<CardType>());
             await _repository.UnitOfWork.CommitAsync();
             return item;

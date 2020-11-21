@@ -20,7 +20,9 @@ using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.TPContractTypeAgg;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {

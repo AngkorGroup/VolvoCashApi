@@ -3,8 +3,8 @@ using Newtonsoft.Json;
 using VolvoCash.Domain.Seedwork;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.Application.Seedwork.DateConverters;
-using VolvoCash.Domain.MainContext.Enums;
 using Newtonsoft.Json.Converters;
+using VolvoCash.Application.MainContext.DTO.Status;
 
 namespace VolvoCash.Application.MainContext.DTO.Cashiers
 {
@@ -44,8 +44,8 @@ namespace VolvoCash.Application.MainContext.DTO.Cashiers
         [JsonConverter(typeof(DefaultDateTimeConverter))]
         public DateTime? ArchiveAt { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Status Status { get; set; }
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public StatusDTO Status { get; set; }
         #endregion
     }
 }

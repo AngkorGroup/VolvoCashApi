@@ -5,7 +5,7 @@ using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Transfers;
 using VolvoCash.Application.Seedwork.DateConverters;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 
 namespace VolvoCash.Application.MainContext.DTO.Movements
 {

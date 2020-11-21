@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg

@@ -10,7 +10,7 @@ using VolvoCash.CrossCutting.Utils;
 using VolvoCash.DistributedServices.Seedwork.Controllers;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {

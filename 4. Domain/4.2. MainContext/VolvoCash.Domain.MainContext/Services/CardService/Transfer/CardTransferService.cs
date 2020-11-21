@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Domain.MainContext.Services.CardService
 {

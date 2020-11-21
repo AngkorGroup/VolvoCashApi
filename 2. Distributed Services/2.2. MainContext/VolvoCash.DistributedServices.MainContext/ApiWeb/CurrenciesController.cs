@@ -4,7 +4,7 @@ using VolvoCash.Application.MainContext.Currencies.Services;
 using VolvoCash.Application.MainContext.DTO.Currencies;
 using VolvoCash.DistributedServices.Seedwork.Controllers;
 using VolvoCash.DistributedServices.Seedwork.Filters;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {

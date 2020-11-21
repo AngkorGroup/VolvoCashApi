@@ -10,7 +10,6 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {

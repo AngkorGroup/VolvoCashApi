@@ -1,6 +1,6 @@
 ﻿using VolvoCash.Application.MainContext.DTO.Currencies;
 using VolvoCash.Application.Seedwork.Common;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 
 namespace VolvoCash.Application.MainContext.Currencies.Services
 {
@@ -9,7 +9,7 @@ namespace VolvoCash.Application.MainContext.Currencies.Services
         #region Members
         #endregion
 
-        #region Construvtor
+        #region Constructor
         public CurrencyAppService(ICurrencyRepository currencyRepository):base(currencyRepository)
         {
         }

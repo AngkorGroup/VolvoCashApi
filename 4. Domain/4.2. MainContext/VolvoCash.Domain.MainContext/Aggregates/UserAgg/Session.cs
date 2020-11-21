@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg

@@ -7,7 +7,7 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Data.Seedwork;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 
 namespace VolvoCash.Data.MainContext.Repositories
 {

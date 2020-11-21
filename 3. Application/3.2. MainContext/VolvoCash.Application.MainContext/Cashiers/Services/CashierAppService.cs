@@ -8,8 +8,8 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Application.MainContext.Cashiers.Services
 {

@@ -3,8 +3,6 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Pushs;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
-using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Domain.MainContext.Services.CardService
 {

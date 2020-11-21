@@ -5,8 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg

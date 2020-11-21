@@ -7,7 +7,8 @@ using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.Seedwork;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
 {

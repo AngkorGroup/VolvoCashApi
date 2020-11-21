@@ -8,7 +8,8 @@ using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.DistributedServices.Seedwork.Filters;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiClient
 {

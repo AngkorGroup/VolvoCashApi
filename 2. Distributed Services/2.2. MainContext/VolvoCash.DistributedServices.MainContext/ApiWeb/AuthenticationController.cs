@@ -7,7 +7,7 @@ using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Authentication;
 using VolvoCash.DistributedServices.MainContext.ApiWeb.Responses.Authentication;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Utils;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {

@@ -8,7 +8,6 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
-using VolvoCash.Domain.MainContext.EnumAgg;
 
 namespace VolvoCash.Application.MainContext.Charges.Services
 {

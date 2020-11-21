@@ -1,5 +1,5 @@
 using System;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Application.MainContext.DTO.Status;
 
 namespace VolvoCash.Application.MainContext.DTO.Sessions
 {
@@ -10,7 +10,7 @@ namespace VolvoCash.Application.MainContext.DTO.Sessions
 
         public int UserId { get; set; }
 
-        public Status Status { get; set; }
+        public StatusDTO Status { get; set; }
 
         public string PushDeviceToken { get; set; }
         #endregion

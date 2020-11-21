@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Charges;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 
 namespace VolvoCash.Application.MainContext.Charges.Services
 {

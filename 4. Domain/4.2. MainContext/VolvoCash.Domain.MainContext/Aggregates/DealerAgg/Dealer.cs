@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.EnumAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg

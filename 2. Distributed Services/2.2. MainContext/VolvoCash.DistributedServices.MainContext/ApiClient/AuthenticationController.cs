@@ -9,7 +9,7 @@ using VolvoCash.DistributedServices.MainContext.ApiClient.Requests.Authenticatio
 using VolvoCash.DistributedServices.MainContext.ApiClient.Responses.Authentication;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Utils;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiClient
 {

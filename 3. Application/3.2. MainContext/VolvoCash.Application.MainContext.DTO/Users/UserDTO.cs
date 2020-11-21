@@ -3,7 +3,7 @@ using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
-using VolvoCash.Domain.MainContext.EnumAgg;
+using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 
 namespace VolvoCash.Application.MainContext.DTO.Users
 {
