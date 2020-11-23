@@ -12,7 +12,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
-    public class ReportsController : ControllerBase
+    public class ReportsController : Controller
     {
         #region Members
         private readonly IReportManager _reportManager;
@@ -26,7 +26,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Private Methods
-        private FileContentResult GetFileResponse(byte[] reportContent, string reportType, string fileName)
+        private IActionResult GetFileResponse(byte[] reportContent, string reportType, string fileName)
         {
             var extension = ContentAndExtensions.excelExtension;
             var mimeType = ContentAndExtensions.excelContentType;

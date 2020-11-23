@@ -78,7 +78,7 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
         {
             Name = key;
             value = value ?? "";
-            Value = value == "all" ? "" : value.PadLeft(padLength,'0');
+            Value = value == "all" || string.IsNullOrEmpty(value) ? "" : value.PadLeft(padLength,'0');
         }
 
         public ReportParameter(string key, List<string> values, int padLength = 0)
@@ -88,7 +88,7 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
             values = values ?? new List<string>();
             foreach (var value in values)
             {
-                padValues.Add(value == "all" ? "" : value.PadLeft(padLength, '0'));
+                padValues.Add(value == "all" || string.IsNullOrEmpty(value) ? "" : value.PadLeft(padLength, '0'));
             }
             Value = string.Join(",", padValues);
         }

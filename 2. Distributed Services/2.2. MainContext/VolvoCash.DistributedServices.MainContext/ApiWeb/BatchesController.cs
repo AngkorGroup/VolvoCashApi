@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Batches.Services;
+using VolvoCash.CrossCutting.Utils;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
@@ -25,9 +27,19 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet]
-        public async Task<ActionResult> GetBatches()
+        public async Task<ActionResult> GetBatches([FromQuery] string beginDate = "", [FromQuery] string endDate = "")
         {
-            var loads = await _batchAppService.GetBatches();
+            DateTime? bDate = null;
+            if (!string.IsNullOrEmpty(beginDate))
+            {
+                bDate = DateTime.ParseExact(beginDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            }
+            DateTime? eDate = null;
+            if (!string.IsNullOrEmpty(endDate))
+            {
+                eDate = DateTime.ParseExact(endDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            }
+            var loads = await _batchAppService.GetBatches(bDate, eDate);
             return Ok(loads);
         }
 

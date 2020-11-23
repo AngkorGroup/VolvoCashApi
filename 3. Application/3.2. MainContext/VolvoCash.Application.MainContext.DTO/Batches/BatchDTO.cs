@@ -16,6 +16,8 @@ namespace VolvoCash.Application.MainContext.DTO.Batches
 
         public MoneyDTO Amount { get; set; }
 
+        public MoneyDTO Balance { get; set; }
+
         [JsonConverter(typeof(DefaultDateConverter))]
         public DateTime ExpiresAt { get; set; }
 

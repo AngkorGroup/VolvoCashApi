@@ -82,7 +82,8 @@ namespace VolvoCash.DistributedServices.MainContext
             {
                 builder.AllowAnyOrigin()
                        .AllowAnyMethod()
-                       .AllowAnyHeader();
+                       .AllowAnyHeader()
+                       .WithExposedHeaders("Content-Disposition");
             }));
 
             //Inject Application User Identity
