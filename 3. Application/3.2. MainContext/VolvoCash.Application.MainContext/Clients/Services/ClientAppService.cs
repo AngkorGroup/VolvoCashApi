@@ -26,7 +26,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
         #region ApiWeb Public Methods
         public async Task<List<ClientFilterDTO>> GetClientsByFilter(string query, int maxRecords)
         {
-            query.Trim().ToUpper();
+            query = query?.Trim().ToUpper();
             var clients = await _clientRepository.FilterAsync(
                 filter: c => c.Name.Trim().ToUpper().Contains(query)
                           || c.Ruc.Trim().Contains(query)
@@ -44,7 +44,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
 
         public async Task<List<ClientListDTO>> GetClientsByPagination(string query, int pageIndex, int pageLength)
         {
-            query?.Trim().ToUpper();
+            query = query?.Trim().ToUpper();
             var clients = await _clientRepository.GetFilteredAsync(
                 c => c.Name.Trim().ToUpper().Contains(query)
                   || c.Ruc.Trim().Contains(query)

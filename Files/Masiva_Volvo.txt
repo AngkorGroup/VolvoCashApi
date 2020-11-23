@@ -1,0 +1,3 @@
+7318438|00027259|VOLVO PERU S.A|ronald.torres@volvo.com|02/10/2020|887358         |F1020013520|11/12/2020|     10000.00|USD|Ronald Torres|A||20100070031|989268537|ronald.torres@volvo.com|04527123|00000008|Mannucci Diesel S.A.C.|01|Camiones Volvo|0001|Contrato Bono Repuestos
+7318438|00027259|VOLVO PERU S.A|ronald.torres@volvo.com|02/10/2020|887358         |F1020013520|11/12/2020|     10000.00|USD|Ronald Torres|A||20100070031|989268537|ronald.torres@volvo.com|04527123|00000008|Mannucci Diesel S.A.C.|01|Camiones Volvo|0002|Contrato Bono Urea
+

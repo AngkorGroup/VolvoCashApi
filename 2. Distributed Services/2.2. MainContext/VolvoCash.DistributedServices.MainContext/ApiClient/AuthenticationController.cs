@@ -48,17 +48,29 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         {
             //TODO EVITAR ENVIAR MENSAJES MUY RAPIDOS QUIZAS HABILITADO SOLO EN PRODUCCION
             //TODO VALIDAR QUE CUANDO BUSQUE NO BUSQUE EN LOS QUE ESTEN ELIMINADOS ARCHIVEAT != null
-            //TODO EN LAS APPS VALIDAR CIERRE DE SESION
-            //TODO WEB CONFIGURAR OLVIDE CONTRASE;A 
-            //TODO WEB PANTALLA DE PERFIL Y CAMBIO DE CONTRASE;A
+
             //TODO CASHIER CONFIGURAR OLVIDE CONTRASE;A 
             //TODO CASHIER PANTALLA DE PERFIL Y CAMBIO DE CONTRASE;A
-            //TODO WEB PONER FILTROS EN LAS VISTAS QUE DIGA MOSTRAR SOLO ACTIVOS
+
             //AL MOMENTO DE HACER DELETE PONER EN EL STATUS = 0 A LOS QUE DEPENDAN DE EL
             //Check if all repositorys are dispose including the ones that are invoke in the services
+
+
             // mostrar en la creacion de usuarios solo los dealers activos
             // ver como mostrar los consumos rechazados de alguna manera
             // validar telefono de un contacto que sea valido siempre
+            // mantenimiento de usuarios permitir autogenerar contrase;a
+            // poner la opcion de restablecer contrase;a en la opcion de POS
+            // hacer que cuando entre a la pantalla aparezca la lista con los valores ya cargados
+            // TODO WEB PONER FILTROS EN LAS VISTAS QUE DIGA MOSTRAR SOLO ACTIVOS
+
+            //Agregar en cargas y recargas filtro de fechas
+
+
+            // TODO WEB CONFIGURAR OLVIDE CONTRASE;A 
+            // TODO WEB PANTALLA DE PERFIL Y CAMBIO DE CONTRASE;A
+            // TODO EN LAS APPS VALIDAR CIERRE DE SESION
+
             var code = await _authenticationAppService.RequestSmsCodeAsync(request.Phone);
             var message = $"{_resources.GetStringResource(LocalizationKeys.DistributedServices.messages_RequestCodeMessage)} {code}";
             _smsManager.SendSMS(request.Phone, message);

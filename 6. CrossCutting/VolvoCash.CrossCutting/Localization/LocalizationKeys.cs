@@ -55,7 +55,12 @@
             exception_CashierNotFound,
             exception_CashierAlreadyExists,
             exception_NullContactIdToTransferFounds,
-            exception_NullContactToTransferFounds
+            exception_NullContactToTransferFounds,
+            messages_NewAdminEmailSubject,
+            messages_NewAdminEmailBody,
+            exception_PasswordAndConfirmNotMatch,
+            exception_InvalidRechargeTypeCode,
+            exception_InvalidBusinessAreaCode
         }
 
         public enum Domain
