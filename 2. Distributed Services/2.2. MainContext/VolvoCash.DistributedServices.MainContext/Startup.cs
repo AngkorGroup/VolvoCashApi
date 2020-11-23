@@ -12,7 +12,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text;
 using VolvoCash.Application.MainContext.Authentication.Services;
+using VolvoCash.Application.MainContext.Banks.Services;
 using VolvoCash.Application.MainContext.Batches.Services;
+using VolvoCash.Application.MainContext.BusinessAreas.Services;
 using VolvoCash.Application.MainContext.Cards.Services;
 using VolvoCash.Application.MainContext.CardTypes.Services;
 using VolvoCash.Application.MainContext.Cashiers.Services;
@@ -21,6 +23,8 @@ using VolvoCash.Application.MainContext.Clients.Services;
 using VolvoCash.Application.MainContext.Contacts.Services;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.Movements.Services;
+using VolvoCash.Application.MainContext.RechargeTypes.Services;
+using VolvoCash.Application.MainContext.Sectors.Services;
 using VolvoCash.Application.MainContext.Transfers.Services;
 using VolvoCash.Application.MainContext.Users.Services;
 using VolvoCash.CrossCutting.Adapter;
@@ -37,11 +41,15 @@ using VolvoCash.Data.MainContext.Repositories;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Settings;
 using VolvoCash.DistributedServices.Seedwork.Utils;
+using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
@@ -74,7 +82,8 @@ namespace VolvoCash.DistributedServices.MainContext
             {
                 builder.AllowAnyOrigin()
                        .AllowAnyMethod()
-                       .AllowAnyHeader();
+                       .AllowAnyHeader()
+                       .WithExposedHeaders("Content-Disposition");
             }));
 
             //Inject Application User Identity
@@ -133,6 +142,10 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICashierAppService, CashierAppService>();
             services.AddScoped<IDealerAppService, DealerAppService>();
             services.AddScoped<IUserAppService, UserAppService>();
+            services.AddScoped<IBankAppService, BankAppService>();
+            services.AddScoped<ISectorAppService, SectorAppService>();
+            services.AddScoped<IBusinessAreaAppService, BusinessAreaAppService>();
+            services.AddScoped<IRechargeTypeAppService, RechargeTypeAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();
@@ -158,6 +171,10 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBatchMovementRepository, BatchMovementRepository>();
             services.AddScoped<ICardBatchRepository, CardBatchRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<IBankRepository, BankRepository>();
+            services.AddScoped<ISectorRepository, SectorRepository>();
+            services.AddScoped<IBusinessAreaRepository, BusinessAreaRepository>();
+            services.AddScoped<IRechargeTypeRepository, RechargeTypeRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();
@@ -166,6 +183,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ISMSManager, SMSManager>();
             services.AddScoped<ITokenManager, TokenManager>();
             services.AddScoped<IPushNotificationManager, OneSignalPushNotification>();
+            services.AddScoped<IReportManager, ReportManager>();
 
             // Adapters
             services.AddScoped<ITypeAdapterFactory, AutomapperTypeAdapterFactory>();

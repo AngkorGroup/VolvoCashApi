@@ -44,9 +44,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
                               IDealerRepository dealerRepository,
                               ICardRepository cardRepository,
                               ITransferRepository transferRepository,
-                              ICardTransferService cardTransferService,                            
+                              ICardTransferService cardTransferService,
                               IEmailManager emailManager,
-                              IConfiguration configuration                     
+                              IConfiguration configuration
                              )
         {
             _userRepository = userRepository;
@@ -58,13 +58,13 @@ namespace VolvoCash.Application.MainContext.Users.Services
             _transferRepository = transferRepository;
             _cardTransferService = cardTransferService;
             _emailManager = emailManager;
-            _configuration = configuration;           
+            _configuration = configuration;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
 
         #region Private Methods
-        private void SendEmailToCashier(Cashier cashier, string generatedPassword)
+        private void SendResetPasswordEmailToCashier(Cashier cashier, string generatedPassword)
         {
             var subject = _resources.GetStringResource(LocalizationKeys.Application.messages_ResetCashierPasswordEmailSubject);
             var body = _resources.GetStringResource(LocalizationKeys.Application.messages_ResetCashierPasswordEmailBody);
@@ -72,13 +72,22 @@ namespace VolvoCash.Application.MainContext.Users.Services
             _emailManager.SendEmail(cashier.Email, subject, body);
         }
 
-        private void SendEmailToAdmin(Admin admin, string generatedPassword)
+        private void SendResetPasswordEmailToAdmin(Admin admin, string generatedPassword)
         {
             var subject = _resources.GetStringResource(LocalizationKeys.Application.messages_ResetAdminPasswordEmailSubject);
             var body = _resources.GetStringResource(LocalizationKeys.Application.messages_ResetAdminPasswordEmailBody);
             var webAdminUrl = _configuration["Application:BaseWebAdminUrl"];
             body = string.Format(body, webAdminUrl, generatedPassword);
             _emailManager.SendEmail(admin.Email, subject, body);
+        }
+
+        private void SendCreateUserEmailToAdmin(AdminDTO adminDTO)
+        {
+            var subject = _resources.GetStringResource(LocalizationKeys.Application.messages_NewAdminEmailSubject);
+            var body = _resources.GetStringResource(LocalizationKeys.Application.messages_NewAdminEmailBody);
+            var webAdminUrl = _configuration["Application:BaseWebAdminUrl"];
+            body = string.Format(body, webAdminUrl, adminDTO.Password);
+            _emailManager.SendEmail(adminDTO.Email, subject, body);
         }
 
         private async Task<List<Transfer>> GetTransfersAboutAllFounds(Contact contact, int? contactToTransferId)
@@ -102,14 +111,14 @@ namespace VolvoCash.Application.MainContext.Users.Services
             }
             return transfers;
         }
-        #endregion
+        #endregion        
 
-        #region Public Methods       
+        #region ApiWeb Public Methods       
         public async Task<IList<UserDTO>> GetAllDTOAsync()
         {
-            var admins = (await _adminRepository.GetAllAsync()).ProjectedAsCollection<AdminDTO>() ;
+            var admins = (await _adminRepository.GetAllAsync()).ProjectedAsCollection<AdminDTO>();
             var cashiers = (await _cashierRepository.GetAllAsync()).ProjectedAsCollection<CashierDTO>();
-            var contacts = (await _contactRepository.GetAllAsync()).ProjectedAsCollection < ContactListDTO>();
+            var contacts = (await _contactRepository.GetAllAsync()).ProjectedAsCollection<ContactListDTO>();
             var users = new List<UserDTO>();
             users.AddRange(admins.Select(a => new UserDTO() { Admin = a, Id = a.UserId, Type = UserType.WebAdmin }));
             users.AddRange(cashiers.Select(c => new UserDTO() { Cashier = c, Id = c.UserId, Type = UserType.Cashier }));
@@ -124,10 +133,15 @@ namespace VolvoCash.Application.MainContext.Users.Services
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_AdminAlreadyExists));
             }
+            if (string.IsNullOrEmpty(adminDTO.Password))
+            {
+                adminDTO.Password = RandomGenerator.RandomDigits(6);
+            }
             var dealer = await _dealerRepository.GetAsync(adminDTO.DealerId);
             var admin = new Admin(adminDTO.FirstName, adminDTO.LastName, adminDTO.Password, adminDTO.Phone, adminDTO.Email, dealer);
             _adminRepository.Add(admin);
             await _adminRepository.UnitOfWork.CommitAsync();
+            SendCreateUserEmailToAdmin(adminDTO);
             return admin.ProjectedAs<AdminDTO>();
         }
 
@@ -158,7 +172,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
                     var cashier = user.Cashier;
                     cashier.SetPasswordHash(password);
                     await _cashierRepository.UnitOfWork.CommitAsync();
-                    SendEmailToCashier(cashier, password);
+                    SendResetPasswordEmailToCashier(cashier, password);
                     break;
                 case UserType.Contact:
                     break;
@@ -166,7 +180,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
                     var admin = user.Admin;
                     admin.SetPasswordHash(password);
                     await _adminRepository.UnitOfWork.CommitAsync();
-                    SendEmailToAdmin(admin, password);
+                    SendResetPasswordEmailToAdmin(admin, password);
                     break;
                 default:
                     break;
@@ -189,7 +203,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
                     var cards = await _cardRepository.GetCardsByContactId(contact.Id);
                     var transfers = await GetTransfersAboutAllFounds(contact, contactToTransferId);
                     _transferRepository.Add(transfers);
-                    contact.Delete();                    
+                    contact.Delete();
                     await _transferRepository.UnitOfWork.CommitAsync();
                     break;
                 case UserType.WebAdmin:
@@ -201,7 +215,35 @@ namespace VolvoCash.Application.MainContext.Users.Services
                 default:
                     break;
             }
-        }      
+        }
+        #endregion
+
+        #region Common Public Methods
+        public async Task ChangePassword(int id, string password, string confirmPassword)
+        {
+            if (password != confirmPassword)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_PasswordAndConfirmNotMatch));
+            }
+            var user = _userRepository.Filter(filter: u => u.Id == id, includeProperties: "Contacts,Admins,Cashiers").FirstOrDefault();
+            switch (user.Type)
+            {
+                case UserType.Cashier:
+                    var cashier = user.Cashier;
+                    cashier.SetPasswordHash(password);
+                    await _cashierRepository.UnitOfWork.CommitAsync();
+                    break;
+                case UserType.Contact:
+                    break;
+                case UserType.WebAdmin:
+                    var admin = user.Admin;
+                    admin.SetPasswordHash(password);
+                    await _adminRepository.UnitOfWork.CommitAsync();
+                    break;
+                default:
+                    break;
+            }
+        }
         #endregion
 
         #region IDisposable Members

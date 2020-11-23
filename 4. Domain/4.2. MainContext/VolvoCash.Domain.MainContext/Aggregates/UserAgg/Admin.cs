@@ -8,7 +8,7 @@ using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
 {
-    public class Admin :AuditableEntityWithKey<int>
+    public class Admin : AuditableEntityWithKey<int>
     {
         #region Properties
         [Required]
@@ -48,7 +48,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
 
         #region NotMapped Properties
         [NotMapped]
-        public string FullName { get => $"{FirstName} {LastName}"; }       
+        public string FullName { get => $"{FirstName} {LastName}"; }
         #endregion
 
         #region Constructor
@@ -56,13 +56,14 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         {
         }
 
-        public Admin(string firstName, string lastName, string password, string phone, string email,Dealer dealer = null)
+        public Admin(string firstName, string lastName, string password, string phone, string email, Dealer dealer = null)
         {
             FirstName = firstName;
             LastName = lastName;
             PasswordHash = CryptoMethods.HashText(password);
             Phone = phone;
             Email = email;
+            Status = Status.Active;
             User = new User(UserType.WebAdmin);
             Dealer = dealer;
         }

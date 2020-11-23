@@ -91,7 +91,7 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         #region ApiPOS Public Methods
         public async Task<List<ContactListDTO>> GetContacts(string query, int pageIndex, int pageLength)
         {
-            query = query.Trim().ToUpper();
+            query = query?.Trim().ToUpper();
             var contacts = await _contactRepository.GetFilteredAsync(
                 c => (c.FirstName.ToUpper().Contains(query)
                   || c.LastName.ToUpper().Contains(query)
@@ -135,12 +135,13 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
 
         public async Task<List<ContactListDTO>> GetContactsByFilter(string query,int maxRecords,bool onlyActive)
         {
-            query = query.Trim().ToUpper();
+            query = query?.Trim().ToUpper();
             var contacts = await _contactRepository.FilterAsync(
                 filter: c => (c.FirstName.ToUpper().Contains(query)
                 || c.LastName.ToUpper().Contains(query)
                 || c.Phone.Contains(query)
-                || c.DocumentNumber.Contains(query)) && (!onlyActive || c.Status == Status.Active),
+                || c.DocumentNumber.Contains(query)
+                || string.IsNullOrEmpty(query)) && (!onlyActive || c.Status == Status.Active),
                 includeProperties:"Client");
 
             contacts = contacts.Take(Math.Min(contacts.Count(), maxRecords));

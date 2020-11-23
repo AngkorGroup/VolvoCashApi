@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.Application.Seedwork.Common;
@@ -41,6 +40,14 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
             var body = _resources.GetStringResource(LocalizationKeys.Application.messages_NewCashierEmailBody);
             body = string.Format(body, cashierDTO.Password);
             _emailManager.SendEmail(cashierDTO.Email, subject, body);
+        }
+        #endregion
+
+        #region ApiPOS Public Methods
+        public async Task<CashierDTO> GetByUserId(int userId)
+        {
+            var cashier = (await _repository.FilterAsync(filter: c=> c.UserId == userId)).FirstOrDefault();
+            return cashier.ProjectedAs<CashierDTO>();
         }
         #endregion
 

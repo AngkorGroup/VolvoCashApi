@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using VolvoCash.DistributedServices.Seedwork.Filters;
+using Microsoft.AspNetCore.Mvc;
 using VolvoCash.Application.MainContext.Clients.Services;
+using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {

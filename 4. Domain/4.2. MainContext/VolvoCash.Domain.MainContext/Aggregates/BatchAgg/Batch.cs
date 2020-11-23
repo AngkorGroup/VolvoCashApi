@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
@@ -39,18 +41,20 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
 
         public string TPReason { get; set; }
 
-        [Required]
-        public TPContractType TPContractType { get; set; }
+        [ForeignKey("RechargeType")]
+        public int ? RechargeTypeId { get; set; }
+
+        public virtual RechargeType RechargeType { get; set; }
 
         public string DealerCode { get; set; }
 
         public string DealerName { get; set; }
 
-        public string BusinessCode { get; set; }
+        [ForeignKey("BusinessArea")]
+        public int? BusinessAreaId { get; set; }
 
-        public string BusinessDescription { get; set; }
+        public virtual BusinessArea BusinessArea { get; set; }
 
-        [Required]
         [ForeignKey("Client")]
         public int ClientId { get; set; }
 
@@ -84,10 +88,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         {
         }
 
-        public Batch(Contact contact, Card card, string tpContractBatchNumber, Money amount, DateTime expire, string tpChasis, DateTime? tpContractDate, string tpInvoiceCode,
-                    DateTime? tpInvoiceDate, TPContractType tpContractType, string tpContractNumber, string tpContractReason,
-                    string dealerCode, string dealerName, string businessCode, string businessDescription,
-                    int cardTypeId, string lineContent)
+        public Batch(Contact contact, Card card, string tpContractBatchNumber, Money amount, DateTime expire, string tpChasis,
+                    DateTime? tpContractDate, string tpInvoiceCode,DateTime? tpInvoiceDate, int rechargeTypeId, 
+                    string tpContractNumber, string tpContractReason, string dealerCode, string dealerName, 
+                    int businessAreaId,  int cardTypeId, string lineContent)
         {
             Contact = contact;
             Card = card;
@@ -100,13 +104,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
             TPContractDate = tpContractDate;
             TPInvoiceCode = tpInvoiceCode;
             TPInvoiceDate = tpInvoiceDate;
-            TPContractType = tpContractType;
+            RechargeTypeId = rechargeTypeId;
             TPContractNumber = tpContractNumber;
             TPReason = tpContractReason;
             DealerCode = dealerCode;
             DealerName = dealerName;
-            BusinessCode = businessCode;
-            BusinessDescription = businessDescription;
+            BusinessAreaId = businessAreaId;
             CardTypeId = cardTypeId;
             LineContent = lineContent;
         }

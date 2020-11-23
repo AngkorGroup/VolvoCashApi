@@ -32,10 +32,12 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<DealerDTO>> GetDealers(string query,int maxRecords)
+        public async Task<List<DealerDTO>> GetDealers(string query, int maxRecords)
         {
             query = query?.Trim().ToUpper();
-            var dealers = await _repository.FilterAsync(filter: d => d.Name.Trim().ToUpper().Contains(query) || d.Ruc.Trim().ToUpper().Contains(query));
+            var dealers = await _repository.FilterAsync(filter: d => d.Name.Trim().ToUpper().Contains(query)
+                                                                  || d.Ruc.Trim().ToUpper().Contains(query)
+                                                                  || string.IsNullOrEmpty(query));
             dealers = dealers.Take(Math.Min(dealers.Count(), maxRecords));
             return dealers.ProjectedAsCollection<DealerDTO>();
         }
