@@ -33,7 +33,3 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg
         #endregion
     }
 }
-
-/*Contract,
-  Addendum
-*/

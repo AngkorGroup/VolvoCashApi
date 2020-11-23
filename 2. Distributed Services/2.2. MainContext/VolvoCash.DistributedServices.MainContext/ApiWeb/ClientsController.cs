@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Clients.Services;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
