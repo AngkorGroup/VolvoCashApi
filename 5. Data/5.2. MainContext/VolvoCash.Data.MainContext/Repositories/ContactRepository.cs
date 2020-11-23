@@ -25,15 +25,15 @@ namespace VolvoCash.Data.MainContext.Repositories
         #region Public Methods
         public async Task<Contact> GetByPhoneAsync(string phone)
         {
-            var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Phone == phone && c.Status.Active == 1);
+            var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Phone == phone && c.Status.ToString() == "Active");
             return contact;
         }
 
         public async Task<Contact> CreateOrUpdateMainContact(Client client, string phone, DocumentType documentType,
             string documentNumber, string firstName, string lastName, string email)
         {
-            var mainContact = client.Contacts.FirstOrDefault(c => c.Type == new ContactType("Primary","###") && c.Status.Active == 1);
-            var existingContactInOtherClient = (await FilterAsync(c => c.ClientId != client.Id && c.Phone == phone && c.Status.Active == 1)).FirstOrDefault();
+            var mainContact = client.Contacts.FirstOrDefault(c => c.Type == new ContactType("Primary","###") && c.Status.ToString() == "Active");
+            var existingContactInOtherClient = (await FilterAsync(c => c.ClientId != client.Id && c.Phone == phone && c.Status.ToString() == "Active")).FirstOrDefault();
             if (mainContact == null)
             {
                 if (existingContactInOtherClient != null)
@@ -66,7 +66,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                 {
                     if (existingContactInOtherClient == null)
                     {
-                        var existingContact = client.Contacts.Where(c => c.Phone == phone && c.Status.Active == 1).FirstOrDefault();
+                        var existingContact = client.Contacts.Where(c => c.Phone == phone && c.Status.ToString() == "Active").FirstOrDefault();
                         if (existingContact == null)
                         {
                             var contactType = new ContactType("Secondary", "###");

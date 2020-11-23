@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
+using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
@@ -80,7 +80,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             TPCode = tpCode;
             Email = email;
             Imei = imei;
-            Status = new Status(1);
+            Status = Status.Active;
             var userType = new UserType("Cashier","###");
             User = new User(userType);
         }
@@ -92,7 +92,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
 
         public void Delete()
         {
-            Status = new Status(0);
+            Status = Status.Inactive;
             ArchiveAt = DateTime.Now;
         }
         #endregion

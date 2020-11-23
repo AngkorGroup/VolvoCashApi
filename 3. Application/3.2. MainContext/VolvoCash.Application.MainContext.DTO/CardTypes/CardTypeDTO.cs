@@ -3,7 +3,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
-using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
+using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Application.MainContext.DTO.CardTypes

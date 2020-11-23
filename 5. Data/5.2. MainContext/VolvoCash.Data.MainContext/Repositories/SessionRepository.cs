@@ -20,7 +20,7 @@ namespace VolvoCash.Data.MainContext.Repositories
         }
         public async Task<List<string>> GetActivePushDeviceTokensAsync(int userId)
         {
-            var activeSessionsWithDeviceToken = await FilterAsync(s => s.UserId == userId && s.Status.Active == 1 && !string.IsNullOrEmpty(s.PushDeviceToken));
+            var activeSessionsWithDeviceToken = await FilterAsync(s => s.UserId == userId && s.Status.ToString() == "Active" && !string.IsNullOrEmpty(s.PushDeviceToken));
             return activeSessionsWithDeviceToken.Select(c => c.PushDeviceToken).ToList();
         }
         #endregion

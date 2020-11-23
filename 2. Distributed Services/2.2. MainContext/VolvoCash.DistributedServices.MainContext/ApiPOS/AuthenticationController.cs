@@ -7,6 +7,7 @@ using VolvoCash.DistributedServices.MainContext.ApiPOS.Requests.Authentication;
 using VolvoCash.DistributedServices.MainContext.ApiPOS.Responses.Authentication;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Utils;
+using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiPOS
@@ -41,7 +42,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
         {
             var cashier = await _authenticationAppService.LoginCashierAsync(request.Email, request.Password);
             var session = await _authenticationAppService.CreateSessionAsync(cashier.UserId, request.DeviceToken);
-            var authToken = _tokenManager.GenerateTokenJWT(session.Id,cashier.UserId, cashier.Id.ToString(), cashier.FullName, cashier.Email, UserType.Cashier.ToString());
+            var authToken = _tokenManager.GenerateTokenJWT(session.Id,cashier.UserId, cashier.Id.ToString(), cashier.FullName, cashier.Email, "Cashier");
             return Ok(new LoginResponse { Cashier = cashier, AuthToken = authToken });
         }
 

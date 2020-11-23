@@ -20,7 +20,6 @@
     <Folder Include="ChargeStatus\" />
     <Folder Include="ChargeTypes\" />
     <Folder Include="DealerTypes\" />
-    <Folder Include="Status\" />
   </ItemGroup>
 
 </Project>

@@ -33,7 +33,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         public virtual Contact Contact { get => Contacts.FirstOrDefault(); }
 
         [NotMapped]
-        public virtual ICollection<Session> OpenSessions { get => Sessions.Where(s => s.Status.Active == 1).ToList(); }
+        public virtual ICollection<Session> OpenSessions { get => Sessions.Where(s => s.Status.ToString() == "Active").ToList(); }
         #endregion
 
         #region Constructor

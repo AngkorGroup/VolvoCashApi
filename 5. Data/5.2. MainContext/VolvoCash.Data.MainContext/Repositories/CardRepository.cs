@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VolvoCash.Data.Seedwork;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Data.MainContext.Repositories
 {
@@ -24,7 +25,7 @@ namespace VolvoCash.Data.MainContext.Repositories
 
         public async Task<Card> GetCardByIdWithBatchesAsync(int id, string phone)
         {
-            return (await FilterAsync(filter: c => c.Id == id && c.Contact.Phone == phone && c.Contact.Status.Active == 1, includeProperties: "Contact.Client,CardBatches.Batch,CardType")).FirstOrDefault(); 
+            return (await FilterAsync(filter: c => c.Id == id && c.Contact.Phone == phone && c.Contact.Status==Status.Active , includeProperties: "Contact.Client,CardBatches.Batch,CardType")).FirstOrDefault(); 
         }
 
         public async Task<IEnumerable<Card>> GetCardsByContactId(int contactId)

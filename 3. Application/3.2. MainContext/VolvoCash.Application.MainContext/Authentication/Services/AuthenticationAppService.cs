@@ -10,6 +10,7 @@ using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.Authentication.Services
 {
@@ -44,7 +45,7 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         public async Task<int> RequestSmsCodeAsync(string phone)
         {
             var contact = await _contactRepository.GetByPhoneAsync(phone);
-            if (contact != null && contact.Status.Active == 1)
+            if (contact != null && contact.Status == Status.Active)
             {
                 var code = await _smsCodeRepository.GenerateSMSCodeAsync(phone);
                 return code;
@@ -112,7 +113,7 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         public async Task DestroySessionAsync(Guid sessionId)
         {
             var session = _sessionRepository.Get(sessionId);
-            session.Status.Active = 0;
+            session.Status=Status.Active;
             await _sessionRepository.UnitOfWork.CommitAsync();
         }
         #endregion

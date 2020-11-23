@@ -8,8 +8,8 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.Cashiers.Services
 {
@@ -102,7 +102,7 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
         {
             var cashier = await _repository.GetAsync(id);
             cashier.ArchiveAt = DateTime.Now;
-            cashier.Status = new Status(0);
+            cashier.Status = Status.Inactive;
             _repository.Modify(cashier);
             await _repository.UnitOfWork.CommitAsync();
         }

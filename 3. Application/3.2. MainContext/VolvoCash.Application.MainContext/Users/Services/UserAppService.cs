@@ -14,8 +14,8 @@ using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
 
 namespace VolvoCash.Application.MainContext.Users.Services
@@ -107,7 +107,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
                     var transfer = await _cardTransferService.PerformTransfer(card, contactToTransfer, card.CalculatedBalance);
                     transfers.Add(transfer);
                 }
-                _card.Status = new Status(0);
+                _card.Status = Status.Inactive;
             }
             return transfers;
         }
@@ -226,16 +226,16 @@ namespace VolvoCash.Application.MainContext.Users.Services
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_PasswordAndConfirmNotMatch));
             }
             var user = _userRepository.Filter(filter: u => u.Id == id, includeProperties: "Contacts,Admins,Cashiers").FirstOrDefault();
-            switch (user.Type)
+            switch (user.Type.Name)
             {
-                case UserType.Cashier:
+                case "Cashier":
                     var cashier = user.Cashier;
                     cashier.SetPasswordHash(password);
                     await _cashierRepository.UnitOfWork.CommitAsync();
                     break;
-                case UserType.Contact:
+                case "Contact":
                     break;
-                case UserType.WebAdmin:
+                case "WebAdmin":
                     var admin = user.Admin;
                     admin.SetPasswordHash(password);
                     await _adminRepository.UnitOfWork.CommitAsync();

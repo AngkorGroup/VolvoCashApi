@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
@@ -64,7 +64,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
             Ruc = ruc;           
             MaxCashiers = maxCashiers;
             Type = type;
-            Status = new Status(1);
+            Status = Status.Active;
         }
         #endregion
     }

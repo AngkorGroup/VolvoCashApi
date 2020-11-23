@@ -28,7 +28,7 @@ namespace VolvoCash.Application.MainContext.DTO.Charges
         public ChargeStatusDTO Status { get; set; }
 
         //[JsonConverter(typeof(StringEnumConverter))]
-        public ChargeTypeDTO ChargeType { get; set; }
+        public ChargeType ChargeType { get; set; }
 
         public int CardId { get; set; }
 

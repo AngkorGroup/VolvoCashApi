@@ -6,13 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
-<<<<<<< HEAD
-=======
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Enums;
->>>>>>> 68ca5318cc9e483c47b2c8f306b10d9462043214
 using VolvoCash.Domain.Seedwork;
-using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
@@ -90,7 +86,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
             Email = email;
             Name = name;
             Phone = phone;
-            Status = new Status(1);
+            Status = Status.Active;
             Contacts = new List<Contact>();
         }
         #endregion

@@ -8,8 +8,8 @@ using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.Seedwork;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
-using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 {
@@ -98,7 +98,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         {
             Contact = contact;
             Balance = new Money(currency, 0);
-            Status = new Status(1);
+            Status = Status.Active;
             CardTypeId = cardTypeId;
             Code = RandomGenerator.RandomDigits(20);
             TPCode = tpCode;

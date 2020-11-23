@@ -22,6 +22,10 @@ using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
+using VolvoCash.Domain.MainContext.Aggregates.TPContractTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -305,7 +309,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
         public async Task<BatchDTO> PerformLoadAsync(ClientDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO)
         {
-            var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc && c.Status.Active == 1,
+            var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc && c.Status == Status.Active,
                                                               includeProperties: "Contacts.Cards")).FirstOrDefault();
             if (client == null)
             {
@@ -318,7 +322,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             var mainContact = await _contactRepository.CreateOrUpdateMainContact(client, contactDTO.Phone, contactDTO.DocumentType,
                                                                                  contactDTO.DocumentNumber, contactDTO.FirstName,
                                                                                  contactDTO.LastName, contactDTO.Email);
-            var card = mainContact.Cards.FirstOrDefault(c => c.CardTypeId == carDTO.CardTypeId && c.Status.Active == 1);
+            var card = mainContact.Cards.FirstOrDefault(c => c.CardTypeId == carDTO.CardTypeId && c.Status== Status.Active);
             var cardType = _cardTypeRepository.Get(carDTO.CardTypeId);
             var batchReason = "Recarga de saldo";
             if (card == null)

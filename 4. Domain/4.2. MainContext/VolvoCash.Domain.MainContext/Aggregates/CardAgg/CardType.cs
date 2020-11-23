@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
-using VolvoCash.Domain.MainContext.Aggregates.StatusAgg;
+using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
