@@ -60,7 +60,8 @@
             messages_NewAdminEmailBody,
             exception_PasswordAndConfirmNotMatch,
             exception_InvalidRechargeTypeCode,
-            exception_InvalidBusinessAreaCode
+            exception_InvalidBusinessAreaCode,
+            exception_InvalidCurrencyCode
         }
 
         public enum Domain

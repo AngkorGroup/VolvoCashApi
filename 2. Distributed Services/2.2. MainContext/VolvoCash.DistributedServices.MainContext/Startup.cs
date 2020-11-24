@@ -49,6 +49,7 @@ using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
@@ -76,7 +77,7 @@ namespace VolvoCash.DistributedServices.MainContext
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {           
+        {
             // To add enviroment variable
             services.Configure<AppSettings>(Configuration.GetSection("ApplicationSettings"));
 
@@ -182,6 +183,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IRechargeTypeRepository, RechargeTypeRepository>();
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
             services.AddScoped<IBankAccountTypeRepository, BankAccountTypeRepository>();
+            services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

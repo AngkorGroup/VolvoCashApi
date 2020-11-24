@@ -9,6 +9,7 @@ using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 
 namespace VolvoCash.Application.MainContext.Charges.Services
 {
@@ -18,6 +19,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region Members
         private readonly IChargeRepository _chargeRepository;
         private readonly ICardBatchRepository _cardBatchRepository;
+        private readonly ICurrencyRepository _currencyRepository;
         private readonly ICardRepository _cardRepository;
         private readonly ICardChargeService _cardChargeService;
         private readonly INotificationChargeService _notificationChargeService;
@@ -29,6 +31,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region Constructor
         public ChargeAppService(IChargeRepository chargeRepository,
                                 ICardBatchRepository cardBatchRepository,
+                                ICurrencyRepository currencyRepository,
                                 ICardRepository cardRepository,
                                 ICardChargeService cardChargeService,
                                 INotificationChargeService notificationChargeService,
@@ -37,6 +40,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         {
             _chargeRepository = chargeRepository;
             _cardBatchRepository = cardBatchRepository;
+            _currencyRepository = currencyRepository;
             _cardRepository = cardRepository;
             _cardChargeService = cardChargeService;
             _notificationChargeService = notificationChargeService;
@@ -91,7 +95,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
                 var url = _urlManager.GetChargeVoucherImageUrl(charge.Id);
                 charge.ImageUrl = await _amazonService.UploadImageUrlToS3(url, ".png", "charges");
                 await _chargeRepository.UnitOfWork.CommitAsync();
-            }           
+            }
         }
         #endregion
 
@@ -107,11 +111,13 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             var card = _cardRepository.Filter(filter: c => c.Id == chargeDTO.CardId, includeProperties: "Contact.Client,CardBatches.Batch,CardType").FirstOrDefault();
             var displayName = _resources.GetStringResource(LocalizationKeys.Application.messages_CreateChargeDisplayName);
             displayName = string.Format(displayName, card.Contact.Client.Ruc, card.Contact.FullName);
+            var chargeCurrency = _currencyRepository.Filter(c => c.Id == chargeDTO.Amount.Currency.Id).FirstOrDefault();
+
             var charge = new Charge(
                 chargeDTO.CashierId,
                 card,
                 chargeDTO.ChargeType,
-                new Money(chargeDTO.Amount.Currency, chargeDTO.Amount.Value),
+                new Money(chargeCurrency, chargeDTO.Amount.Value),
                 displayName,
                 chargeDTO.Description
             );

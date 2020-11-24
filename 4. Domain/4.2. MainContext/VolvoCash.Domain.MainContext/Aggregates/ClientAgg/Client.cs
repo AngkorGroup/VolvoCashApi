@@ -55,15 +55,19 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
         public Contact MainContact { get => Contacts.FirstOrDefault(c => c.Type == ContactType.Primary); }
 
         [NotMapped]
-        public Money Balance 
+        public Money Balance
         {
             get
             {
-                var calculatedBalance = new Money(Currency.USD, 0);                
+                Money calculatedBalance = null;
                 foreach (var contact in Contacts)
                 {
-                    foreach(var card in contact.Cards)
+                    foreach (var card in contact.Cards)
                     {
+                        if (calculatedBalance == null)
+                        {
+                            calculatedBalance = new Money(card.Currency, 0);
+                        }
                         calculatedBalance = calculatedBalance.Add(card.Balance);
                     }
                 }
@@ -119,7 +123,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ClientAgg
                                             Name = ct.First().CardType.Name,
                                             DisplayName = ct.First().CardType.DisplayName,
                                             Color = ct.First().CardType.Color,
-                                            Sum = ct.Aggregate(new Money(ct.First().CardType.Currency,0), (acc,c)=> acc.Add(c.Balance))
+                                            Sum = ct.Aggregate(new Money(ct.First().CardType.Currency, 0), (acc, c) => acc.Add(c.Balance))
                                         }).ToList();
             return cardTypesSummary;
         }

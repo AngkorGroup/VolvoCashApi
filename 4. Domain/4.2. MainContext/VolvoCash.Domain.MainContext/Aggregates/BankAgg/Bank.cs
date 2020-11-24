@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -19,6 +20,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAgg
         public DateTime? ArchiveAt { get; set; }
 
         public Status Status { get; set; }
+
+        public virtual ICollection<BankDocumentType> BankDocumentTypes { get; } = new List<BankDocumentType>();
         #endregion
 
         #region Constructor

@@ -1,5 +1,6 @@
 using System;
-using VolvoCash.Domain.MainContext.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
@@ -7,9 +8,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
     public class Money : ValueObject<Money>
     {
         #region Properties
-        public Currency Currency { get; set; }
-
         public double Value { get; set; }
+
+        [ForeignKey("Currency")]
+        public int? CurrencyId { get; set; }
+
+        public virtual Currency Currency { get; set; }
         #endregion
 
         #region Constructor
@@ -42,7 +46,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             {
                 var exchangeRate = 1;
                 amount += other.Value * exchangeRate;
-                //TODO aplicar tipo de cambio
+                //TODO: aplicar tipo de cambio
             }
             return new Money(Currency, amount);
         }
@@ -58,7 +62,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             {
                 var exchangeRate = 1;
                 amount -= other.Value * exchangeRate;
-                //TODO aplicar tipo de cambio
+                //TODO: aplicar tipo de cambio
             }
             return new Money(Currency, amount);
         }
@@ -85,7 +89,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             }
             return other;
         }
-        
+
         public Money Opposite()
         {
             return new Money(Currency, Value * -1);
@@ -110,8 +114,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             }
         }
 
-        public string GetLabel() {
-            return Currency.ToString() + " " + string.Format("{0:#,0.00}", Value); 
+        public string GetLabel()
+        {
+            return Currency.ToString() + " " + string.Format("{0:#,0.00}", Value);
         }
         #endregion
     }

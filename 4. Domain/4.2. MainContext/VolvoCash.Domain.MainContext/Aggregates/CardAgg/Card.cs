@@ -9,6 +9,7 @@ using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 {
@@ -21,6 +22,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         [Required]
         public Money Balance { get; set; }
+
+        [Required]
+        public Currency Currency { get; set; }
 
         [MaxLength(100)]
         public string TPCode { get; set; }
@@ -97,6 +101,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         {
             Contact = contact;
             Balance = new Money(currency, 0);
+            Currency = currency;
             Status = Status.Active;
             CardTypeId = cardTypeId;
             Code = RandomGenerator.RandomDigits(20);

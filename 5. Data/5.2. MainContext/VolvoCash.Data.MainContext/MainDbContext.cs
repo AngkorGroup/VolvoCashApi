@@ -39,9 +39,10 @@ namespace VolvoCash.Data.MainContext
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<RechargeType> RechargeTypes { get; set; }
+        public DbSet<BusinessArea> BusinessAreas { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<BankAccountType> BankAccountTypes { get; set; }
-        public DbSet<BusinessArea> BusinessAreas { get; set; }
+        public DbSet<BankDocumentType> BankDocumentTypes { get; set; }
         #endregion
         
         #region Constructor
@@ -115,6 +116,18 @@ namespace VolvoCash.Data.MainContext
                 .HasMany(cashier => cashier.Charges)
                 .WithOne(charge => charge.Cashier)
                 .HasForeignKey(charge => charge.CashierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Bank>()
+                .HasMany(b => b.BankDocumentTypes)
+                .WithOne(bdt => bdt.Bank)
+                .HasForeignKey(bdt => bdt.BankId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<DocumentType>()
+                .HasMany(d => d.BankDocumentTypes)
+                .WithOne(bdt => bdt.DocumentType)
+                .HasForeignKey(bdt => bdt.DocumentTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Movement>()

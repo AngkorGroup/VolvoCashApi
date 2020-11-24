@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
-namespace VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg
+namespace VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg
 {
-    public class DocumentType : AuditableEntityWithKey<int>
+    public class Currency : AuditableEntityWithKey<int>
     {
         #region Properties
         [Required]
@@ -18,25 +16,23 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg
 
         public string Abbreviation { get; set; }
 
-        public string SUNATCode { get; set; }
+        public string Symbol { get; set; }
 
         public DateTime? ArchiveAt { get; set; }
 
         public Status Status { get; set; }
-
-        public virtual ICollection<BankDocumentType> BankDocumentTypes { get; } = new List<BankDocumentType>();
         #endregion
 
         #region Constructor
-        public DocumentType()
+        public Currency()
         {
         }
 
-        public DocumentType(string name, string abbreviation, string sunatCode, string tpCode)
+        public Currency(string name, string abbreviation, string symbol, string tpCode)
         {
             Name = name;
             Abbreviation = abbreviation;
-            SUNATCode = sunatCode;
+            Symbol = symbol;
             TPCode = tpCode;
             Status = Status.Active;
         }
