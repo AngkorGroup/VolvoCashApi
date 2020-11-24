@@ -7,6 +7,8 @@ namespace VolvoCash.Application.MainContext.DTO.Common
         #region Properties
         public double Value { get; set; }
 
+        public int CurrencyId { get; set; }
+
         public CurrencyDTO Currency { get; set; }
 
         public string CurrencyLabel { get => Currency.Name; }

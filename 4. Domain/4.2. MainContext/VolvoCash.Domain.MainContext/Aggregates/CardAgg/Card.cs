@@ -22,9 +22,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         [Required]
         public Money Balance { get; set; }
+        
+        [ForeignKey("Currency")]
+        public int? CurrencyId { get; set; }
 
-        [Required]
-        public Currency Currency { get; set; }
+        public virtual Currency Currency { get; set; }
 
         [MaxLength(100)]
         public string TPCode { get; set; }

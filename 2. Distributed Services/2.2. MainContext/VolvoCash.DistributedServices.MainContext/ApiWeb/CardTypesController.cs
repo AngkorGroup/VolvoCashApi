@@ -33,7 +33,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         [HttpDelete("{id}")]
         public override async Task Delete([FromRoute] int id)
         {
-             await (_service as ICardTypeAppService).Delete(id);            
+            await (_service as ICardTypeAppService).Delete(id);
         }
         #endregion
     }

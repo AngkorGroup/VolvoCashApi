@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VolvoCash.CrossCutting.NetFramework.Identity;
 using VolvoCash.Data.Seedwork.UnitOfWork;
+using VolvoCash.CrossCutting.NetFramework.Identity;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
@@ -21,6 +22,7 @@ namespace VolvoCash.Data.MainContext
         #region Members
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
         public DbSet<Batch> Batches { get; set; }
         public DbSet<BatchMovement> BatchMovements { get; set; }
         public DbSet<Card> Cards { get; set; }

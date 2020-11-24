@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -21,8 +22,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         [Required]
         public int Term { get; set; }
 
-        [Required]
-        public Currency Currency { get; set; }
+        [ForeignKey("Currency")]
+        public int? CurrencyId { get; set; }
+
+        public virtual Currency Currency { get; set; }
 
         [Required]
         [MaxLength(10)]

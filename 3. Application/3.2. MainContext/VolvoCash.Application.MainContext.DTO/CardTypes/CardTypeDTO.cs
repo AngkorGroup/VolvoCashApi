@@ -19,6 +19,8 @@ namespace VolvoCash.Application.MainContext.DTO.CardTypes
 
         public int Term { get; set; }
 
+        public int CurrencyId { get; set; }
+        
         public CurrencyDTO Currency { get; set; }
 
         public string TPCode { get; set; }
