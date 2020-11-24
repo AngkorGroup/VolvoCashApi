@@ -24,12 +24,14 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public Money(Currency currency, double value)
         {
             Currency = currency;
+            CurrencyId = currency?.Id;
             Value = value;
         }
 
         public Money(Money amount)
         {
             Currency = amount.Currency;
+            CurrencyId = amount?.Currency?.Id;
             Value = amount.Value;
         }
         #endregion

@@ -11,9 +11,9 @@ namespace VolvoCash.Application.MainContext.DTO.Common
 
         public CurrencyDTO Currency { get; set; }
 
-        public string CurrencyLabel { get => Currency.Name; }
+        public string CurrencyLabel { get => Currency?.Name ?? (CurrencyId == 1 ? "Dólares" : "Soles" ); }
 
-        public string CurrencySymbol { get => Currency.Symbol; }
+        public string CurrencySymbol { get => Currency?.Symbol ?? (CurrencyId == 1 ? "US$" : "S/."); }
 
         public string Label { get => CurrencySymbol + " " + string.Format("{0:#,0.00}", Value); }
         #endregion
