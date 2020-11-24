@@ -18,7 +18,6 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             );
             rechargeType1.CreatedBy = "ADMIN";
             rechargeType1.CreatedAt = DateTime.Now;
-
             context.RechargeTypes.Add(rechargeType1);
 
             var rechargeType2 = new RechargeType(
@@ -27,8 +26,8 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             );
             rechargeType2.CreatedBy = "ADMIN";
             rechargeType2.CreatedAt = DateTime.Now;
-
             context.RechargeTypes.Add(rechargeType2);
+
             context.SaveChanges();
         }
     }

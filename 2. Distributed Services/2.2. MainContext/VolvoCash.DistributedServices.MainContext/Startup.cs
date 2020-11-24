@@ -1,3 +1,4 @@
+using System.Text;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -10,8 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.Text;
 using VolvoCash.Application.MainContext.Authentication.Services;
+using VolvoCash.Application.MainContext.BankAccountTypes.Services;
 using VolvoCash.Application.MainContext.Banks.Services;
 using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.MainContext.BusinessAreas.Services;
@@ -149,6 +150,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBusinessAreaAppService, BusinessAreaAppService>();
             services.AddScoped<IRechargeTypeAppService, RechargeTypeAppService>();
             services.AddScoped<IDocumentTypeAppService, DocumentTypeAppService>();
+            services.AddScoped<IBankAccountTypeAppService, BankAccountTypeAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();
@@ -179,6 +181,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBusinessAreaRepository, BusinessAreaRepository>();
             services.AddScoped<IRechargeTypeRepository, RechargeTypeRepository>();
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
+            services.AddScoped<IBankAccountTypeRepository, BankAccountTypeRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

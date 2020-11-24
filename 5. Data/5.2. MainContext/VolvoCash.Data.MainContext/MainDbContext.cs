@@ -40,6 +40,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<RechargeType> RechargeTypes { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<BankAccountType> BankAccountTypes { get; set; }
         public DbSet<BusinessArea> BusinessAreas { get; set; }
         #endregion
         

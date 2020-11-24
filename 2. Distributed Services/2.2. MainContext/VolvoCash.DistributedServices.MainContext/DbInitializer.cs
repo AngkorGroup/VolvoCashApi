@@ -14,6 +14,7 @@ namespace VolvoCash.DistributedServices.MainContext
             DbAdminSeeder.Initialize(context);
             DbRechargeTypeSeeder.Initialize(context);
             DbDocumentTypeSeeder.Initialize(context);
+            DbBankAccountTypeSeeder.Initialize(context);
         }
     }
 }

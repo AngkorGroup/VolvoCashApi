@@ -20,7 +20,6 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             );
             docTypeDNI.CreatedBy = "ADMIN";
             docTypeDNI.CreatedAt = DateTime.Now;
-
             context.DocumentTypes.Add(docTypeDNI);
 
             var docTypeCE = new DocumentType(
@@ -31,7 +30,6 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             );
             docTypeCE.CreatedBy = "ADMIN";
             docTypeCE.CreatedAt = DateTime.Now;
-
             context.DocumentTypes.Add(docTypeCE);
 
             var docTypeRUC = new DocumentType(
@@ -42,7 +40,6 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             );
             docTypeRUC.CreatedBy = "ADMIN";
             docTypeRUC.CreatedAt = DateTime.Now;
-
             context.DocumentTypes.Add(docTypeRUC);
 
             var docTypePAS = new DocumentType(
@@ -53,8 +50,8 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             );
             docTypePAS.CreatedBy = "ADMIN";
             docTypePAS.CreatedAt = DateTime.Now;
-
             context.DocumentTypes.Add(docTypePAS);
+
             context.SaveChanges();
         }
     }
