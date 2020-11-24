@@ -14,6 +14,7 @@ using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg;
 
 namespace VolvoCash.Data.MainContext
 {
@@ -45,8 +46,9 @@ namespace VolvoCash.Data.MainContext
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<BankAccountType> BankAccountTypes { get; set; }
         public DbSet<BankDocumentType> BankDocumentTypes { get; set; }
+        public DbSet<BankBankAccountType> BankBankAccountTypes { get; set; }
         #endregion
-        
+
         #region Constructor
         public MainDbContext(IApplicationUser _applicationUser) : base(_applicationUser)
         {
@@ -130,6 +132,18 @@ namespace VolvoCash.Data.MainContext
                 .HasMany(d => d.BankDocumentTypes)
                 .WithOne(bdt => bdt.DocumentType)
                 .HasForeignKey(bdt => bdt.DocumentTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Bank>()
+                .HasMany(b => b.BankBankAccountTypes)
+                .WithOne(bbat => bbat.Bank)
+                .HasForeignKey(bbat => bbat.BankId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<BankAccountType>()
+                .HasMany(bat => bat.BankBankAccountTypes)
+                .WithOne(bbat => bbat.BankAccountType)
+                .HasForeignKey(bbat => bbat.BankAccountTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Movement>()

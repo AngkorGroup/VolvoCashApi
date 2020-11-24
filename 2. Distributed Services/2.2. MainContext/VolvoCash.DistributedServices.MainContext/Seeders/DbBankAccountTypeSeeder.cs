@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using VolvoCash.Data.MainContext;
-using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.Seeders
 {

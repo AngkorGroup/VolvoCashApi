@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
-namespace VolvoCash.Domain.MainContext.Aggregates.BankAgg
+namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg
 {
     public class BankAccountType : AuditableEntityWithKey<int>
     {
@@ -15,6 +17,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAgg
         public DateTime? ArchiveAt { get; set; }
 
         public Status Status { get; set; }
+
+        public virtual ICollection<BankBankAccountType> BankBankAccountTypes { get; } = new List<BankBankAccountType>();
         #endregion
 
         #region Constructor
