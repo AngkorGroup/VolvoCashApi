@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
+using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -46,6 +47,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public int CashierId { get; set; }
 
         public virtual Cashier Cashier { get; set; }
+
+        [Required]
+        [ForeignKey("Liquidation")]
+        public int? LiquidationId { get; set; }
+
+        public virtual Liquidation Liquidation { get; set; }
 
         public virtual ICollection<Movement> Movements { get; set; } = new List<Movement>();
         #endregion

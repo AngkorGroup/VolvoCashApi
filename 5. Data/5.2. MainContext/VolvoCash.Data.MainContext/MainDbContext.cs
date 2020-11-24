@@ -15,6 +15,7 @@ using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 
 namespace VolvoCash.Data.MainContext
 {
@@ -41,6 +42,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Sector> Sectors { get; set; }
+        public DbSet<Liquidation> Liquidations { get; set; }
         public DbSet<RechargeType> RechargeTypes { get; set; }
         public DbSet<BusinessArea> BusinessAreas { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -117,9 +119,15 @@ namespace VolvoCash.Data.MainContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Cashier>()
-                .HasMany(cashier => cashier.Charges)
-                .WithOne(charge => charge.Cashier)
-                .HasForeignKey(charge => charge.CashierId)
+                .HasMany(ca => ca.Charges)
+                .WithOne(ch => ch.Cashier)
+                .HasForeignKey(ch => ch.CashierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Liquidation>()
+                .HasMany(l => l.Charges)
+                .WithOne(c => c.Liquidation)
+                .HasForeignKey(c => c.LiquidationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Bank>()
@@ -169,6 +177,9 @@ namespace VolvoCash.Data.MainContext
 
             modelBuilder.Entity<Batch>()
                 .OwnsOne(b => b.Balance);
+
+            modelBuilder.Entity<Liquidation>()
+                .OwnsOne(m => m.Amount);
         }
         #endregion
     }
