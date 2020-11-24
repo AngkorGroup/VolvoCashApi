@@ -64,6 +64,8 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
             // hacer que cuando entre a la pantalla aparezca la lista con los valores ya cargados
             // TODO WEB PONER FILTROS EN LAS VISTAS QUE DIGA MOSTRAR SOLO ACTIVOS
 
+            //Agregar en cargas y recargas filtro de fechas
+
 
             // TODO WEB CONFIGURAR OLVIDE CONTRASE;A 
             // TODO WEB PANTALLA DE PERFIL Y CAMBIO DE CONTRASE;A

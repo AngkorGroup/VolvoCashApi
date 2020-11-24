@@ -1,13 +1,11 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using VolvoCash.Application.MainContext.DTO.BusinessAreas;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.RechargeTypes;
 using VolvoCash.Application.Seedwork.DateConverters;
-using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Batches
 {
@@ -17,6 +15,8 @@ namespace VolvoCash.Application.MainContext.DTO.Batches
         public int Id { get; set; }
 
         public MoneyDTO Amount { get; set; }
+
+        public MoneyDTO Balance { get; set; }
 
         [JsonConverter(typeof(DefaultDateConverter))]
         public DateTime ExpiresAt { get; set; }

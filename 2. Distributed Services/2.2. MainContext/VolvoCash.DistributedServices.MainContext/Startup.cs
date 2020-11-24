@@ -82,7 +82,8 @@ namespace VolvoCash.DistributedServices.MainContext
             {
                 builder.AllowAnyOrigin()
                        .AllowAnyMethod()
-                       .AllowAnyHeader();
+                       .AllowAnyHeader()
+                       .WithExposedHeaders("Content-Disposition");
             }));
 
             //Inject Application User Identity
@@ -182,6 +183,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ISMSManager, SMSManager>();
             services.AddScoped<ITokenManager, TokenManager>();
             services.AddScoped<IPushNotificationManager, OneSignalPushNotification>();
+            services.AddScoped<IReportManager, ReportManager>();
 
             // Adapters
             services.AddScoped<ITypeAdapterFactory, AutomapperTypeAdapterFactory>();

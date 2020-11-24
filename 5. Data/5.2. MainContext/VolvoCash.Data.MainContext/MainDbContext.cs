@@ -19,48 +19,28 @@ namespace VolvoCash.Data.MainContext
     {
         #region Members
         public DbSet<Admin> Admins { get; set; }
-
         public DbSet<Contact> Contacts { get; set; }
-
         public DbSet<Batch> Batches { get; set; }
-
         public DbSet<BatchMovement> BatchMovements { get; set; }
-
         public DbSet<Card> Cards { get; set; }
-
         public DbSet<CardBatch> CardBatches { get; set; }
-
         public DbSet<CardType> CardTypes { get; set; }
-
         public DbSet<Cashier> Cashiers { get; set; }
-
         public DbSet<Charge> Charges { get; set; }
-
         public DbSet<Client> Clients { get; set; }
-
         public DbSet<Dealer> Dealers { get; set; }
-
         public DbSet<Movement> Movements { get; set; }
-
         public DbSet<Transfer> Transfers { get; set; }
-
         public DbSet<User> Users { get; set; }
-
         public DbSet<SMSCode> SMSCodes { get; set; }
-
         public DbSet<BatchError> BatchErrors { get; set; }
-
         public DbSet<Session> Sessions { get; set; }
-
         public DbSet<Bank> Banks { get; set; }
-
         public DbSet<Sector> Sectors { get; set; }
-
         public DbSet<RechargeType> RechargeTypes { get; set; }
-
         public DbSet<BusinessArea> BusinessAreas { get; set; }
         #endregion
-
+        
         #region Constructor
         public MainDbContext(IApplicationUser _applicationUser) : base(_applicationUser)
         {

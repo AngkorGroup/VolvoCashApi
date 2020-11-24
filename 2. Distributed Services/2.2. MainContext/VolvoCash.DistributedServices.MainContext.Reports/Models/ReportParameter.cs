@@ -2,9 +2,12 @@
 {
     public class ReportParameter
     {
+        #region Properties
         public string Name { get; set; }
         public string Value { get; set; }
+        #endregion
 
+        #region Constructor
         public ReportParameter()
         {
         }
@@ -14,6 +17,6 @@
             Name = name;
             Value = value;
         }
-
+        #endregion
     }
 }

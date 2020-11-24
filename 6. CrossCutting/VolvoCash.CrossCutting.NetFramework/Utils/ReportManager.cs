@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace VolvoCash.CrossCutting.NetFramework.Utils
 {
@@ -24,33 +24,40 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
         #region Public Methods
         public async Task<byte[]> GetReportAsync(CustomReport report)
         {
-            var reportPath = "/" + report.Path + ".rpt";
-            var parameters = report.Parameters;
-
-            parameters.Add(new ReportParameter("p_company", "001"));
-            parameters.Add(new ReportParameter("p_branch", "001"));
-            parameters.Add(new ReportParameter("p_user", "Usuario"));
-
-            var url = _configuration["ReportServiceUrl"];
-            var reportRequest = JsonConvert.SerializeObject(new { ReportPath = reportPath, Parameters = parameters, Extension = report.Extension });
-            url = url + "?_reportRequest=" + reportRequest;
-
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.ContentType = "application/json";
-            request.ContentLength = 0;
-            request.Timeout = 600000;
-
-            var response = await request.GetResponseAsync();
-            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            var obj = JsonConvert.DeserializeObject<ReportFileResponse>(responseString);
-
-            if (obj.Success)
+            try
             {
-                return Convert.FromBase64String(obj.Content);
-            }
+                var reportPath = "/" + report.Path + ".rpt";
+                var parameters = report.Parameters;
 
-            throw new InvalidOperationException(obj.Message);
+                parameters.Add(new ReportParameter("p_company", "001"));
+                parameters.Add(new ReportParameter("p_branch", "001"));
+                parameters.Add(new ReportParameter("p_user", "Usuario"));
+
+                var url = _configuration["ReportServiceUrl"];
+                var reportRequest = JsonConvert.SerializeObject(new { ReportPath = reportPath, Parameters = parameters, report.Extension });
+                url = url + "?_reportRequest=" + reportRequest;
+
+                var request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "GET";
+                request.ContentType = "application/json";
+                request.ContentLength = 0;
+                request.Timeout = 600000;
+
+                var response = await request.GetResponseAsync();
+                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                var obj = JsonConvert.DeserializeObject<ReportFileResponse>(responseString);
+
+                if (obj.Success)
+                {
+                    return Convert.FromBase64String(obj.Content);
+                }
+
+                throw new InvalidOperationException(obj.Message);
+            }
+            catch(WebException e)
+            {
+                throw new InvalidOperationException(e.Message);
+            }            
         }
         #endregion
     }
@@ -64,22 +71,24 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
 
     public class ReportParameter
     {
-        public string Key { get; set; }
+        public string Name { get; set; }
         public string Value { get; set; }
 
         public ReportParameter(string key, string value, int padLength = 0)
         {
-            Key = key;
-            Value = value == "all" ? "" : value.PadLeft(padLength);
+            Name = key;
+            value = value ?? "";
+            Value = value == "all" || string.IsNullOrEmpty(value) ? "" : value.PadLeft(padLength,'0');
         }
 
         public ReportParameter(string key, List<string> values, int padLength = 0)
         {
-            Key = key;
+            Name = key;
             var padValues = new List<string>();
+            values = values ?? new List<string>();
             foreach (var value in values)
             {
-                padValues.Add(value == "all" ? "" : value.PadLeft(padLength));
+                padValues.Add(value == "all" || string.IsNullOrEmpty(value) ? "" : value.PadLeft(padLength, '0'));
             }
             Value = string.Join(",", padValues);
         }

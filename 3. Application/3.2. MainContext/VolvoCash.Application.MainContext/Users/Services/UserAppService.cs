@@ -44,9 +44,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
                               IDealerRepository dealerRepository,
                               ICardRepository cardRepository,
                               ITransferRepository transferRepository,
-                              ICardTransferService cardTransferService,                            
+                              ICardTransferService cardTransferService,
                               IEmailManager emailManager,
-                              IConfiguration configuration                     
+                              IConfiguration configuration
                              )
         {
             _userRepository = userRepository;
@@ -58,7 +58,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
             _transferRepository = transferRepository;
             _cardTransferService = cardTransferService;
             _emailManager = emailManager;
-            _configuration = configuration;           
+            _configuration = configuration;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
@@ -86,7 +86,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
             var subject = _resources.GetStringResource(LocalizationKeys.Application.messages_NewAdminEmailSubject);
             var body = _resources.GetStringResource(LocalizationKeys.Application.messages_NewAdminEmailBody);
             var webAdminUrl = _configuration["Application:BaseWebAdminUrl"];
-            body = string.Format(body, webAdminUrl,adminDTO.Password);
+            body = string.Format(body, webAdminUrl, adminDTO.Password);
             _emailManager.SendEmail(adminDTO.Email, subject, body);
         }
 
@@ -116,9 +116,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
         #region ApiWeb Public Methods       
         public async Task<IList<UserDTO>> GetAllDTOAsync()
         {
-            var admins = (await _adminRepository.GetAllAsync()).ProjectedAsCollection<AdminDTO>() ;
+            var admins = (await _adminRepository.GetAllAsync()).ProjectedAsCollection<AdminDTO>();
             var cashiers = (await _cashierRepository.GetAllAsync()).ProjectedAsCollection<CashierDTO>();
-            var contacts = (await _contactRepository.GetAllAsync()).ProjectedAsCollection < ContactListDTO>();
+            var contacts = (await _contactRepository.GetAllAsync()).ProjectedAsCollection<ContactListDTO>();
             var users = new List<UserDTO>();
             users.AddRange(admins.Select(a => new UserDTO() { Admin = a, Id = a.UserId, Type = UserType.WebAdmin }));
             users.AddRange(cashiers.Select(c => new UserDTO() { Cashier = c, Id = c.UserId, Type = UserType.Cashier }));
@@ -203,7 +203,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
                     var cards = await _cardRepository.GetCardsByContactId(contact.Id);
                     var transfers = await GetTransfersAboutAllFounds(contact, contactToTransferId);
                     _transferRepository.Add(transfers);
-                    contact.Delete();                    
+                    contact.Delete();
                     await _transferRepository.UnitOfWork.CommitAsync();
                     break;
                 case UserType.WebAdmin:
@@ -219,9 +219,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
         #endregion
 
         #region Common Public Methods
-        public async Task ChangePassword(int id,string password, string confirmPassword)
+        public async Task ChangePassword(int id, string password, string confirmPassword)
         {
-            if (password!= confirmPassword)
+            if (password != confirmPassword)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_PasswordAndConfirmNotMatch));
             }

@@ -8,6 +8,8 @@ namespace VolvoCash.Application.MainContext.CardTypes.Services
 {
     public interface ICardTypeAppService : IService<CardType, CardTypeDTO>, IDisposable
     {
-         Task Delete(int id);
+        #region ApiWeb
+        Task Delete(int id);
+        #endregion
     }
 }

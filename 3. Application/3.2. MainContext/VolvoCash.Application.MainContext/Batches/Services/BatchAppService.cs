@@ -219,10 +219,13 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<BatchDTO>> GetBatches()
+        public async Task<List<BatchDTO>> GetBatches(DateTime? beginDate, DateTime? endDate)
         {
-            var batches = await _batchRepository.FilterAsync(includeProperties: "Client.Contacts,CardType,RechargeType,BusinessArea",
-                                                             orderBy: bq => bq.OrderByDescending(b => b.CreatedAt));
+            var batches = await _batchRepository.FilterAsync(
+                filter: b=> (beginDate == null || b.CreatedAt >= beginDate)
+                            &&  (endDate == null || b.CreatedAt <= endDate),
+                includeProperties: "Client.Contacts,CardType,RechargeType,BusinessArea",
+                orderBy: bq => bq.OrderByDescending(b => b.CreatedAt));
             return batches.ProjectedAsCollection<BatchDTO>();
         }
 
