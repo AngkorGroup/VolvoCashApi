@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Reports;
 using VolvoCash.DistributedServices.Seedwork.Filters;
@@ -106,7 +106,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
                     new ReportParameter("p_card_types", reportRequest.CardTypes, 4),
                     new ReportParameter("p_begin_date", reportRequest.StartDate),
                     new ReportParameter("p_end_date", reportRequest.EndDate),
-                     new ReportParameter("p_flag", reportRequest.EconomicGroup ? "1" : "0")
+                    new ReportParameter("p_flag", reportRequest.EconomicGroup ? "1" : "0")
                 },
                 Path = "RankingOfCollectionsByDealers"
             };

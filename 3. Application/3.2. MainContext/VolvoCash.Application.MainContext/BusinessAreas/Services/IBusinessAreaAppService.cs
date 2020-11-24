@@ -7,14 +7,12 @@ namespace VolvoCash.Application.MainContext.BusinessAreas.Services
 {
     public interface IBusinessAreaAppService : IDisposable
     {
+        #region ApiWeb
         Task<List<BusinessAreaDTO>> GetBusinessAreas(bool onlyActive);
-
         Task<BusinessAreaDTO> GetBusinessArea(int id);
-
         Task<BusinessAreaDTO> AddAsync(BusinessAreaDTO rechargeTypeDTO);
-
         Task<BusinessAreaDTO> ModifyAsync(BusinessAreaDTO rechargeTypeDTO);
-
         Task Delete(int id);
+        #endregion
     }
 }

@@ -8,7 +8,9 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
 {
     public interface ICashierAppService : IService<Cashier, CashierDTO>, IDisposable
     {
+        #region ApiWeb
         Task Delete(int id);
         Task<CashierDTO> GetByUserId(int userId);
+        #endregion
     }
 }
