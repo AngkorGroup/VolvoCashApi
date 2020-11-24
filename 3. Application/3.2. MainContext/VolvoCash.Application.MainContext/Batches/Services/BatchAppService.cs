@@ -23,6 +23,7 @@ using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -38,6 +39,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         private readonly IBusinessAreaRepository _businessAreaRepository;
         private readonly IBatchRepository _batchRepository;
         private readonly IBatchErrorRepository _batchErrorRepository;
+        private readonly IDocumentTypeRepository _documentTypeRepository;
         private readonly ICardRechargeService _rechargeService;
         private readonly ILocalization _resources;
         #endregion
@@ -51,6 +53,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                                IBusinessAreaRepository businessAreaRepository,
                                IBatchRepository batchRepository,
                                IBatchErrorRepository batchErrorRepository,
+                               IDocumentTypeRepository documentTypeRepository,
                                ICardRechargeService rechargeService)
         {
             _clientRepository = clientRepository;
@@ -61,6 +64,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             _cardRepository = cardRepository;
             _batchRepository = batchRepository;
             _batchErrorRepository = batchErrorRepository;
+            _documentTypeRepository = documentTypeRepository;
             _rechargeService = rechargeService;
             _resources = LocalizationFactory.CreateLocalResources();
         }
@@ -113,7 +117,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var clientAddress = "Mi direccion 1234";
                 var clientPhone = "987654321";
                 var contactLastName = "Apellidos";
-                var contactDocumentType = DocumentType.DNI;
+                var contactDocumentTypeId = (_documentTypeRepository.Filter(filter: dt => dt.Abbreviation == "DNI")).FirstOrDefault().Id;
+                
                 try
                 {
                     var client = new ClientDTO()
@@ -132,7 +137,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                         LastName = contactLastName,
                         Phone = contactPhone,
                         Email = contactEmail,
-                        DocumentType = contactDocumentType,
+                        DocumentTypeId = contactDocumentTypeId,
                         DocumentNumber = contactDocumentNumber,
                     };
 
@@ -313,7 +318,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             {
                 client.UpdateFields(clientDTO.Ruc, clientDTO.Address, clientDTO.Email, clientDTO.Name, clientDTO.Phone);
             }
-            var mainContact = await _contactRepository.CreateOrUpdateMainContact(client, contactDTO.Phone, contactDTO.DocumentType,
+            var mainContact = await _contactRepository.CreateOrUpdateMainContact(client, contactDTO.Phone, contactDTO.DocumentTypeId,
                                                                                  contactDTO.DocumentNumber, contactDTO.FirstName,
                                                                                  contactDTO.LastName, contactDTO.Email);
             var card = mainContact.Cards.FirstOrDefault(c => c.CardTypeId == carDTO.CardTypeId && c.Status == Status.Active);

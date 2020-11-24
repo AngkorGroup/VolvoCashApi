@@ -6,7 +6,7 @@ using VolvoCash.Domain.Seedwork;
 namespace VolvoCash.Domain.MainContext.Aggregates.BankAgg
 {
     public class Bank : AuditableEntityWithKey<int>
-    {        
+    {
         #region Properties
         [Required]
         [MaxLength(100)]
@@ -26,7 +26,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAgg
         {
         }
 
-        public Bank(string name,string abbreviation,string tpCode)
+        public Bank(string name, string abbreviation, string tpCode)
         {
             Name = name;
             Abbreviation = abbreviation;

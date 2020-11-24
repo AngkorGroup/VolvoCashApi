@@ -33,7 +33,3 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg
         #endregion
     }
 }
-
-/*Contract,
-  Addendum
-*/

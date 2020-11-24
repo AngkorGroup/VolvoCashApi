@@ -8,6 +8,7 @@ using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
@@ -38,6 +39,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<RechargeType> RechargeTypes { get; set; }
+        public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<BusinessArea> BusinessAreas { get; set; }
         #endregion
         

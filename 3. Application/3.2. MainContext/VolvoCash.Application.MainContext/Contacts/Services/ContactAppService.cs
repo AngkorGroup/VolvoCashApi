@@ -68,7 +68,7 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
                 var contact = new Contact(
                     currentContact.Client,
                     ContactType.Secondary,
-                    contactDTO.DocumentType,
+                    contactDTO.DocumentTypeId,
                     contactDTO.DocumentNumber,
                     contactDTO.Phone,
                     contactDTO.FirstName,
@@ -166,7 +166,7 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
                 contactPersisted.LastName = contactDTO.LastName;
                 contactPersisted.Phone = contactDTO.Phone;
                 contactPersisted.Email = contactDTO.Email;
-                contactPersisted.DocumentType = contactDTO.DocumentType;
+                contactPersisted.DocumentTypeId = contactDTO.DocumentTypeId;
                 contactPersisted.DocumentNumber = contactDTO.DocumentNumber;
                 contactPersisted.Status = contactDTO.Status;
                 

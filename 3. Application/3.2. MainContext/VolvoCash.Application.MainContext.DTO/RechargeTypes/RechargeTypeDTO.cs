@@ -1,8 +1,8 @@
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Application.Seedwork.DateConverters;
 
 namespace VolvoCash.Application.MainContext.DTO.RechargeTypes
 {
