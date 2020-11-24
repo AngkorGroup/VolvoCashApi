@@ -43,6 +43,7 @@ using VolvoCash.Data.MainContext.Repositories;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Settings;
 using VolvoCash.DistributedServices.Seedwork.Utils;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
