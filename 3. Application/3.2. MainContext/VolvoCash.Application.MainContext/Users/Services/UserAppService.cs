@@ -147,8 +147,14 @@ namespace VolvoCash.Application.MainContext.Users.Services
 
         public async Task<AdminDTO> ModifyAdminAsync(AdminDTO adminDTO)
         {
-            var admin = _adminRepository.Filter(a => (a.Email == adminDTO.Email) && a.ArchiveAt == null).FirstOrDefault();
-            if (admin.Id != adminDTO.Id)
+            var admin = await _adminRepository.GetAsync(adminDTO.Id);
+            if (admin == null)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_AdminNotFound));
+            }
+
+            var existingAdmin = _adminRepository.Filter(a => (a.Email == adminDTO.Email) && a.ArchiveAt == null).FirstOrDefault();
+            if (existingAdmin != null && existingAdmin.Id != adminDTO.Id)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_AdminAlreadyExists));
             }
