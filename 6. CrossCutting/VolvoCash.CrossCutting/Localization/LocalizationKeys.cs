@@ -51,16 +51,17 @@
             exception_CannotUpdateNonExistingContact,
             exception_InvalidDealerForCashier,
             exception_CashierAlreadyExistsEmail,
-            exception_AdminAlreadyExists,
-            exception_CashierNotFound,
             exception_CashierAlreadyExists,
+            exception_CashierNotFound,
+            exception_AdminAlreadyExists,
             exception_NullContactIdToTransferFounds,
             exception_NullContactToTransferFounds,
             messages_NewAdminEmailSubject,
             messages_NewAdminEmailBody,
             exception_PasswordAndConfirmNotMatch,
             exception_InvalidRechargeTypeCode,
-            exception_InvalidBusinessAreaCode
+            exception_InvalidBusinessAreaCode,
+            exception_AdminNotFound
         }
 
         public enum Domain
