@@ -62,7 +62,8 @@
             exception_InvalidRechargeTypeCode,
             exception_InvalidBusinessAreaCode,
             exception_InvalidCurrencyCode,
-            exception_AdminNotFound
+            exception_AdminNotFound,
+            exception_BatchAlreadyExists
         }
 
         public enum Domain

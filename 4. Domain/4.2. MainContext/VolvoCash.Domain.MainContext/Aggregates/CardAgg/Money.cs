@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.Seedwork;
@@ -10,8 +11,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         #region Properties
         public double Value { get; set; }
 
+        [Required]
         [ForeignKey("Currency")]
-        public int? CurrencyId { get; set; }
+        public int CurrencyId { get; set; }
 
         public virtual Currency Currency { get; set; }
         #endregion
@@ -24,14 +26,14 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public Money(Currency currency, double value)
         {
             Currency = currency;
-            CurrencyId = currency?.Id;
+            CurrencyId = currency.Id;
             Value = value;
         }
 
         public Money(Money amount)
         {
             Currency = amount.Currency;
-            CurrencyId = amount?.Currency?.Id;
+            CurrencyId = amount.Currency.Id;
             Value = amount.Value;
         }
         #endregion

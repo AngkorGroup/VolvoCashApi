@@ -15,14 +15,14 @@ namespace VolvoCash.Application.MainContext.DTO.Common
 
         public string CurrencySymbol { get => Currency?.Symbol ?? (CurrencyId == 1 ? "US$" : "S/."); }
 
+        public string CurrencyCode { get => Currency?.TPCode ?? (CurrencyId == 1 ? "USD" : "PEN"); }
+
         public string Label { get => CurrencySymbol + " " + string.Format("{0:#,0.00}", Value); }
         #endregion
 
         #region Constructor
-        public MoneyDTO(CurrencyDTO currency, double value)
+        public MoneyDTO()
         {
-            Currency = currency;
-            Value = value;
         }
         #endregion
     }

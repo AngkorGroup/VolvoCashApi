@@ -330,9 +330,19 @@ namespace VolvoCash.Data.Seedwork
             return await GetSet().Where(filter).ToListAsync();
         }
 
-        public virtual IEnumerable<TEntity> GetFiltered<KProperty>(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageCount, Expression<Func<TEntity, KProperty>> orderByExpression, bool ascending)
+        public virtual IEnumerable<TEntity> GetFiltered<KProperty>(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageCount, Expression<Func<TEntity, KProperty>> orderByExpression, bool ascending, string includeProperties = "")
         {
-            var set = GetSet();
+            IQueryable<TEntity> set = GetSet();
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+
+                    set = set.Include(includeProperty);
+                }
+            }
 
             if (ascending)
             {
@@ -350,9 +360,25 @@ namespace VolvoCash.Data.Seedwork
             }
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetFilteredAsync<KProperty>(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageCount, Expression<Func<TEntity, KProperty>> orderByExpression, bool ascending)
+        public virtual async Task<IEnumerable<TEntity>> GetFilteredAsync<KProperty>(
+                                Expression<Func<TEntity, bool>> filter, 
+                                int pageIndex, 
+                                int pageCount, 
+                                Expression<Func<TEntity, KProperty>> orderByExpression,
+                                bool ascending,
+                                string includeProperties = "")
         {
-            var set = GetSet();
+            IQueryable<TEntity> set = GetSet();
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+
+                    set = set.Include(includeProperty);
+                }
+            }
 
             if (ascending)
             {
