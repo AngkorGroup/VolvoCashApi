@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using VolvoCash.Data.MainContext;
@@ -9,9 +10,10 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201125062644_AddCurrencyToBankAccountNullable")]
+    partial class AddCurrencyToBankAccountNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +52,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int>("CurrencyId")
+                    b.Property<int?>("CurrencyId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<int?>("DealerId")
@@ -1099,12 +1101,6 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<int>("LiquidationStatus")
                         .HasColumnType("NUMBER(10)");
 
-                    b.Property<DateTime?>("PaymentDate")
-                        .HasColumnType("TIMESTAMP(7)");
-
-                    b.Property<string>("Voucher")
-                        .HasColumnType("NVARCHAR2(2000)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DealerId");
@@ -1418,9 +1414,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CurrencyId");
 
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.DealerAgg.Dealer", "Dealer")
                         .WithMany("BankAccounts")

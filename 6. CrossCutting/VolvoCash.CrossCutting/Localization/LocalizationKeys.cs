@@ -97,7 +97,8 @@
             exception_InvalidTransferDifferentContactClient,
             exception_InvalidStatusForCharge,
             exception_PerformTransferOriginCardIsNull,
-            exception_PerformTransferDestinyCardIsNull
+            exception_PerformTransferDestinyCardIsNull,
+            exception_BankAccountIsNull
         }
     }
 }

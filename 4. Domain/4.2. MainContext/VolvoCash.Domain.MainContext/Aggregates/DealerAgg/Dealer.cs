@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
@@ -63,10 +64,19 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
             Address = address;
             ContactName = contactName;
             Name = name;
-            Ruc = ruc;           
+            Ruc = ruc;
             MaxCashiers = maxCashiers;
             Type = type;
             Status = Status.Active;
+        }
+        #endregion
+
+        #region Public Methods
+        public BankAccount GetBankAccount(int bankId, int currencyId)
+        {
+            return BankAccounts.First(ba => ba.BankId == bankId 
+                                   && ba.CurrencyId == currencyId
+                                   && ba.IsDefault);
         }
         #endregion
     }

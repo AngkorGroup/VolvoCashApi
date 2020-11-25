@@ -59,6 +59,7 @@ using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Services.BankService;
 using VolvoCash.Domain.MainContext.Services.CardService;
 
 namespace VolvoCash.DistributedServices.MainContext
@@ -163,6 +164,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICardRechargeService, CardRechargeService>();
             services.AddScoped<ICardChargeService, CardChargeService>();
             services.AddScoped<INotificationChargeService, NotificationChargeService>();
+            services.AddScoped<IBankLiquidationService, BankLiquidationService>();
 
             // Repositories
             services.AddScoped<ISMSCodeRepository, SMSCodeRepository>();
