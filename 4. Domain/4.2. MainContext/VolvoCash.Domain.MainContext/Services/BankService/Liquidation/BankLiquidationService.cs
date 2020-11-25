@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
+using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 
 namespace VolvoCash.Domain.MainContext.Services.BankService
 {
     public class BankLiquidationService : IBankLiquidationService
     {
-        #region Properties
-        private readonly string _headerIndicator = "1";
-        private readonly string _detailIndicator = "2";
+        #region Members
+        private const string _headerIndicator = "1";
+        private const string _detailIndicator = "2";
+        private readonly IBankRepository _bankRepository;
+        private readonly ILocalization _resources;
+        #endregion
+
+        #region Constructor
+        public BankLiquidationService(IBankRepository bankRepository)
+        {
+            _bankRepository = bankRepository;
+            _resources = LocalizationFactory.CreateLocalResources();
+        }
         #endregion
 
         #region Private Methods
@@ -21,21 +34,29 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             var processDate = DateTime.Now.ToString(DateTimeFormats.BankDateFormat);
             var bankAccountType = "";
             var currencyAccount = "";
-            var bankAccount = "".PadRight(20);
+            var bankAccountNumber = "".PadRight(20);
             var totalAmount = "";
             var payrollReference = "".PadRight(20);
             var itfExonerationFlag = "N";
             var checkSum = "";
 
-            var headerline = $"{headerIndicator}{paymentsQuantity}{processDate}{bankAccountType}{currencyAccount}{bankAccount}{totalAmount}{payrollReference}{itfExonerationFlag}{checkSum}";
+            var headerline = $"{headerIndicator}{paymentsQuantity}{processDate}{bankAccountType}{currencyAccount}{bankAccountNumber}{totalAmount}{payrollReference}{itfExonerationFlag}{checkSum}";
             return headerline;
         }
 
-        private string getBCPDetailLine(Liquidation liquidation)
+        private string getBCPDetailLine(Liquidation liquidation, int bankId)
         {
+            var bankAccount = liquidation.Dealer.GetBankAccount(bankId, liquidation.Amount.CurrencyId);
+
+            // TODO: Validar que si la cuenta no existe como mostrar el error.
+            if (bankAccount == null)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_BankAccountIsNull));
+            }
+
             var detailIndicator = _detailIndicator;
-            var bankAccountType = "";
-            var bankAccount = "".PadRight(20);
+            var bankAccountType = bankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bat => bat.BankId == bankId).Equivalence;
+            var bankAccountNumber = bankAccount.Account.PadRight(20);
             var paymentMethod = "1";
             var supplierDocumentTypeId = "6";
             var supplierDocumentTypeNumber = liquidation.Dealer.Ruc.PadRight(12);
@@ -43,21 +64,23 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             var supplierName = liquidation.Dealer.Name.PadRight(75);
             var beneficiaryReference = "".PadRight(40);
             var companyReference = "".PadRight(20);
-            var currencyPayment = "";
-            var amount = liquidation.Amount.Value.ToString().PadLeft(17);
+            var currencyPayment = liquidation.Amount.Currency.BankCurrencies.FirstOrDefault(bc => bc.BankId == bankId).Equivalence;
+            var amount = liquidation.Amount.Value.ToString("0.00", CultureInfo.InvariantCulture).PadLeft(17);
             var idcValidation = "S";
             var documentsQuantity = "";
 
-            var detailLine = $"{detailIndicator}{bankAccountType}{bankAccount}{paymentMethod}{supplierDocumentTypeId}{supplierDocumentTypeNumber}{supplierDocumentCorrelative}{supplierName}{beneficiaryReference}{companyReference}{currencyPayment}{amount}{idcValidation}{documentsQuantity}";
+            var detailLine = $"{detailIndicator}{bankAccountType}{bankAccountNumber}{paymentMethod}{supplierDocumentTypeId}{supplierDocumentTypeNumber}{supplierDocumentCorrelative}{supplierName}{beneficiaryReference}{companyReference}{currencyPayment}{amount}{idcValidation}{documentsQuantity}";
             return detailLine;
         }
 
         private List<string> getBCPDetailLines(List<Liquidation> liquidations)
         {
+            var bank = _bankRepository.Filter(b => b.Abbreviation == BankNames.BCP).FirstOrDefault();
             var detailLines = new List<string>();
+
             foreach (var liquidation in liquidations)
             {
-                var detailLine = getBCPDetailLine(liquidation);
+                var detailLine = getBCPDetailLine(liquidation, bank.Id);
                 detailLines.Add(detailLine);
             }
             return detailLines;
@@ -65,8 +88,6 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
         #endregion
 
         #region Public Methods
-        #endregion
-
         public void GenerateBCPFile(List<Liquidation> liquidations)
         {
             if (liquidations.Any())
@@ -76,5 +97,6 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
                 //TODO:Crear el archivo con el header y el detailLines
             }
         }
+        #endregion
     }
 }

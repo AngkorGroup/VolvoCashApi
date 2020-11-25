@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
@@ -71,10 +72,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
         #endregion
 
         #region Public Methods
-        // public BankAccount GetBankAccount(int bankId)
-        // {
-
-        // }
+        public BankAccount GetBankAccount(int bankId, int currencyId)
+        {
+            return BankAccounts.First(ba => ba.BankId == bankId 
+                                   && ba.CurrencyId == currencyId
+                                   && ba.IsDefault);
+        }
         #endregion
     }
 }
