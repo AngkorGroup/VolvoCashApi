@@ -20,11 +20,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         [Required]
         public Money Amount { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string DisplayName { get; set; }
 
         public string ImageUrl { get; set; }
 
+        [MaxLength(200)]
         public string Description { get; set; }
 
         [Required]
@@ -63,12 +64,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public Charge(int cashierId, Card card, ChargeType chargeType, Money amount, string displayName, string description)
         {
+            Description = description?.Substring(0, Math.Min(200, description.Length));
+            DisplayName = displayName?.Substring(0, Math.Min(100, displayName.Length));
             CashierId = cashierId;
             Card = card;
             Amount = amount;
-            DisplayName = displayName;
             ChargeType = chargeType;
-            Description = description;
             Status = ChargeStatus.Pending;
             var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON, this);
             movement.CardId = card.Id;

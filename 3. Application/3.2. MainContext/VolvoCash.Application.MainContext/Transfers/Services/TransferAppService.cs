@@ -83,6 +83,7 @@ namespace VolvoCash.Application.MainContext.Transfers.Services
             await _transferRepository.UnitOfWork.CommitAsync();
 
             await GenerateTransferImageUrl(transfer);
+
             return transfer.ProjectedAs<TransferListDTO>();
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VolvoCash.Application.MainContext.DTO.BankAccounts;
 using VolvoCash.Application.MainContext.DTO.Banks;
 
 namespace VolvoCash.Application.MainContext.Banks.Services
@@ -13,6 +14,7 @@ namespace VolvoCash.Application.MainContext.Banks.Services
         Task<BankDTO> AddAsync(BankDTO bankDTO);
         Task<BankDTO> ModifyAsync(BankDTO bankDTO);
         Task Delete(int id);
+        Task<List<BankAccountDTO>> GetBankAccounts(int id);
         #endregion
     }
 }

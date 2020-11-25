@@ -49,8 +49,11 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
             if (originCard.Contact.ClientId != destinyCard.Contact.ClientId)
                 throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_InvalidTransferDifferentContactClient));
 
+            var fromContact = originCard.Contact.FullName;
+            var toContact = destinyCard.Contact.FullName;
+
             var displayName = messages.GetStringResource(LocalizationKeys.Application.messages_CreateTransferDisplayName);
-            displayName = string.Format(displayName, originCard.Contact.Phone, destinyCard.Contact.Phone);
+            displayName = string.Format(displayName, fromContact, toContact);
 
             var transfer = new Transfer(originCard, destinyCard, Amount, displayName);
             destinyCard.DestinyTransfers.Add(transfer);
@@ -58,9 +61,11 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
             if (originCard.CanWithdraw(transfer.Amount))
             {
                 var displayNameFrom = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferFromMessageDisplayName);
-                displayNameFrom = string.Format(displayNameFrom, destinyCard.Contact.Phone);
+                displayNameFrom = string.Format(displayNameFrom, toContact);
+
                 var descriptionFrom = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferFromMessageDescription);
-                descriptionFrom = string.Format(descriptionFrom, destinyCard.Contact.Phone);
+                descriptionFrom = string.Format(descriptionFrom, toContact);
+
                 var movementBatchs = originCard.WithdrawMoney(
                     MovementType.STR,
                     transfer.Amount,
@@ -68,10 +73,13 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                     descriptionFrom,
                     transfer
                 );
+
                 var displayNameTo = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferToMessageDescription);
-                displayNameTo = string.Format(displayNameTo, originCard.Contact.Phone);
+                displayNameTo = string.Format(displayNameTo, fromContact);
+
                 var descriptionTo = messages.GetStringResource(LocalizationKeys.Domain.messages_TransferToMessageDisplayName);
-                descriptionTo = string.Format(descriptionTo, originCard.Contact.Phone);
+                descriptionTo = string.Format(descriptionTo, fromContact);
+
                 destinyCard.DepositMoneyFromTransfer(
                     transfer.Amount,
                     movementBatchs,

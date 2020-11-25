@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -46,6 +47,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public Transfer(Card originCard, Card destinyCard, Money amount, string displayName)
         {
+            DisplayName = displayName?.Substring(0, Math.Min(100, displayName.Length));
             OriginCard      = originCard;
             DestinyCard     = destinyCard;
             Amount          = amount;

@@ -95,15 +95,16 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             try
             {
+
                 var lineSegments = line.Split("|");
                 var batchTPCode = GetLineSegment(lineSegments, 0);
                 var clientTPCode = GetLineSegment(lineSegments, 1);
                 var clientName = GetLineSegment(lineSegments, 2);
                 var clientEmail = GetLineSegment(lineSegments, 3);
-                var contractDate = DateTime.ParseExact(GetLineSegment(lineSegments, 4), DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+                var contractDate = DateTimeParser.TryParseString(GetLineSegment(lineSegments, 4), DateTimeFormats.DateFormat);
                 var chasisNumber = GetLineSegment(lineSegments, 5);
                 var invoiceDocumentNumber = GetLineSegment(lineSegments, 6);
-                var invoiceDate = DateTime.ParseExact(GetLineSegment(lineSegments, 7), DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+                var invoiceDate = DateTimeParser.TryParseString(GetLineSegment(lineSegments, 7), DateTimeFormats.DateFormat); 
                 var batchAmount = double.Parse(GetLineSegment(lineSegments, 8));
                 var batchCurrency = GetLineSegment(lineSegments, 9);
                 var contactName = GetLineSegment(lineSegments, 10);

@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using VolvoCash.Application.MainContext.DTO.BankAccounts;
 using VolvoCash.Application.MainContext.DTO.Banks;
 using VolvoCash.Application.Seedwork;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
@@ -12,12 +15,15 @@ namespace VolvoCash.Application.MainContext.Banks.Services
     {
         #region Members
         private readonly IBankRepository _bankRepository;
+        private readonly IBankAccountRepository _bankAccountRepository;
+
         #endregion
 
         #region Constructor
-        public BankAppService(IBankRepository bankRepository)
+        public BankAppService(IBankRepository bankRepository, IBankAccountRepository bankAccountRepository)
         {
             _bankRepository = bankRepository;
+            _bankAccountRepository = bankAccountRepository;
         }
         #endregion
 
@@ -59,6 +65,12 @@ namespace VolvoCash.Application.MainContext.Banks.Services
             bank.Status = Status.Inactive;
             _bankRepository.Modify(bank);
             await _bankRepository.UnitOfWork.CommitAsync();
+        }
+
+        public async Task<List<BankAccountDTO>> GetBankAccounts(int id)
+        {
+            var bankAccounts = (await _bankAccountRepository.FilterAsync(filter: ba => ba.BankId == id && ba.DealerId == null ,includeProperties: "BankAccountType"));
+            return bankAccounts.ProjectedAsCollection<BankAccountDTO>();
         }
         #endregion
 

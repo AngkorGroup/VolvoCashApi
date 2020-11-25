@@ -63,7 +63,12 @@
             exception_InvalidBusinessAreaCode,
             exception_InvalidCurrencyCode,
             exception_AdminNotFound,
-            exception_BatchAlreadyExists
+            exception_BatchAlreadyExists,
+            exception_InvalidLiquidationStatusForCancel,
+            exception_InvalidLiquidationStatusForPay,
+            exception_BankAccountNotFound,
+            exception_LiquidationNotFound,
+            exception_InvalidLiquidationStatusForSchedule
         }
 
         public enum Domain
@@ -98,7 +103,8 @@
             exception_InvalidStatusForCharge,
             exception_PerformTransferOriginCardIsNull,
             exception_PerformTransferDestinyCardIsNull,
-            exception_BankAccountIsNull
+            exception_BankAccountIsNull,
+            exception_NoLiquidationsToGenerateFile
         }
     }
 }

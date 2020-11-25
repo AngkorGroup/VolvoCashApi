@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 
@@ -88,14 +90,63 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
         #endregion
 
         #region Public Methods
-        public void GenerateBCPFile(List<Liquidation> liquidations)
+        public byte[] GenerateBankFile(BankAccount bankAccount, List<Liquidation> liquidations)
         {
+            switch (bankAccount.Bank.Abbreviation)
+            {
+                case BankNames.BCP:
+                    return GenerateBCPFile(bankAccount, liquidations);
+                case BankNames.BBVA:
+                    return GenerateBBVAFile(bankAccount, liquidations);
+                default:
+                    return null;
+            }            
+        }
+        #endregion
+
+        #region Private Methods
+        private byte[] GetFileFromStructure(string headerLine, List<string> detailLines)
+        {
+            byte[] bytes = null;
+            using (var ms = new MemoryStream())
+            {
+                var sr = new StreamWriter(ms);
+                sr.WriteLine(headerLine);
+                foreach (var detailLine in detailLines)
+                {
+                    sr.WriteLine(detailLine);
+                }
+                sr.Flush();
+                ms.Position = 0;
+                bytes = ms.ToArray();
+            }               
+            return bytes;
+        }
+
+        private byte[] GenerateBCPFile(BankAccount bankAccount, List<Liquidation> liquidations)
+        {
+            //TODO REMOVER CUANDO LA LOGICA ESTE LISTA
+            return GetFileFromStructure("CABECERABCP", new List<string>() { "DETALLEBCP1", "DETALLEBCP2" });
             if (liquidations.Any())
             {
                 var headerLine = getBCPHeaderLine(liquidations);
                 var detailLines = getBCPDetailLines(liquidations);
-                //TODO:Crear el archivo con el header y el detailLines
+                return GetFileFromStructure(headerLine, detailLines);
             }
+            throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_NoLiquidationsToGenerateFile));
+        }
+
+        private byte[] GenerateBBVAFile(BankAccount bankAccount, List<Liquidation> liquidations)
+        {
+            //TODO REMOVER CUANDO LA LOGICA ESTE LISTA
+            return GetFileFromStructure("CABECERABBVA", new List<string>() { "DETALLEBBVA1", "DETALLEBBVA2" });
+            if (liquidations.Any())
+            {
+                var headerLine = getBCPHeaderLine(liquidations);
+                var detailLines = getBCPDetailLines(liquidations);
+                return GetFileFromStructure(headerLine, detailLines);
+            }
+            throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_NoLiquidationsToGenerateFile));
         }
         #endregion
     }

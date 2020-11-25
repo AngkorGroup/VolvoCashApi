@@ -2,8 +2,7 @@ namespace VolvoCash.CrossCutting.Utils
 {
     public static class BankNames
     {
-        public static string BCP = "BCP";
-        public static string BBVA = "BBVA";
-        
+        public const string BCP = "BCP";
+        public const string BBVA = "BBVA";        
     }
 }

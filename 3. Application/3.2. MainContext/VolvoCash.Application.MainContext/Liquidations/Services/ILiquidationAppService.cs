@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Liquidations;
 using VolvoCash.Domain.MainContext.Enums;
 
@@ -11,7 +12,11 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
         #region ApiWeb
         Task<List<LiquidationDTO>> GetLiquidations(DateTime date, LiquidationStatus liquidationStatus);
         Task<LiquidationDTO> GetLiquidation(int id);
-        // Task<LiquidationDTO> AddAsync(LiquidationDTO liquidationDTO);
+        Task<List<LiquidationDTO>> GenerateLiquidations();
+        Task<List<ChargeListDTO>> GetLiquidationCharges(int id);
+        Task<byte[]> ScheduleLiquidations(int bankId, int bankAccountId, List<int> liquidationsId);
+        Task PayLiquidation(int id, string voucher, DateTime paymentDate);
+        Task CancelLiquidation(int id);       
         #endregion
     }
 }

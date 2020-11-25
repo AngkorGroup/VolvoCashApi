@@ -120,7 +120,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public string GetLabel()
         {
-            return Currency.ToString() + " " + string.Format("{0:#,0.00}", Value);
+            return Currency.Symbol + " " + string.Format("{0:#,0.00}", Value);
         }
         #endregion
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
@@ -22,8 +23,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAgg
         public Status Status { get; set; }
 
         public virtual ICollection<BankDocumentType> BankDocumentTypes { get; } = new List<BankDocumentType>();
+        
         public virtual ICollection<BankBankAccountType> BankBankAccountTypes { get; } = new List<BankBankAccountType>();
+        
         public virtual ICollection<BankCurrency> BankCurrencies { get; } = new List<BankCurrency>();
+
+        public virtual ICollection<BankAccount> BankAccounts { get; } = new List<BankAccount>();
         #endregion
 
         #region Constructor
