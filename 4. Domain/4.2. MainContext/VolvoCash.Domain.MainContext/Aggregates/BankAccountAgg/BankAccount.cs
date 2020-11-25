@@ -1,9 +1,8 @@
 using System;
-
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -19,6 +18,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg
 
         [MaxLength(40)]
         public string CCI { get; set; }
+        
+        [Required]
+        [ForeignKey("Currency")]
+        public int CurrencyId { get; set; }
+
+        public virtual Currency Currency { get; set; }
 
         public bool IsDefault { get; set; }
 
