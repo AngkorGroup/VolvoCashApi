@@ -21,10 +21,10 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             var processDate = DateTime.Now.ToString(DateTimeFormats.BankDateFormat);
             var bankAccountType = "";
             var currencyAccount = "";
-            var bankAccount = "";
+            var bankAccount = "".PadRight(20);
             var totalAmount = "";
-            var payrollReference = "";
-            var itfExonerationFlag = "";
+            var payrollReference = "".PadRight(20);
+            var itfExonerationFlag = "N";
             var checkSum = "";
 
             var headerline = $"{headerIndicator}{paymentsQuantity}{processDate}{bankAccountType}{currencyAccount}{bankAccount}{totalAmount}{payrollReference}{itfExonerationFlag}{checkSum}";
@@ -35,17 +35,17 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
         {
             var detailIndicator = _detailIndicator;
             var bankAccountType = "";
-            var bankAccount = "";
-            var paymentMethod = "";
-            var supplierDocumentTypeId = "";
-            var supplierDocumentTypeNumber = "";
-            var supplierDocumentCorrelative = "";
-            var supplierName = "";
-            var beneficiaryReference = "";
-            var companyReference = "";
+            var bankAccount = "".PadRight(20);
+            var paymentMethod = "1";
+            var supplierDocumentTypeId = "6";
+            var supplierDocumentTypeNumber = liquidation.Dealer.Ruc.PadRight(12);
+            var supplierDocumentCorrelative = "".PadRight(3);
+            var supplierName = liquidation.Dealer.Name.PadRight(75);
+            var beneficiaryReference = "".PadRight(40);
+            var companyReference = "".PadRight(20);
             var currencyPayment = "";
-            var amount = "";
-            var idcValidation = "";
+            var amount = liquidation.Amount.Value.ToString().PadLeft(17);
+            var idcValidation = "S";
             var documentsQuantity = "";
 
             var detailLine = $"{detailIndicator}{bankAccountType}{bankAccount}{paymentMethod}{supplierDocumentTypeId}{supplierDocumentTypeNumber}{supplierDocumentCorrelative}{supplierName}{beneficiaryReference}{companyReference}{currencyPayment}{amount}{idcValidation}{documentsQuantity}";

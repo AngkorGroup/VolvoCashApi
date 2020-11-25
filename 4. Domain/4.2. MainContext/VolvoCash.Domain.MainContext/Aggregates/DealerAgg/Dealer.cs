@@ -63,11 +63,18 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
             Address = address;
             ContactName = contactName;
             Name = name;
-            Ruc = ruc;           
+            Ruc = ruc;
             MaxCashiers = maxCashiers;
             Type = type;
             Status = Status.Active;
         }
+        #endregion
+
+        #region Public Methods
+        // public BankAccount GetBankAccount()
+        // {
+
+        // }
         #endregion
     }
 }
