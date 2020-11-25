@@ -194,6 +194,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBankAccountTypeRepository, BankAccountTypeRepository>();
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<ILiquidationRepository, LiquidationRepository>();
+            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolvoCash.Application.MainContext.Liquidations.Services;
 using VolvoCash.CrossCutting.Utils;
+using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Liquidations;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Domain.MainContext.Enums;
 
@@ -28,10 +29,12 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet]
-        public async Task<IActionResult> GetLiquidations([FromQuery] string date, [FromQuery] int statusId)
+        public async Task<IActionResult> GetLiquidations([FromQuery] string date, [FromQuery] string status)
         {
             var _date = DateTimeParser.ParseString(date, DateTimeFormats.DateFormat);
-            return Ok(await _liquidationAppService.GetLiquidations(_date, (LiquidationStatus)statusId));
+            var liquidationStatus = (LiquidationStatus) Enum.Parse(typeof(LiquidationStatus), status);
+            var liquidations = await _liquidationAppService.GetLiquidations(_date, liquidationStatus);
+            return Ok(liquidations);
         }
 
         [HttpGet("{id}")]
@@ -47,30 +50,31 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpGet("generate")]
-        public async Task<IActionResult> PostLiquidation()
+        public async Task<IActionResult> GenerateLiquidations()
         {
             await _liquidationAppService.GenerateLiquidations();
             return Ok();
         }
 
-        [HttpPost("{id}/program")]
-        public async Task<IActionResult> ProgramLiquidation([FromRoute] int id)
+        [HttpPost("schedule")]
+        public async Task<IActionResult> ScheduleLiquidations([FromBody] ScheduleLiquidationsRequest request)
         {
-            //await _liquidationAppService.AnulateLiquidation(id);
-            return Ok();
+            byte[] content = await _liquidationAppService.ScheduleLiquidations(request.BankId, request.BankAccountId, request.LiquidationsId);
+            return File(content, "text/plain", "ArchivoBanco.txt");
         }
 
         [HttpPost("{id}/pay")]
-        public async Task<IActionResult> PayLiquidation([FromRoute] int id)
+        public async Task<IActionResult> PayLiquidation([FromRoute] int id, [FromBody] PayLiquidationRequest request)
         {
-            //await _liquidationAppService.AnulateLiquidation(id);
+            var paymentDate = DateTimeParser.ParseString(request.PaymentDate, DateTimeFormats.DateFormat);
+            await _liquidationAppService.PayLiquidation(id, request.Voucher, paymentDate);
             return Ok();
         }
 
-        [HttpPost("{id}/anulate")]
-        public async Task<IActionResult> AnulateLiquidation([FromRoute] int id)
+        [HttpPost("{id}/cancel")]
+        public async Task<IActionResult> CancelLiquidation([FromRoute] int id)
         {
-            //await _liquidationAppService.AnulateLiquidation(id);
+            await _liquidationAppService.CancelLiquidation(id);
             return Ok();
         }
         #endregion

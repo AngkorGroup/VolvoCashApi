@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using VolvoCash.Data.MainContext;
@@ -9,9 +10,10 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201125140927_AddCountAndBankToLiquidationEntity")]
+    partial class AddCountAndBankToLiquidationEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1082,7 +1084,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .HasColumnType("NUMBER(10)")
                         .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BankAccountId")
+                    b.Property<int?>("BankId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("ChargesCount")
@@ -1117,7 +1119,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BankAccountId");
+                    b.HasIndex("BankId");
 
                     b.HasIndex("DealerId");
 
@@ -1423,7 +1425,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .IsRequired();
 
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAgg.Bank", "Bank")
-                        .WithMany("BankAccounts")
+                        .WithMany()
                         .HasForeignKey("BankId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1889,9 +1891,9 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg.Liquidation", b =>
                 {
-                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccount", "BankAccount")
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAgg.Bank", "Bank")
                         .WithMany()
-                        .HasForeignKey("BankAccountId");
+                        .HasForeignKey("BankId");
 
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.DealerAgg.Dealer", "Dealer")
                         .WithMany()
