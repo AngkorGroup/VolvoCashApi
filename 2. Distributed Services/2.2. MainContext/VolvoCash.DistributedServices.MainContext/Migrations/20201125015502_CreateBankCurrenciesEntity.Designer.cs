@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using VolvoCash.Data.MainContext;
@@ -9,9 +10,10 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201125015502_CreateBankCurrenciesEntity")]
+    partial class CreateBankCurrenciesEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -602,6 +604,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<int?>("LiquidationId")
+                        .IsRequired()
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("OperationCode")
@@ -1620,7 +1623,8 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg.Liquidation", "Liquidation")
                         .WithMany("Charges")
                         .HasForeignKey("LiquidationId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.OwnsOne("VolvoCash.Domain.MainContext.Aggregates.CardAgg.Money", "Amount", b1 =>
                         {

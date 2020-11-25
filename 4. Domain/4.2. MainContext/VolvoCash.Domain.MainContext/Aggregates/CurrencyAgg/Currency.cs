@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
@@ -21,6 +23,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg
         public DateTime? ArchiveAt { get; set; }
 
         public Status Status { get; set; }
+
+        public virtual ICollection<BankCurrency> BankCurrencies { get; } = new List<BankCurrency>();
         #endregion
 
         #region Constructor
