@@ -177,9 +177,10 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                         TPCode = batchTPCode,
                     };
 
+                    var currencyDTO = currency.ProjectedAs<CurrencyDTO>();
                     var batch = new BatchDTO()
                     {
-                        Amount = new MoneyDTO(currency.ProjectedAs<CurrencyDTO>(), batchAmount),
+                        Amount = new MoneyDTO() { Currency = currencyDTO, CurrencyId = currencyDTO.Id, Value = batchAmount },
                         TPContractDate = contractDate,
                         TPChasis = chasisNumber,
                         TPInvoiceDate = invoiceDate,

@@ -21,11 +21,8 @@ namespace VolvoCash.Application.MainContext.DTO.Common
         #endregion
 
         #region Constructor
-        public MoneyDTO(CurrencyDTO currency, double value)
+        public MoneyDTO()
         {
-            Currency = currency;
-            CurrencyId = currency.Id;
-            Value = value;
         }
         #endregion
     }
