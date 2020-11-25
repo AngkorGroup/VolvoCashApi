@@ -52,7 +52,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
         public async Task<ActionResult> AddCharge([FromBody] ChargeDTO request)
         {
             request.CashierId = int.Parse(_applicationUser.GetUserName());
-            request.CardId = JsonConvert.DeserializeObject<CardDTO>(CryptoMethods.DecryptString(request.CardToken)).Id;
+            var card = JsonConvert.DeserializeObject<CardDTO>(CryptoMethods.DecryptString(request.CardToken));
+            request.CardId = card.Id;
+            request.Amount.CurrencyId = card.CurrencyId;
             var charge = await _chargeAppService.AddCharge(request);
             return Ok(charge);
         }

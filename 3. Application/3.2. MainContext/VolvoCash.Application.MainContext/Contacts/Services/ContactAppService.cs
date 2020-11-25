@@ -100,7 +100,9 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
                 pageIndex,
                 pageLength,
                 c => c.LastName,
-                true);
+                true,
+                includeProperties : "DocumentType"
+                );
 
             if (contacts != null && contacts.Any())
             {

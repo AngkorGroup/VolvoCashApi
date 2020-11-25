@@ -67,7 +67,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
         {
             var client = (await _clientRepository.FilterAsync(
                 filter: c => c.Id == id,
-                includeProperties: "Contacts.Cards.CardType"
+                includeProperties: "Contacts.Cards.CardType.Currency"
             )).FirstOrDefault();
 
             if (client != null)
