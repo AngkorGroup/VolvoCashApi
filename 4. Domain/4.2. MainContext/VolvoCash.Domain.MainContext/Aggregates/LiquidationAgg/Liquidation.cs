@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
         public virtual Dealer Dealer { get; set; }
 
         public LiquidationStatus LiquidationStatus { get; set; }
+
+        public DateTime? PaymentDate { get; set; }
+
+        public string Voucher { get; set; }
 
         public virtual ICollection<Charge> Charges { get; set; } = new List<Charge>();
         #endregion

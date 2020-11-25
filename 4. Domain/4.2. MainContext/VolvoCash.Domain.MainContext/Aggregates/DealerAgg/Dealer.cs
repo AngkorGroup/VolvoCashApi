@@ -71,7 +71,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
         #endregion
 
         #region Public Methods
-        // public BankAccount GetBankAccount()
+        // public BankAccount GetBankAccount(int bankId)
         // {
 
         // }
