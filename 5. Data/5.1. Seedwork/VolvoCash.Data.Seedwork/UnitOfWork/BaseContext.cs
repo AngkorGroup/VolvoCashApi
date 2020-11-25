@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Security.Claims;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using VolvoCash.Domain.Seedwork;
 using VolvoCash.CrossCutting.NetFramework.Identity;
+using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Data.Seedwork.UnitOfWork
 {

@@ -73,7 +73,7 @@ namespace VolvoCash.Application.MainContext.Transfers.Services
             }
 
             var destinyContact = await _contactRepository.GetContactById(transferDTO.DestinyCard.ContactId);
-            var transferCurrency = _currencyRepository.Filter(c => c.Id == transferDTO.Amount.Currency.Id).FirstOrDefault();
+            var transferCurrency = _currencyRepository.Filter(c => c.Id == transferDTO.Amount.CurrencyId).FirstOrDefault();
             var amountToTransfer = new Money(transferCurrency, transferDTO.Amount.Value);
             var transfer = await _transferService.PerformTransfer(originCard, destinyContact, amountToTransfer);
 

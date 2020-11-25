@@ -111,7 +111,8 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             var card = _cardRepository.Filter(filter: c => c.Id == chargeDTO.CardId, includeProperties: "Contact.Client,CardBatches.Batch,CardType").FirstOrDefault();
             var displayName = _resources.GetStringResource(LocalizationKeys.Application.messages_CreateChargeDisplayName);
             displayName = string.Format(displayName, card.Contact.Client.Ruc, card.Contact.FullName);
-            var chargeCurrency = _currencyRepository.Filter(c => c.Id == chargeDTO.Amount.Currency.Id).FirstOrDefault();
+
+            var chargeCurrency = _currencyRepository.Filter(c => c.Id == chargeDTO.Amount.CurrencyId).FirstOrDefault();
 
             var charge = new Charge(
                 chargeDTO.CashierId,

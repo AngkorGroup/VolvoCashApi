@@ -48,7 +48,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public virtual Cashier Cashier { get; set; }
 
-        [Required]
         [ForeignKey("Liquidation")]
         public int? LiquidationId { get; set; }
 
