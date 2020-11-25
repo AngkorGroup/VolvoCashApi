@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VolvoCash.CrossCutting.NetFramework.Identity;
 using VolvoCash.Data.Seedwork.UnitOfWork;
-using VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
@@ -16,6 +15,7 @@ using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 
 namespace VolvoCash.Data.MainContext
 {

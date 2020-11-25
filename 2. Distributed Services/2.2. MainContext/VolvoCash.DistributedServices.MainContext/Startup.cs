@@ -24,6 +24,7 @@ using VolvoCash.Application.MainContext.Clients.Services;
 using VolvoCash.Application.MainContext.Contacts.Services;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DocumentTypes.Services;
+using VolvoCash.Application.MainContext.Liquidations.Services;
 using VolvoCash.Application.MainContext.Movements.Services;
 using VolvoCash.Application.MainContext.RechargeTypes.Services;
 using VolvoCash.Application.MainContext.Sectors.Services;
@@ -43,7 +44,7 @@ using VolvoCash.Data.MainContext.Repositories;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.DistributedServices.Seedwork.Settings;
 using VolvoCash.DistributedServices.Seedwork.Utils;
-using VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
@@ -153,6 +154,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IRechargeTypeAppService, RechargeTypeAppService>();
             services.AddScoped<IDocumentTypeAppService, DocumentTypeAppService>();
             services.AddScoped<IBankAccountTypeAppService, BankAccountTypeAppService>();
+            services.AddScoped<ILiquidationAppService, LiquidationAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();
