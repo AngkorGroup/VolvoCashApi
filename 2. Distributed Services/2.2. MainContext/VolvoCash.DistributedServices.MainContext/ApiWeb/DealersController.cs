@@ -47,22 +47,14 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpGet("{id}/charges")]
-        public async Task<ActionResult> GetDealerCharges([FromRoute] int id,[FromQuery] string beginDate = "", [FromQuery] string endDate = "",
-                                                        [FromQuery] int? cashierId =null, [FromQuery] string cardTypes = ""
-                                                    )
+        public async Task<ActionResult> GetDealerCharges([FromRoute] int id,[FromQuery] string beginDate = "",
+                                                        [FromQuery] string endDate = "", [FromQuery] int? cashierId =null,
+                                                        [FromQuery] string cardTypes = "")
         {
-            DateTime? bDate = null;
-            if (!string.IsNullOrEmpty(beginDate))
-            {
-                bDate =  DateTime.ParseExact(beginDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            }
-            DateTime? eDate = null;
-            if (!string.IsNullOrEmpty(endDate))
-            {
-                eDate = DateTime.ParseExact(endDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            }
+            var _beginDate = DateTimeParser.TryParseString(beginDate, DateTimeFormats.DateFormat);
+            var _endDate = DateTimeParser.TryParseString(endDate, DateTimeFormats.DateFormat);
             var cardTypesList = string.IsNullOrEmpty(cardTypes) ? new List<int>() : cardTypes.Split(",").Select(s => int.Parse(s)).ToList();
-            var charges = await _dealerAppService.GetDealerCharges(id, bDate, eDate, cashierId, cardTypesList);
+            var charges = await _dealerAppService.GetDealerCharges(id, _beginDate, _endDate, cashierId, cardTypesList);
             return Ok(charges);
         }
 

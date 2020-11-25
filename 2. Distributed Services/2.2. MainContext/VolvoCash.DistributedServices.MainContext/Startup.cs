@@ -55,6 +55,7 @@ using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
@@ -165,6 +166,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICardChargeService, CardChargeService>();
             services.AddScoped<INotificationChargeService, NotificationChargeService>();
             services.AddScoped<IBankLiquidationService, BankLiquidationService>();
+            services.AddScoped<ILiquidationService, LiquidationService>();
 
             // Repositories
             services.AddScoped<ISMSCodeRepository, SMSCodeRepository>();
@@ -191,6 +193,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
             services.AddScoped<IBankAccountTypeRepository, BankAccountTypeRepository>();
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+            services.AddScoped<ILiquidationRepository, LiquidationRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

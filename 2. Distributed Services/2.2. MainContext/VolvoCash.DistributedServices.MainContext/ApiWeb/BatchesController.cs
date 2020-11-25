@@ -29,17 +29,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         [HttpGet]
         public async Task<ActionResult> GetBatches([FromQuery] string beginDate = "", [FromQuery] string endDate = "")
         {
-            DateTime? bDate = null;
-            if (!string.IsNullOrEmpty(beginDate))
-            {
-                bDate = DateTime.ParseExact(beginDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            }
-            DateTime? eDate = null;
-            if (!string.IsNullOrEmpty(endDate))
-            {
-                eDate = DateTime.ParseExact(endDate, DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            }
-            var loads = await _batchAppService.GetBatches(bDate, eDate);
+            var _beginDate = DateTimeParser.TryParseString(beginDate, DateTimeFormats.DateFormat);
+            var _endDate = DateTimeParser.TryParseString(endDate, DateTimeFormats.DateFormat);
+            var loads = await _batchAppService.GetBatches(_beginDate, _endDate);
             return Ok(loads);
         }
 
