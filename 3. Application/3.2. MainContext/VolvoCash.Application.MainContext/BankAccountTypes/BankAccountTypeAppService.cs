@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.BankAccountTypes;
 using VolvoCash.Application.Seedwork;
-using VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.BankAccountTypes.Services

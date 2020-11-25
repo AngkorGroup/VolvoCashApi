@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -45,6 +46,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
         public DateTime? ArchiveAt { get; set; }
 
         public virtual ICollection<Cashier> Cashiers { get; set; }
+        public virtual ICollection<BankAccount> BankAccounts { get; set; }
         #endregion
 
         #region Constructor

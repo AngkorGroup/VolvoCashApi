@@ -5,7 +5,7 @@ using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
-namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg
+namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg
 {
     public class BankAccountType : AuditableEntityWithKey<int>
     {

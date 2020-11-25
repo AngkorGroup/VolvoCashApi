@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using VolvoCash.Data.Seedwork;
-using VolvoCash.Domain.MainContext.Aggregates.BankAccountTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 
 namespace VolvoCash.Data.MainContext.Repositories
 {
