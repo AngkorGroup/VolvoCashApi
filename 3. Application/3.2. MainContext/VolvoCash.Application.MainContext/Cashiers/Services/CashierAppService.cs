@@ -62,7 +62,7 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
             var existingCashier =  _cashierRepository.Filter(c => (c.Email == cashierDTO.Email || c.Phone == cashierDTO.Phone) && c.ArchiveAt == null).FirstOrDefault();
             if (existingCashier != null)
             {
-                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierAlreadyExists));
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_AdminAlreadyExists));
             }
             cashierDTO.Password = RandomGenerator.RandomDigits(6);
             var cashier = new Cashier(dealer, cashierDTO.FirstName, cashierDTO.LastName, cashierDTO.Password, cashierDTO.Phone, cashierDTO.TPCode, cashierDTO.Email, cashierDTO.Imei);
@@ -81,9 +81,9 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
             }
 
             var existingCashier = _cashierRepository.Filter(c => (c.Email == cashierDTO.Email || c.Phone == cashierDTO.Phone) && c.ArchiveAt == null).FirstOrDefault();
-            if (existingCashier.Id != cashierDTO.Id)
+            if (existingCashier != null  && existingCashier.Id != cashierDTO.Id)
             {
-                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierAlreadyExists));
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_AdminAlreadyExists));
             }
 
             cashier.Email = cashierDTO.Email;
