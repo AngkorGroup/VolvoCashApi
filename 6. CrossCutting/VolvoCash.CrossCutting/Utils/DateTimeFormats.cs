@@ -7,5 +7,6 @@ namespace VolvoCash.CrossCutting.Utils
         public static string DateLiterallyFormat = "dd MMMM yyyy";
         public static string TimeShortFormat = "hh:mm tt";
         public static string TimeFormat = "HH:mm:ss";
+        public static string BankDateFormat = "yyyyMMdd";
     }
 }
