@@ -23,6 +23,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAgg
 
         public virtual ICollection<BankDocumentType> BankDocumentTypes { get; } = new List<BankDocumentType>();
         public virtual ICollection<BankBankAccountType> BankBankAccountTypes { get; } = new List<BankBankAccountType>();
+        public virtual ICollection<BankCurrency> BankCurrencies { get; } = new List<BankCurrency>();
         #endregion
 
         #region Constructor

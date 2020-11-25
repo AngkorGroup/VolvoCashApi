@@ -49,6 +49,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<BankAccountType> BankAccountTypes { get; set; }
         public DbSet<BankDocumentType> BankDocumentTypes { get; set; }
         public DbSet<BankBankAccountType> BankBankAccountTypes { get; set; }
+        public DbSet<BankCurrency> BankCurrencies { get; set; }
         #endregion
 
         #region Constructor
@@ -152,6 +153,18 @@ namespace VolvoCash.Data.MainContext
                 .HasMany(bat => bat.BankBankAccountTypes)
                 .WithOne(bbat => bbat.BankAccountType)
                 .HasForeignKey(bbat => bbat.BankAccountTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Bank>()
+                .HasMany(b => b.BankCurrencies)
+                .WithOne(bc => bc.Bank)
+                .HasForeignKey(bc => bc.BankId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Currency>()
+                .HasMany(c => c.BankCurrencies)
+                .WithOne(bc => bc.Currency)
+                .HasForeignKey(bc => bc.CurrencyId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Movement>()
