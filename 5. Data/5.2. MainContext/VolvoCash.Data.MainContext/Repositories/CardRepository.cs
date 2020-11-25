@@ -20,12 +20,12 @@ namespace VolvoCash.Data.MainContext.Repositories
         #region Public Methods
         public async Task<Card> GetCardByIdWithBatchesAsync(int id)
         {
-            return (await FilterAsync(filter: c => c.Id == id, includeProperties: "Contact.Client,CardBatches.Batch,CardType")).FirstOrDefault();
+            return (await FilterAsync(filter: c => c.Id == id, includeProperties: "Contact.Client,CardBatches.Balance.Currency,CardBatches.Batch.Balance.Currency,CardType,Currency")).FirstOrDefault();
         }
 
         public async Task<Card> GetCardByIdWithBatchesAsync(int id, string phone)
         {
-            return (await FilterAsync(filter: c => c.Id == id && c.Contact.Phone == phone && c.Contact.Status == Status.Active, includeProperties: "Contact.Client,CardBatches.Batch,CardType")).FirstOrDefault(); 
+            return (await FilterAsync(filter: c => c.Id == id && c.Contact.Phone == phone && c.Contact.Status == Status.Active, includeProperties: "Contact.Client,CardBatches.Batch.Balance.Currency,CardType,Currency")).FirstOrDefault(); 
         }
 
         public async Task<IEnumerable<Card>> GetCardsByContactId(int contactId)

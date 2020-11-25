@@ -34,7 +34,8 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
 
         #region Public Methods
         [HttpGet]
-        public async Task<ActionResult> GetCharges([FromQuery] ChargeType chargeType, [FromQuery] int pageIndex = 0, [FromQuery] int pageLength = 10)
+        public async Task<ActionResult> GetCharges([FromQuery] ChargeType chargeType,
+                                                   [FromQuery] int pageIndex = 0, [FromQuery] int pageLength = 100)
         {
             var charges = await _chargeAppService.GetChargesByCashierId(int.Parse(_applicationUser.GetUserName()), chargeType, pageIndex, pageLength);
             return Ok(charges);

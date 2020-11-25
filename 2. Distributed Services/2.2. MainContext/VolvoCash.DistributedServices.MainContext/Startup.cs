@@ -22,6 +22,7 @@ using VolvoCash.Application.MainContext.Cashiers.Services;
 using VolvoCash.Application.MainContext.Charges.Services;
 using VolvoCash.Application.MainContext.Clients.Services;
 using VolvoCash.Application.MainContext.Contacts.Services;
+using VolvoCash.Application.MainContext.Currencies.Services;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DocumentTypes.Services;
 using VolvoCash.Application.MainContext.Liquidations.Services;
@@ -155,6 +156,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IDocumentTypeAppService, DocumentTypeAppService>();
             services.AddScoped<IBankAccountTypeAppService, BankAccountTypeAppService>();
             services.AddScoped<ILiquidationAppService, LiquidationAppService>();
+            services.AddScoped<ICurrencyAppService, CurrencyAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();

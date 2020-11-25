@@ -24,7 +24,7 @@ namespace VolvoCash.Application.MainContext.Currencies.Services
         #region ApiWeb Public Methods
         public async Task<List<CurrencyDTO>> GetCurrencies(bool onlyActive)
         {
-            var currencies = await _currencyRepository.FilterAsync(filter: c => !onlyActive || c.Status == Status.Active);
+            var currencies = await _currencyRepository.FilterAsync(filter: c => !onlyActive || c.Status == Status.Active,includeProperties:"Currency");
             return currencies.ProjectedAsCollection<CurrencyDTO>();
         }
 

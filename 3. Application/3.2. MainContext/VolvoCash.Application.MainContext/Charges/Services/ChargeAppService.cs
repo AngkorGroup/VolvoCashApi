@@ -67,8 +67,8 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         {
             var charge = _chargeRepository.Filter(
                 filter: c => c.Id == chargeId && c.Card.Contact.Phone == phone,
-                includeProperties: "Card.Contact.Client,Card.CardType,Movements,Cashier").FirstOrDefault();
-            charge.Card.CardBatches = _cardBatchRepository.Filter(filter: c => c.CardId == charge.CardId, includeProperties: "Batch").ToList();
+                includeProperties: "Card.Contact.Client,Card.CardType,Movements,Cashier,Amount.Currency").FirstOrDefault();
+            charge.Card.CardBatches = _cardBatchRepository.Filter(filter: c => c.CardId == charge.CardId, includeProperties: "Batch.Balance.Currency,Balance.Currency").ToList();
             if (charge == null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_ChargeNotFound));
@@ -102,7 +102,8 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region ApiPOS Public Methods
         public async Task<List<ChargeListDTO>> GetChargesByCashierId(int id, ChargeType chargeType, int pageIndex, int pageLength)
         {
-            var charges = await _chargeRepository.GetFilteredAsync(c => c.Cashier.Id == id && c.ChargeType == chargeType, pageIndex, pageLength, c => c.CreatedAt, false);
+            var charges = await _chargeRepository.GetFilteredAsync(c => c.Cashier.Id == id && c.ChargeType == chargeType,
+                                                                        pageIndex, pageLength, c => c.CreatedAt, false);
             return charges.ProjectedAsCollection<ChargeListDTO>();
         }
 
@@ -122,6 +123,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
                 displayName,
                 chargeDTO.Description
             );
+
             _chargeRepository.Add(charge);
             await _chargeRepository.UnitOfWork.CommitAsync();
             await _notificationChargeService.SendNotificationToContact(charge);

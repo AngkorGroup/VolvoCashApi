@@ -166,6 +166,11 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     if (currency == null)
                         throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidCurrencyCode));
 
+                    var existingBatch = _batchRepository.Filter(b => b.TPContractBatchNumber == batchTPCode && b.TPChasis == chasisNumber).FirstOrDefault();
+
+                    if (existingBatch != null)
+                        throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BatchAlreadyExists));
+
                     var card = new CardDTO()
                     {
                         CardTypeId = cardType.Id,
@@ -341,7 +346,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             }
             batchDTO.TPContractReason += " " + batchReason;
             var expire = DateTime.Now.AddMonths(cardType.Term);
-            var batchCurrency = _currencyRepository.Filter(c => c.Id == batchDTO.Amount.Currency.Id).FirstOrDefault();
+            var batchCurrency = _currencyRepository.Filter(c => c.Id == batchDTO.Amount.CurrencyId).FirstOrDefault();
 
             var batch = new Batch(
                 mainContact,

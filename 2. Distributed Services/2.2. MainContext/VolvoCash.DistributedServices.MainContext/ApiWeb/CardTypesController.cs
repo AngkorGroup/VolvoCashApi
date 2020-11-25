@@ -30,6 +30,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             entityDTO.Status = Status.Active;
             return await _service.AddAsync(entityDTO);
         }
+
         [HttpDelete("{id}")]
         public override async Task Delete([FromRoute] int id)
         {

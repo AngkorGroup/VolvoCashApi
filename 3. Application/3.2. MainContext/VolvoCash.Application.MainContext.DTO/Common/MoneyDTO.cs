@@ -15,6 +15,8 @@ namespace VolvoCash.Application.MainContext.DTO.Common
 
         public string CurrencySymbol { get => Currency?.Symbol ?? (CurrencyId == 1 ? "US$" : "S/."); }
 
+        public string CurrencyCode { get => Currency?.TPCode ?? (CurrencyId == 1 ? "USD" : "PEN"); }
+
         public string Label { get => CurrencySymbol + " " + string.Format("{0:#,0.00}", Value); }
         #endregion
 
@@ -22,6 +24,7 @@ namespace VolvoCash.Application.MainContext.DTO.Common
         public MoneyDTO(CurrencyDTO currency, double value)
         {
             Currency = currency;
+            CurrencyId = currency.Id;
             Value = value;
         }
         #endregion

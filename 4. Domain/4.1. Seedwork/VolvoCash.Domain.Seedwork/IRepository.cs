@@ -228,7 +228,12 @@ namespace VolvoCash.Domain.Seedwork
         /// <param name="orderByExpression">Order by expression for this query</param>
         /// <param name="ascending">Specify if order is ascending</param>
         /// <returns>List of selected elements</returns>
-        IEnumerable<TEntity> GetFiltered<KProperty>(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageCount, Expression<Func<TEntity, KProperty>> orderByExpression, bool ascending);
+        IEnumerable<TEntity> GetFiltered<KProperty>(Expression<Func<TEntity, bool>> filter,
+            int pageIndex,
+            int pageCount, 
+            Expression<Func<TEntity, KProperty>> orderByExpression, 
+            bool ascending,
+            string includeProperties = "");
 
         /// <summary>
         /// Get  elements of type TEntity in repository - Async
@@ -238,7 +243,10 @@ namespace VolvoCash.Domain.Seedwork
         /// <param name="orderByExpression">Order by expression for this query</param>
         /// <param name="ascending">Specify if order is ascending</param>
         /// <returns>List of selected elements</returns>
-        Task<IEnumerable<TEntity>> GetFilteredAsync<KProperty>(Expression<Func<TEntity, bool>> filter, int pageIndex, int pageCount, Expression<Func<TEntity, KProperty>> orderByExpression, bool ascending);
+        Task<IEnumerable<TEntity>> GetFilteredAsync<KProperty>(Expression<Func<TEntity, bool>> filter,
+            int pageIndex, int pageCount, Expression<Func<TEntity, KProperty>> orderByExpression, 
+            bool ascending,
+            string includeProperties = "");
 
         /// <summary>
         /// Refresh entity. Note. This generates adhoc queries.
