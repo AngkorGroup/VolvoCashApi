@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using VolvoCash.Data.MainContext;
@@ -9,9 +10,10 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201125053218_AddBankAccountTypeToBankAccountNullable")]
+    partial class AddBankAccountTypeToBankAccountNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<DateTime?>("ArchiveAt")
                         .HasColumnType("TIMESTAMP(7)");
 
-                    b.Property<int>("BankAccountTypeId")
+                    b.Property<int?>("BankAccountTypeId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("BankId")
@@ -1395,9 +1397,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 {
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccountType", "BankAccountType")
                         .WithMany()
-                        .HasForeignKey("BankAccountTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BankAccountTypeId");
 
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAgg.Bank", "Bank")
                         .WithMany()

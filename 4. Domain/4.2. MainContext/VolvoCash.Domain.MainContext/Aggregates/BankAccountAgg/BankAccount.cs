@@ -1,4 +1,6 @@
 using System;
+
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
@@ -19,6 +21,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg
         public string CCI { get; set; }
 
         public bool IsDefault { get; set; }
+
+        [Required]
+        [ForeignKey("BankAccountType")]
+        public int BankAccountTypeId { get; set; }
+
+        public virtual BankAccountType BankAccountType { get; set; }
 
         [Required]
         [ForeignKey("Bank")]
