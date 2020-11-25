@@ -8,7 +8,7 @@ using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.Banks.Services
 {
-    public class BankAppService :  IBankAppService
+    public class BankAppService : IBankAppService
     {
         #region Members
         private readonly IBankRepository _bankRepository;
@@ -24,7 +24,7 @@ namespace VolvoCash.Application.MainContext.Banks.Services
         #region ApiWeb Public Methods
         public async Task<List<BankDTO>> GetBanks(bool onlyActive)
         {
-            var banks =  await _bankRepository.FilterAsync(filter: b=> !onlyActive || b.Status == Status.Active);
+            var banks = await _bankRepository.FilterAsync(filter: b => !onlyActive || b.Status == Status.Active);
             return banks.ProjectedAsCollection<BankDTO>();
         }
 
@@ -35,7 +35,7 @@ namespace VolvoCash.Application.MainContext.Banks.Services
         }
 
         public async Task<BankDTO> AddAsync(BankDTO bankDTO)
-        {           
+        {
             var bank = new Bank(bankDTO.Name, bankDTO.Abbreviation, bankDTO.TPCode);
             _bankRepository.Add(bank);
             await _bankRepository.UnitOfWork.CommitAsync();

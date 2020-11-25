@@ -48,7 +48,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public virtual Cashier Cashier { get; set; }
 
-        [Required]
         [ForeignKey("Liquidation")]
         public int? LiquidationId { get; set; }
 
@@ -71,7 +70,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             ChargeType = chargeType;
             Description = description;
             Status = ChargeStatus.Pending;
-            var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON,this);
+            var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON, this);
             movement.CardId = card.Id;
             Movements.Add(movement);
             if (!card.CanWithdraw(amount))
