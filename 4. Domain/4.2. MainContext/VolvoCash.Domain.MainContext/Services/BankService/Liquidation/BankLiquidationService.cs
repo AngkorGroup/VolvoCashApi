@@ -66,6 +66,7 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             if (dealerBankAccount == null)
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_BankAccountIsNull));
 
+            liquidation.SetDealerBankAccount(dealerBankAccount);
             var detailIndicator = _detailIndicator;
             var bankAccountType = dealerBankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bat => bat.BankId == bankAccount.Bank.Id).Equivalence.PadRight(1);
             var bankAccountNumber = dealerBankAccount.Account.PadRight(20);
