@@ -233,7 +233,10 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             var rowIndex = 1;
             foreach (var line in ReadLines(stream, Encoding.UTF8))
             {
-                loads.Add(GetLoadFromLine(line, rowIndex));
+                if (!string.IsNullOrEmpty(line?.Trim()))
+                {
+                    loads.Add(GetLoadFromLine(line, rowIndex));
+                }                
                 rowIndex++;
             }
             return loads;
@@ -285,6 +288,16 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             var batchErrors = await _batchErrorRepository.FilterAsync(orderBy: beq => beq.OrderByDescending(be => be.CreatedAt));
             return batchErrors.ProjectedAsCollection<BatchErrorDTO>();
+        }
+
+        public List<Load> GetLoadsFromFileStream(string fileName, Stream stream)
+        {
+            if (stream == null)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BatchFileIsNull));
+            }
+            var loads = GetLoadsFromStream(stream);
+            return loads;
         }
 
         public async Task<List<BatchErrorDTO>> PerformLoadsFromFileStreamAsync(string fileName, Stream stream)
