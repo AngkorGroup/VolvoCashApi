@@ -8,6 +8,5 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
     public interface ILiquidationService
     {
         Task<IEnumerable<Liquidation>> GenerateLiquidationsAsync();
-       
     }
 }

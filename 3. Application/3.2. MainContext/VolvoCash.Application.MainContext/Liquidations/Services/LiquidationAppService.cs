@@ -68,7 +68,7 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
 
         public async Task<byte[]> ScheduleLiquidations(int bankId, int bankAccountId, List<int> liquidationsId)
         {
-            var bankAccount = _bankAccountRepository.Filter(ba=>ba.BankId == bankId && ba.Id == bankAccountId && ba.DealerId == null,includeProperties : "BankAccountType,Bank").FirstOrDefault();
+            var bankAccount = _bankAccountRepository.Filter(ba => ba.BankId == bankId && ba.Id == bankAccountId && ba.DealerId == null, includeProperties: "BankAccountType,Bank").FirstOrDefault();
 
             if (bankAccount == null)
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BankAccountNotFound));
@@ -89,7 +89,7 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
                 liquidations.Add(liquidation);
             }
 
-            var bankFile =_bankLiquidationService.GenerateBankFile(bankAccount, liquidations);
+            var bankFile = _bankLiquidationService.GenerateBankFile(bankAccount, liquidations);
 
             foreach (var liquidation in liquidations)
             {
@@ -107,7 +107,7 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidLiquidationStatusForPay));
             }
-            liquidation.PayLiquidation(voucher,paymentDate);
+            liquidation.PayLiquidation(voucher, paymentDate);
             await _liquidationRepository.UnitOfWork.CommitAsync();
         }
 
