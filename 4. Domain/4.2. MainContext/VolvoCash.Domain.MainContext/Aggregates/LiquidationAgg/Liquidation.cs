@@ -29,6 +29,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
 
         public virtual BankAccount BankAccount { get; set; }
 
+        public string CompanyBankAccount { get; set; }
+
+        public string DealerBankAccount { get; set; }
+
         public LiquidationStatus LiquidationStatus { get; set; }
 
         public DateTime? PaymentDate { get; set; }
@@ -38,7 +42,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
         public string Voucher { get; set; }
 
         public virtual ICollection<Charge> Charges { get; set; } = new List<Charge>();
-       
+
         #endregion
 
         #region Constructor
@@ -72,6 +76,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
         {
             BankAccount = bankAccount;
             LiquidationStatus = LiquidationStatus.Scheduled;
+            CompanyBankAccount = bankAccount.ToString();
+        }
+
+        public void SetDealerBankAccount(BankAccount dealerBankAccount)
+        {
+            DealerBankAccount = dealerBankAccount.ToString();
         }
 
         public void PayLiquidation(string voucher, DateTime paymentDate)
@@ -79,7 +89,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
             Voucher = voucher;
             PaymentDate = paymentDate;
             LiquidationStatus = LiquidationStatus.Paid;
-            foreach(var charge in Charges)
+            foreach (var charge in Charges)
             {
                 charge.HasBeenRefunded = true;
             }
@@ -87,10 +97,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
 
         public void CancelLiquidation()
         {
-           foreach(var charge in Charges)
-           {
+            foreach (var charge in Charges)
+            {
                 charge.LiquidationId = null;
-           }
+            }
             LiquidationStatus = LiquidationStatus.Canceled;
         }
         #endregion

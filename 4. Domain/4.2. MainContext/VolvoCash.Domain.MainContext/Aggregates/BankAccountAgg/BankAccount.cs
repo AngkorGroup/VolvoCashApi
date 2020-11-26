@@ -18,7 +18,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg
 
         [MaxLength(40)]
         public string CCI { get; set; }
-        
+
         [Required]
         [ForeignKey("Currency")]
         public int CurrencyId { get; set; }
@@ -72,6 +72,13 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg
             BankId = bankId;
             DealerId = dealerId;
             Status = Status.Active;
+        }
+        #endregion
+
+        #region Public Methods
+        public override string ToString()
+        {
+            return $"{Bank.Abbreviation}: {BankAccountType.Name} {Currency.Abbreviation} {Account} CCI:{CCI}";
         }
         #endregion
     }
