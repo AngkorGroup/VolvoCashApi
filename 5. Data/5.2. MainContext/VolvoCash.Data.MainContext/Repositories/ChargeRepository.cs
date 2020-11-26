@@ -21,5 +21,10 @@ namespace VolvoCash.Data.MainContext.Repositories
             return await FilterAsync(filter: c => c.LiquidationId == null && c.Status == ChargeStatus.Accepted
             && !c.HasBeenRefunded, includeProperties: "Cashier.Dealer,Amount.Currency");
         }
+
+        public async Task<IEnumerable<Charge>> GetChargesByLiquidationId(int liquidationId)
+        {
+            return await FilterAsync(filter: c => c.LiquidationId == liquidationId, includeProperties: "Cashier.Dealer,Card.CardType,Card.Contact.Client");
+        }
     }
 }

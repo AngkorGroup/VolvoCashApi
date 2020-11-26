@@ -7,6 +7,7 @@ using VolvoCash.Application.MainContext.DTO.Liquidations;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.BankService;
@@ -20,6 +21,7 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
         private readonly ILiquidationRepository _liquidationRepository;
         private readonly IBankLiquidationService _bankLiquidationService;
         private readonly IBankAccountRepository _bankAccountRepository;
+        private readonly IChargeRepository _chargeRepository;
         private readonly ILocalization _resources;
         #endregion
 
@@ -27,12 +29,14 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
         public LiquidationAppService(ILiquidationRepository liquidationRepository,
                                      ILiquidationService liquidationService,
                                      IBankLiquidationService bankLiquidationService,
-                                     IBankAccountRepository bankAccountRepository)
+                                     IBankAccountRepository bankAccountRepository,
+                                     IChargeRepository chargeRepository)
         {
             _liquidationService = liquidationService;
             _liquidationRepository = liquidationRepository;
             _bankLiquidationService = bankLiquidationService;
             _bankAccountRepository = bankAccountRepository;
+            _chargeRepository = chargeRepository;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
@@ -52,7 +56,7 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
 
         public async Task<List<ChargeListDTO>> GetLiquidationCharges(int id)
         {
-            var charges = await _liquidationRepository.GetLiquidationChargesAsync(id);
+            var charges = await _chargeRepository.GetChargesByLiquidationId(id);
             return charges.ProjectedAsCollection<ChargeListDTO>();
         }
 

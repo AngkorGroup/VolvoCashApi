@@ -49,12 +49,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                 filter: l => l.Id == id,
                 includeProperties: "Dealer,Amount.Currency,BankAccount.Bank,Charges",
                 orderBy: lq => lq.OrderByDescending(l => l.Id))).FirstOrDefault();
-        }
-
-        public async Task<IEnumerable<Charge>> GetLiquidationChargesAsync(int id)
-        {
-            return (await FilterAsync(filter: l => l.Id == id, includeProperties: "Charges")).FirstOrDefault().Charges;
-        }        
+        }               
         #endregion
     }
 }

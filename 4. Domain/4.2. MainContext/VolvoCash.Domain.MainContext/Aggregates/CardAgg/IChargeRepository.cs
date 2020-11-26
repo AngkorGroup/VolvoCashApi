@@ -7,5 +7,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
     public interface IChargeRepository : IRepository<Charge>
     {
         Task<IEnumerable<Charge>> GetChargesToLiquidate();
+
+        Task<IEnumerable<Charge>> GetChargesByLiquidationId(int liquidationId);
     }
 }
