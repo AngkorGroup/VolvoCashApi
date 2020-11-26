@@ -74,9 +74,17 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
         #region Public Methods
         public BankAccount GetBankAccount(int bankId, int currencyId)
         {
-            return BankAccounts.First(ba => ba.BankId == bankId 
-                                   && ba.CurrencyId == currencyId
-                                   && ba.IsDefault);
+            var defaultBankAccount = BankAccounts.First(ba => ba.BankId == bankId && ba.CurrencyId == currencyId && ba.IsDefault);
+
+            if (defaultBankAccount == null)
+            {
+                defaultBankAccount = BankAccounts.First(ba => ba.BankId == bankId && ba.CurrencyId == currencyId);
+                if (defaultBankAccount == null)
+                {
+                    defaultBankAccount = BankAccounts.First(ba => ba.CurrencyId == currencyId);
+                }
+            }
+            return defaultBankAccount;
         }
         #endregion
     }

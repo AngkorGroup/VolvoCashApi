@@ -69,12 +69,12 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             liquidation.SetDealerBankAccount(dealerBankAccount);
             var detailIndicator = _detailIndicator;
             var bankAccountType = dealerBankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bat => bat.BankId == bankAccount.Bank.Id).Equivalence.PadRight(1);
-            var bankAccountNumber = dealerBankAccount.Account.PadRight(20);
+            var bankAccountNumber = dealerBankAccount.Bank.Id == bankAccount.Bank.Id ? dealerBankAccount.Account.PadRight(20) : dealerBankAccount.CCI.PadRight(20);
             var paymentMethod = "1";
             var supplierDocumentTypeId = "6"; //TODO: Debería traerse del document Type, añadirlo en la tabla
             var supplierDocumentTypeNumber = liquidation.Dealer.Ruc.PadRight(12);
             var supplierDocumentCorrelative = "".PadRight(3);
-            var supplierName = liquidation.Dealer.Name.PadRight(75);
+            var supplierName = liquidation.Dealer.Name.PadRight(75).Substring(0, 75);
             var beneficiaryReference = $"Referencia Beneficiario {liquidation.Dealer.Ruc}".PadRight(40);
             var companyReference = $"Ref Emp {liquidation.Dealer.Ruc}".PadRight(20);
             var currencyPayment = liquidation.Amount.Currency.BankCurrencies.FirstOrDefault(bc => bc.BankId == bankAccount.Bank.Id).Equivalence.PadRight(4);
