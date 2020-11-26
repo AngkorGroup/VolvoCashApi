@@ -147,14 +147,14 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
         #endregion
 
         #region Public Methods
-        public byte[] GenerateBankFile(BankAccount bankAccount, List<Liquidation> liquidations)
+        public byte[] GenerateBankFile(BankAccount originBankAccount, List<Liquidation> liquidations)
         {
-            switch (bankAccount.Bank.Abbreviation)
+            switch (originBankAccount.Bank.Abbreviation)
             {
                 case BankNames.BCP:
-                    return GenerateBCPFile(bankAccount, liquidations);
+                    return GenerateBCPFile(originBankAccount, liquidations);
                 case BankNames.BBVA:
-                    return GenerateBBVAFile(bankAccount, liquidations);
+                    return GenerateBBVAFile(originBankAccount, liquidations);
                 default:
                     return null;
             }

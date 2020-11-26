@@ -72,10 +72,13 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
 
         public async Task<byte[]> ScheduleLiquidations(int bankId, int bankAccountId, List<int> liquidationsId)
         {
-            var bankAccount = _bankAccountRepository.Filter(ba => ba.BankId == bankId && ba.Id == bankAccountId && ba.DealerId == null,
-                                                            includeProperties: "BankAccountType.BankBankAccountTypes,Bank,Currency.BankCurrencies").FirstOrDefault();
+            var originBankAccount = _bankAccountRepository.Filter(ba => ba.BankId == bankId 
+                                                                && ba.Id == bankAccountId 
+                                                                && ba.DealerId == null,
+                                                            includeProperties: "BankAccountType.BankBankAccountTypes,Bank,Currency.BankCurrencies")
+                                                            .FirstOrDefault();
 
-            if (bankAccount == null)
+            if (originBankAccount == null)
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BankAccountNotFound));
 
             var liquidations = new List<Liquidation>();
@@ -94,11 +97,11 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
                 liquidations.Add(liquidation);
             }
 
-            var bankFile = _bankLiquidationService.GenerateBankFile(bankAccount, liquidations);
+            var bankFile = _bankLiquidationService.GenerateBankFile(originBankAccount, liquidations);
 
             foreach (var liquidation in liquidations)
             {
-                liquidation.ScheduleLiquidation(bankAccount);
+                liquidation.ScheduleLiquidation(originBankAccount);
             }
 
             await _liquidationRepository.UnitOfWork.CommitAsync();
