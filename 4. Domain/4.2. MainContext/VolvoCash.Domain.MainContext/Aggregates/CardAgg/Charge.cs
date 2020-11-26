@@ -16,6 +16,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         #region Properties
         [MaxLength(20)]
         public string OperationCode { get; set; }
+        
+        public DateTime? OperationDate { get; set; }
 
         [Required]
         public Money Amount { get; set; }
@@ -87,6 +89,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public void GenerateOperationCode()
         {
             OperationCode = RandomGenerator.RandomDigits(10);
+            OperationDate = DateTime.Now;
         }
         #endregion
     }

@@ -30,12 +30,12 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             var liquidationsToGenerate = new List<Liquidation>();
             foreach (var charge in charges)
             {
-                var liquidation = liquidationsToGenerate.Where(l => l.Date == charge.CreatedAt.Date
+                var liquidation = liquidationsToGenerate.Where(l => l.Date == charge.OperationDate
                                                                     && l.DealerId == charge.Cashier.DealerId
                                                                     && l.Amount.CurrencyId == charge.Amount.CurrencyId).FirstOrDefault();
                 if (liquidation == null)
                 {
-                    liquidation = new Liquidation(charge.CreatedAt.Date, charge.Amount, charge.Cashier.DealerId);
+                    liquidation = new Liquidation(charge.OperationDate.Value, charge.Amount, charge.Cashier.DealerId);
                     liquidationsToGenerate.Add(liquidation);
                 }
                 else
