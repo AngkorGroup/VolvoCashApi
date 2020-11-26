@@ -1,10 +1,11 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using VolvoCash.Application.MainContext.DTO.BankAccounts;
-using VolvoCash.Application.MainContext.DTO.Banks;
 using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Dealers;
+using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Liquidations
@@ -22,9 +23,15 @@ namespace VolvoCash.Application.MainContext.DTO.Liquidations
 
         public LiquidationStatus LiquidationStatus { get; set; }
 
+        [JsonConverter(typeof(DefaultDateConverter))]
         public DateTime Date { get; set; }
 
+        [JsonConverter(typeof(DefaultDateConverter))]
         public DateTime? PaymentDate { get; set; }
+
+        public string CompanyBankAccount { get; set; }
+
+        public string DealerBankAccount { get; set; }
 
         public string Voucher { get; set; }
 
