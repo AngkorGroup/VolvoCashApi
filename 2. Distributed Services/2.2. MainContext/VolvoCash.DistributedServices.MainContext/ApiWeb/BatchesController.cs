@@ -56,13 +56,21 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(loads);
         }
 
+        [HttpPost("pre_massive_load")]
+        public ActionResult PrePerformMassiveLoad()
+        {
+            var file = Request.Form.Files["file"];
+            var batches = _batchAppService.GetLoadsFromFileStream(file?.FileName, file?.OpenReadStream());
+            return Ok(batches);
+        }
+
         [HttpPost("massive_load")]
-        public async Task<ActionResult> PerformBatch()
+        public async Task<ActionResult> PerformMassiveLoad()
         {
             var file = Request.Form.Files["file"];
             var batchErrors = await _batchAppService.PerformLoadsFromFileStreamAsync(file?.FileName, file?.OpenReadStream());
             return Ok(batchErrors);
-        }
+        }       
         #endregion
     }
 }
