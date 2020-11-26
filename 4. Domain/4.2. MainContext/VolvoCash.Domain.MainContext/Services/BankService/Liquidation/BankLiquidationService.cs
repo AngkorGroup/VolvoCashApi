@@ -36,14 +36,29 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             return totalAmount;
         }
 
-        private string GetCheckSum(BankAccount bankAccount, List<Liquidation> liquidations)
+        private long GetCheckSum(BankAccount bankAccount, List<Liquidation> liquidations)
         {
+            var sumAccount = long.Parse(bankAccount.Account.Substring(3, 10));
             foreach (var liquidation in liquidations)
             {
                 var dealerBankAccount = liquidation.Dealer.GetBankAccount(bankAccount.Bank.Id, liquidation.Amount.CurrencyId);
+                var isCCI = dealerBankAccount.Bank.Id != bankAccount.Bank.Id;
+                var accountType = dealerBankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bat => bat.BankId == bankAccount.Bank.Id).Equivalence;
 
+                if (isCCI)
+                {
+                    sumAccount += long.Parse(dealerBankAccount.CCI.Substring(10, 10));
+                }
+                else if (accountType == "C" || accountType == "M")
+                {
+                    sumAccount += long.Parse(dealerBankAccount.Account.Substring(3, 10));
+                }
+                else if (accountType == "A")
+                {
+                    sumAccount += long.Parse(dealerBankAccount.Account.Substring(3, 11));
+                }
             }
-            return "".PadRight(15, '#');
+            return sumAccount;
         }
 
         private string GetBCPHeaderLine(BankAccount bankAccount, List<Liquidation> liquidations)
@@ -57,7 +72,7 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             var totalAmount = GetSumForLiquidations(liquidations).ToString("0.00", CultureInfo.InvariantCulture).PadLeft(17, '0');
             var payrollReference = $"Referencia Pago Proveedores {processDate}".PadRight(40);
             var itfExonerationFlag = "N";
-            var checkSum = GetCheckSum(bankAccount, liquidations);
+            var checkSum = GetCheckSum(bankAccount, liquidations).ToString().PadLeft(15, '0');
 
             var headerline = $"{headerIndicator}{paymentsQuantity}{processDate}{bankAccountType}{currencyAccount}{bankAccountNumber}{totalAmount}{payrollReference}{itfExonerationFlag}{checkSum}";
             return headerline;
