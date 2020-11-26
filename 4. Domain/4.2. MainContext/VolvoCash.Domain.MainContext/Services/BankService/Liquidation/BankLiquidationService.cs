@@ -36,8 +36,13 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             return totalAmount;
         }
 
-        private string GetCheckSum()
+        private string GetCheckSum(BankAccount bankAccount, List<Liquidation> liquidations)
         {
+            foreach (var liquidation in liquidations)
+            {
+                var dealerBankAccount = liquidation.Dealer.GetBankAccount(bankAccount.Bank.Id, liquidation.Amount.CurrencyId);
+
+            }
             return "".PadRight(15, '#');
         }
 
@@ -52,7 +57,7 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             var totalAmount = GetSumForLiquidations(liquidations).ToString("0.00", CultureInfo.InvariantCulture).PadLeft(17, '0');
             var payrollReference = $"Referencia Pago Proveedores {processDate}".PadRight(40);
             var itfExonerationFlag = "N";
-            var checkSum = GetCheckSum();
+            var checkSum = GetCheckSum(bankAccount, liquidations);
 
             var headerline = $"{headerIndicator}{paymentsQuantity}{processDate}{bankAccountType}{currencyAccount}{bankAccountNumber}{totalAmount}{payrollReference}{itfExonerationFlag}{checkSum}";
             return headerline;

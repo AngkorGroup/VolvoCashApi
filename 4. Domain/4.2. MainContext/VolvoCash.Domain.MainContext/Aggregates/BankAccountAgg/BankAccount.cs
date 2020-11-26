@@ -16,7 +16,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg
         [MaxLength(20)]
         public string Account { get; set; }
 
-        [MaxLength(40)]
+        [Required]
+        [MaxLength(20)]
         public string CCI { get; set; }
 
         [Required]
