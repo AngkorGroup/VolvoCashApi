@@ -13,7 +13,7 @@
     <RootNamespace>VolvoCash.DistributedServices.MainContext.Reports</RootNamespace>
     <AssemblyName>VolvoCash.DistributedServices.MainContext.Reports</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -153,6 +153,12 @@
       <DependentUpon>RankingOfCollectionsByDealers.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reporting\Refund.cs">
+      <DependentUpon>Refund.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reporting\RefillsByClientAndBusinessArea.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -212,6 +218,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>RankingOfCollectionsByDealers.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reporting\Refund.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Refund.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reporting\RefillsByClientAndBusinessArea.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>RefillsByClientAndBusinessArea.cs</LastGenOutput>
@@ -235,7 +245,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55556</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:55556/</IISUrl>
+          <IISUrl>http://localhost:3004</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
