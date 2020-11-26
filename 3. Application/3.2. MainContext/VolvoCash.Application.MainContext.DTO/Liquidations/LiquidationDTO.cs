@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using VolvoCash.Application.MainContext.DTO.BankAccounts;
@@ -21,6 +22,7 @@ namespace VolvoCash.Application.MainContext.DTO.Liquidations
 
         public DealerDTO Dealer { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public LiquidationStatus LiquidationStatus { get; set; }
 
         [JsonConverter(typeof(DefaultDateConverter))]
