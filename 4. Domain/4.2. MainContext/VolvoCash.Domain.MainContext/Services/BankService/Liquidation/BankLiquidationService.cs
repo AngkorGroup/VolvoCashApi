@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
+using System.Globalization;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
@@ -29,63 +29,114 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
         #endregion
 
         #region Private Methods
-        private string getBCPHeaderLine(List<Liquidation> liquidations)
+        private double GetSumForLiquidations(List<Liquidation> liquidations)
+        {
+            var totalAmount = 0.0;
+            liquidations.ForEach(l => totalAmount += l.Amount.Value);
+            return totalAmount;
+        }
+
+        private string GetCheckSum()
+        {
+            return "".PadRight(15, '#');
+        }
+
+        private string GetBCPHeaderLine(BankAccount bankAccount, List<Liquidation> liquidations)
         {
             var headerIndicator = _headerIndicator;
             var paymentsQuantity = liquidations.Count().ToString().PadLeft(6, '0');
-            var processDate = DateTime.Now.ToString(DateTimeFormats.BankDateFormat);
-            var bankAccountType = "";
-            var currencyAccount = "";
-            var bankAccountNumber = "".PadRight(20);
-            var totalAmount = "";
-            var payrollReference = "".PadRight(20);
+            var processDate = DateTime.Now.ToString(DateTimeFormats.BankDateFormat).PadRight(8);
+            var bankAccountType = bankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bbat => bbat.Bank.Id == bankAccount.Bank.Id).Equivalence.PadRight(1);
+            var currencyAccount = bankAccount.Currency.BankCurrencies.FirstOrDefault(bc => bc.Bank.Id == bankAccount.Bank.Id).Equivalence.PadRight(4);
+            var bankAccountNumber = bankAccount.Account.PadRight(20);
+            var totalAmount = GetSumForLiquidations(liquidations).ToString("0.00", CultureInfo.InvariantCulture).PadLeft(17, '0');
+            var payrollReference = $"Referencia Pago Proveedores {processDate}".PadRight(40);
             var itfExonerationFlag = "N";
-            var checkSum = "";
+            var checkSum = GetCheckSum();
 
             var headerline = $"{headerIndicator}{paymentsQuantity}{processDate}{bankAccountType}{currencyAccount}{bankAccountNumber}{totalAmount}{payrollReference}{itfExonerationFlag}{checkSum}";
             return headerline;
         }
 
-        private string getBCPDetailLine(Liquidation liquidation, int bankId)
+        private string GetBCPDetailLine(BankAccount bankAccount, Liquidation liquidation)
         {
-            var bankAccount = liquidation.Dealer.GetBankAccount(bankId, liquidation.Amount.CurrencyId);
+            var dealerBankAccount = liquidation.Dealer.GetBankAccount(bankAccount.Bank.Id, liquidation.Amount.CurrencyId);
 
             // TODO: Validar que si la cuenta no existe como mostrar el error.
-            if (bankAccount == null)
-            {
+            if (dealerBankAccount == null)
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_BankAccountIsNull));
-            }
 
             var detailIndicator = _detailIndicator;
-            var bankAccountType = bankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bat => bat.BankId == bankId).Equivalence;
-            var bankAccountNumber = bankAccount.Account.PadRight(20);
+            var bankAccountType = dealerBankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bat => bat.BankId == bankAccount.Bank.Id).Equivalence.PadRight(1);
+            var bankAccountNumber = dealerBankAccount.Account.PadRight(20);
             var paymentMethod = "1";
-            var supplierDocumentTypeId = "6";
+            var supplierDocumentTypeId = "6"; //TODO: Debería traerse del document Type, añadirlo en la tabla
             var supplierDocumentTypeNumber = liquidation.Dealer.Ruc.PadRight(12);
             var supplierDocumentCorrelative = "".PadRight(3);
             var supplierName = liquidation.Dealer.Name.PadRight(75);
-            var beneficiaryReference = "".PadRight(40);
-            var companyReference = "".PadRight(20);
-            var currencyPayment = liquidation.Amount.Currency.BankCurrencies.FirstOrDefault(bc => bc.BankId == bankId).Equivalence;
-            var amount = liquidation.Amount.Value.ToString("0.00", CultureInfo.InvariantCulture).PadLeft(17);
+            var beneficiaryReference = $"Referencia Beneficiario {liquidation.Dealer.Ruc}".PadRight(40);
+            var companyReference = $"Ref Emp {liquidation.Dealer.Ruc}".PadRight(20);
+            var currencyPayment = liquidation.Amount.Currency.BankCurrencies.FirstOrDefault(bc => bc.BankId == bankAccount.Bank.Id).Equivalence.PadRight(4);
+            var amount = liquidation.Amount.Value.ToString("0.00", CultureInfo.InvariantCulture).PadLeft(17, '0');
             var idcValidation = "S";
-            var documentsQuantity = "";
 
-            var detailLine = $"{detailIndicator}{bankAccountType}{bankAccountNumber}{paymentMethod}{supplierDocumentTypeId}{supplierDocumentTypeNumber}{supplierDocumentCorrelative}{supplierName}{beneficiaryReference}{companyReference}{currencyPayment}{amount}{idcValidation}{documentsQuantity}";
+            var detailLine = $"{detailIndicator}{bankAccountType}{bankAccountNumber}{paymentMethod}{supplierDocumentTypeId}{supplierDocumentTypeNumber}{supplierDocumentCorrelative}{supplierName}{beneficiaryReference}{companyReference}{currencyPayment}{amount}{idcValidation}";
             return detailLine;
         }
 
-        private List<string> getBCPDetailLines(List<Liquidation> liquidations)
+        private List<string> GetBCPDetailLines(BankAccount bankAccount, List<Liquidation> liquidations)
         {
-            var bank = _bankRepository.Filter(b => b.Abbreviation == BankNames.BCP).FirstOrDefault();
             var detailLines = new List<string>();
-
             foreach (var liquidation in liquidations)
             {
-                var detailLine = getBCPDetailLine(liquidation, bank.Id);
+                var detailLine = GetBCPDetailLine(bankAccount, liquidation);
                 detailLines.Add(detailLine);
             }
             return detailLines;
+        }
+
+        private byte[] GetFileFromStructure(string headerLine, List<string> detailLines)
+        {
+            byte[] bytes = null;
+            using (var memoryStream = new MemoryStream())
+            {
+                var sw = new StreamWriter(memoryStream);
+                sw.WriteLine(headerLine);
+
+                foreach (var detailLine in detailLines)
+                {
+                    sw.WriteLine(detailLine);
+                }
+
+                sw.Flush();
+                memoryStream.Position = 0;
+                bytes = memoryStream.ToArray();
+            }
+            return bytes;
+        }
+
+        private byte[] GenerateBCPFile(BankAccount bankAccount, List<Liquidation> liquidations)
+        {
+            if (liquidations.Any())
+            {
+                var headerLine = GetBCPHeaderLine(bankAccount, liquidations);
+                var detailLines = GetBCPDetailLines(bankAccount, liquidations);
+                return GetFileFromStructure(headerLine, detailLines);
+            }
+            throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_NoLiquidationsToGenerateFile));
+        }
+
+        private byte[] GenerateBBVAFile(BankAccount bankAccount, List<Liquidation> liquidations)
+        {
+            //FIXME: REMOVER CUANDO LA LOGICA ESTE LISTA
+            return GetFileFromStructure("CABECERABBVA", new List<string>() { "DETALLEBBVA1", "DETALLEBBVA2" });
+            if (liquidations.Any())
+            {
+                var headerLine = GetBCPHeaderLine(bankAccount, liquidations);
+                var detailLines = GetBCPDetailLines(bankAccount, liquidations);
+                return GetFileFromStructure(headerLine, detailLines);
+            }
+            throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_NoLiquidationsToGenerateFile));
         }
         #endregion
 
@@ -100,53 +151,7 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
                     return GenerateBBVAFile(bankAccount, liquidations);
                 default:
                     return null;
-            }            
-        }
-        #endregion
-
-        #region Private Methods
-        private byte[] GetFileFromStructure(string headerLine, List<string> detailLines)
-        {
-            byte[] bytes = null;
-            using (var ms = new MemoryStream())
-            {
-                var sr = new StreamWriter(ms);
-                sr.WriteLine(headerLine);
-                foreach (var detailLine in detailLines)
-                {
-                    sr.WriteLine(detailLine);
-                }
-                sr.Flush();
-                ms.Position = 0;
-                bytes = ms.ToArray();
-            }               
-            return bytes;
-        }
-
-        private byte[] GenerateBCPFile(BankAccount bankAccount, List<Liquidation> liquidations)
-        {
-            //TODO REMOVER CUANDO LA LOGICA ESTE LISTA
-            return GetFileFromStructure("CABECERABCP", new List<string>() { "DETALLEBCP1", "DETALLEBCP2" });
-            if (liquidations.Any())
-            {
-                var headerLine = getBCPHeaderLine(liquidations);
-                var detailLines = getBCPDetailLines(liquidations);
-                return GetFileFromStructure(headerLine, detailLines);
             }
-            throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_NoLiquidationsToGenerateFile));
-        }
-
-        private byte[] GenerateBBVAFile(BankAccount bankAccount, List<Liquidation> liquidations)
-        {
-            //TODO REMOVER CUANDO LA LOGICA ESTE LISTA
-            return GetFileFromStructure("CABECERABBVA", new List<string>() { "DETALLEBBVA1", "DETALLEBBVA2" });
-            if (liquidations.Any())
-            {
-                var headerLine = getBCPHeaderLine(liquidations);
-                var detailLines = getBCPDetailLines(liquidations);
-                return GetFileFromStructure(headerLine, detailLines);
-            }
-            throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_NoLiquidationsToGenerateFile));
         }
         #endregion
     }

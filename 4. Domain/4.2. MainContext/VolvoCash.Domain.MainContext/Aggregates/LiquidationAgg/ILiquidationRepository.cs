@@ -11,6 +11,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
     {
         Task<IEnumerable<Liquidation>> GetLiquidations(DateTime date, LiquidationStatus liquidationStatus);
         Task<Liquidation> GetLiquidation(int id);
+        Task<Liquidation> GetLiquidationForScheduled(int id);
         Task<Liquidation> GetLiquidationWithCharges(int id);
         Task<IEnumerable<Charge>> GetLiquidationChargesAsync(int id);
     }

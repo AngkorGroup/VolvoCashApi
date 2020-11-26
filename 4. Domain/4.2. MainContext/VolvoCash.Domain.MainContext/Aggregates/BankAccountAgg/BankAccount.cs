@@ -55,20 +55,20 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg
         {
         }
 
-        public BankAccount(string account, string cci, bool IsDefault, int bankId)
+        public BankAccount(string account, string cci, bool isDefault, int bankId)
         {
             Account = account;
             CCI = cci;
-            IsDefault = IsDefault;
+            IsDefault = isDefault;
             BankId = bankId;
             Status = Status.Active;
         }
 
-        public BankAccount(string account, string cci, bool IsDefault, int bankId, int dealerId)
+        public BankAccount(string account, string cci, bool isDefault, int bankId, int dealerId)
         {
             Account = account;
             CCI = cci;
-            IsDefault = IsDefault;
+            IsDefault = isDefault;
             BankId = bankId;
             DealerId = dealerId;
             Status = Status.Active;
