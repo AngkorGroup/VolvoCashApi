@@ -33,7 +33,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet("by_filter")]
-        public async Task<ActionResult> GetDealers([FromQuery] string query = "", int maxRecords = 5 )
+        public async Task<ActionResult> GetDealers([FromQuery] string query = "", int maxRecords = 5)
         {
             var charges = await _dealerAppService.GetDealers(query, maxRecords);
             return Ok(charges);
@@ -47,9 +47,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpGet("{id}/charges")]
-        public async Task<ActionResult> GetDealerCharges([FromRoute] int id,[FromQuery] string beginDate = "",
-                                                        [FromQuery] string endDate = "", [FromQuery] int? cashierId =null,
-                                                        [FromQuery] string cardTypes = "")
+        public async Task<ActionResult> GetDealerCharges([FromRoute] int id, [FromQuery] string beginDate = "",
+                                                         [FromQuery] string endDate = "", [FromQuery] int? cashierId = null,
+                                                         [FromQuery] string cardTypes = "")
         {
             var _beginDate = DateTimeParser.TryParseString(beginDate, DateTimeFormats.DateFormat);
             var _endDate = DateTimeParser.TryParseString(endDate, DateTimeFormats.DateFormat);
@@ -69,6 +69,20 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         public override async Task Delete([FromRoute] int id)
         {
             await _dealerAppService.Delete(id);
+        }
+
+        [HttpGet("{id}/bank_accounts")]
+        public async Task<ActionResult> GetBankAccounts([FromRoute] int id)
+        {
+            var bankAccounts = await _dealerAppService.GetBankAccounts(id);
+            return Ok(bankAccounts);
+        }
+
+        [HttpGet("{id}/bank_accounts/{bankId}")]
+        public async Task<ActionResult> GetBankAccount([FromRoute] int id, [FromRoute] int bankId)
+        {
+            var bankAccount = await _dealerAppService.GetBankAccount(id, bankId);
+            return Ok(bankAccount);
         }
         #endregion
     }
