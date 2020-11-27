@@ -26,6 +26,7 @@ using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Application.MainContext.DTO.Currencies;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -120,14 +121,14 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var businessDescription = GetLineSegment(lineSegments, 20);
                 var cardTypeCode = GetLineSegment(lineSegments, 21);
                 var cardTypeDescription = GetLineSegment(lineSegments, 22);
-                var clientAddress = "Mi direccion 1234";
-                var clientPhone = "987654321";
-                var contactLastName = "Apellidos";
+                var clientAddress = "-";
+                var clientPhone = "-";
+                var contactLastName = "-";
                 var contactDocumentTypeId = (_documentTypeRepository.Filter(filter: dt => dt.Abbreviation == "DNI")).FirstOrDefault().Id;
 
                 try
                 {
-                    var client = new ClientDTO()
+                    var client = new ClientListDTO()
                     {
                         Ruc = clientRuc,
                         Address = clientAddress,
@@ -172,28 +173,48 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     if (existingBatch != null)
                         throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BatchAlreadyExists));
 
+                    var cardTypeDTO = new CardTypeDTO() { 
+                         DisplayName = cardType.DisplayName,
+                         Name = cardType.Name
+                    };
+
                     var card = new CardDTO()
                     {
                         CardTypeId = cardType.Id,
                         TPCode = batchTPCode,
+                        CardType = cardTypeDTO
                     };
 
                     var currencyDTO = currency.ProjectedAs<CurrencyDTO>();
+
+                    var amount = new MoneyDTO() { Currency = currencyDTO, CurrencyId = currencyDTO.Id, Value = batchAmount };
+                    
                     var batch = new BatchDTO()
                     {
-                        Amount = new MoneyDTO() { Currency = currencyDTO, CurrencyId = currencyDTO.Id, Value = batchAmount },
-                        TPContractDate = contractDate,
-                        TPChasis = chasisNumber,
-                        TPInvoiceDate = invoiceDate,
-                        TPInvoiceCode = invoiceDocumentNumber,
-                        RechargeTypeId = rechargeType.Id,
-                        TPContractNumber = contractNumber,
-                        TPContractBatchNumber = batchTPCode,
-                        DealerCode = dealerCode,
-                        DealerName = dealerName,
-                        BusinessAreaId = businessArea.Id,
-                        CardTypeId = cardType.Id,
-                        LineContent = line
+                        Amount                  = amount,
+                        TPContractDate          = contractDate,
+                        TPChasis                = chasisNumber,
+                        TPInvoiceDate           = invoiceDate,
+                        TPInvoiceCode           = invoiceDocumentNumber,
+                        RechargeTypeId          = rechargeType.Id,
+                        TPContractNumber        = contractNumber,
+                        TPContractBatchNumber   = batchTPCode,
+                        DealerCode              = dealerCode,
+                        DealerName              = dealerName,
+                        BusinessAreaId          = businessArea.Id,
+                        CardTypeId              = cardType.Id,
+                        LineContent             = line,
+                        Client                  = client,
+                        Balance                 = amount,
+                        CardType                = cardTypeDTO,
+                        RechargeType            = new DTO.RechargeTypes.RechargeTypeDTO()
+                        {
+                            Name = rechargeType.Name
+                        },
+                        BusinessArea            = new DTO.BusinessAreas.BusinessAreaDTO()
+                        {
+                            Name = businessArea.Name
+                        }
                     };
 
                     var load = new Load()
@@ -336,7 +357,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             return batchsErrors.ProjectedAsCollection<BatchErrorDTO>();
         }
 
-        public async Task<BatchDTO> PerformLoadAsync(ClientDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO)
+        public async Task<BatchDTO> PerformLoadAsync(ClientListDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO)
         {
             var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc && c.Status == Status.Active,
                                                               includeProperties: "Contacts.Cards")).FirstOrDefault();
