@@ -42,9 +42,9 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<LiquidationDTO>> GetLiquidations(DateTime date, LiquidationStatus liquidationStatus)
+        public async Task<List<LiquidationDTO>> GetLiquidations(DateTime beginDate, DateTime endDate, LiquidationStatus liquidationStatus)
         {
-            var liquidations = await _liquidationRepository.GetLiquidations(date, liquidationStatus);
+            var liquidations = await _liquidationRepository.GetLiquidations(beginDate, endDate, liquidationStatus);
             return liquidations.ProjectedAsCollection<LiquidationDTO>();
         }
 
@@ -108,6 +108,7 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
 
             return bankFile;
         }
+
         public async Task PayLiquidation(int id, string voucher, DateTime paymentDate)
         {
             var liquidation = await _liquidationRepository.GetLiquidationWithCharges(id);

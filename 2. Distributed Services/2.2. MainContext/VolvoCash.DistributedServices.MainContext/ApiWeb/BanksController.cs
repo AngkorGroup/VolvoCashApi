@@ -49,6 +49,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _bankAppService.AddAsync(bankDTO));
         }
 
+        [HttpPut]
         public async Task<IActionResult> PutBank([FromBody] BankDTO bankDTO)
         {
             return Ok(await _bankAppService.ModifyAsync(bankDTO));

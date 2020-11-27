@@ -9,7 +9,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
 {
     public interface ILiquidationRepository : IRepository<Liquidation>
     {
-        Task<IEnumerable<Liquidation>> GetLiquidations(DateTime date, LiquidationStatus liquidationStatus);
+        Task<IEnumerable<Liquidation>> GetLiquidations(DateTime beginDate, DateTime endDate, LiquidationStatus liquidationStatus);
         Task<Liquidation> GetLiquidation(int id);
         Task<Liquidation> GetLiquidationForScheduled(int id);
         Task<Liquidation> GetLiquidationWithCharges(int id);

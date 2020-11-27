@@ -333,4 +333,7 @@
   <data name="Application_messages_NewAdminEmailSubject" xml:space="preserve">
     <value>Se ha dado de alta como administrador en Volvo Cash.</value>
   </data>
+  <data name="Application_exception_BatchAlreadyExists" xml:space="preserve">
+    <value>La recarga para el número de contrato: {0} chasis: {1} ya existe.</value>
+  </data>
 </root>

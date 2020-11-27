@@ -43,6 +43,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _rechargeTypeAppService.AddAsync(rechargeTypeDTO));
         }
 
+        [HttpPut]
         public async Task<IActionResult> PutRechargeType([FromBody] RechargeTypeDTO rechargeTypeDTO)
         {
             return Ok(await _rechargeTypeAppService.ModifyAsync(rechargeTypeDTO));

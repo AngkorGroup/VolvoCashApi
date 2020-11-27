@@ -35,6 +35,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _cardTypeAppService.AddAsync(cardTypeDTO));
         }
 
+        [HttpPut]
         public async Task<IActionResult> PutCardType([FromBody] CardTypeDTO cardTypeDTO)
         {
             return Ok(await _cardTypeAppService.ModifyAsync(cardTypeDTO));

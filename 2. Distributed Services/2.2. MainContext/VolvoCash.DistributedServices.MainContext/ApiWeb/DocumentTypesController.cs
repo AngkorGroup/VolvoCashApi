@@ -43,6 +43,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _documentTypeAppService.AddAsync(documentTypeDTO));
         }
 
+        [HttpPut]
         public async Task<IActionResult> PutDocumentType([FromBody] DocumentTypeDTO documentTypeDTO)
         {
             return Ok(await _documentTypeAppService.ModifyAsync(documentTypeDTO));

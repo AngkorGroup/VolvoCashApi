@@ -40,9 +40,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpGet("{id}/cashiers")]
-        public async Task<ActionResult> GetDealerCashiers([FromRoute] int id)
+        public async Task<ActionResult> GetDealerCashiers([FromRoute] int id, [FromQuery] bool onlyActive = false)
         {
-            var charges = await _dealerAppService.GetDealerCashiers(id);
+            var charges = await _dealerAppService.GetDealerCashiers(id,onlyActive);
             return Ok(charges);
         }
 

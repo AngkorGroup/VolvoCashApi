@@ -19,10 +19,12 @@ namespace VolvoCash.Data.MainContext.Repositories
         #endregion
 
         #region Public Methods
-        public async Task<IEnumerable<Liquidation>> GetLiquidations(DateTime date, LiquidationStatus liquidationStatus)
+        public async Task<IEnumerable<Liquidation>> GetLiquidations(DateTime beginDate, DateTime endDate, LiquidationStatus liquidationStatus)
         {
             return await FilterAsync(
-                filter: l => l.Date == date && l.LiquidationStatus == liquidationStatus,
+                filter: l => l.Date >= beginDate
+                           && l.Date <= endDate
+                           && l.LiquidationStatus == liquidationStatus,
                 includeProperties: "Dealer,Amount.Currency,BankAccount.Bank",
                 orderBy: lq => lq.OrderByDescending(l => l.Id));
         }

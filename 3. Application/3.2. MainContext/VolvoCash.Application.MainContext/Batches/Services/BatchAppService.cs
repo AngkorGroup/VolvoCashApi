@@ -171,7 +171,11 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     var existingBatch = _batchRepository.Filter(b => b.TPContractBatchNumber == batchTPCode && b.TPChasis == chasisNumber).FirstOrDefault();
 
                     if (existingBatch != null)
-                        throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BatchAlreadyExists));
+                    {
+                        var existingBatchMessage = _resources.GetStringResource(LocalizationKeys.Application.exception_BatchAlreadyExists);
+                        existingBatchMessage = string.Format(existingBatchMessage, batchTPCode, chasisNumber);
+                        throw new InvalidOperationException(existingBatchMessage);
+                    }
 
                     var cardTypeDTO = new CardTypeDTO() { 
                          DisplayName = cardType.DisplayName,
