@@ -42,9 +42,9 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<LiquidationDTO>> GetLiquidations(DateTime date, LiquidationStatus liquidationStatus)
+        public async Task<List<LiquidationDTO>> GetLiquidations(DateTime beginDate, DateTime endDate, LiquidationStatus liquidationStatus)
         {
-            var liquidations = await _liquidationRepository.GetLiquidations(date, liquidationStatus);
+            var liquidations = await _liquidationRepository.GetLiquidations(beginDate, endDate, liquidationStatus);
             return liquidations.ProjectedAsCollection<LiquidationDTO>();
         }
 
@@ -72,10 +72,13 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
 
         public async Task<byte[]> ScheduleLiquidations(int bankId, int bankAccountId, List<int> liquidationsId)
         {
-            var bankAccount = _bankAccountRepository.Filter(ba => ba.BankId == bankId && ba.Id == bankAccountId && ba.DealerId == null,
-                                                            includeProperties: "BankAccountType.BankBankAccountTypes,Bank,Currency.BankCurrencies").FirstOrDefault();
+            var originBankAccount = _bankAccountRepository.Filter(ba => ba.BankId == bankId
+                                                                  && ba.Id == bankAccountId
+                                                                  && ba.DealerId == null,
+                                                                  includeProperties: "BankAccountType.BankBankAccountTypes,Bank,Currency.BankCurrencies")
+                                                          .FirstOrDefault();
 
-            if (bankAccount == null)
+            if (originBankAccount == null)
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BankAccountNotFound));
 
             var liquidations = new List<Liquidation>();
@@ -94,17 +97,18 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
                 liquidations.Add(liquidation);
             }
 
-            var bankFile = _bankLiquidationService.GenerateBankFile(bankAccount, liquidations);
+            var bankFile = _bankLiquidationService.GenerateBankFile(originBankAccount, liquidations);
 
             foreach (var liquidation in liquidations)
             {
-                liquidation.ScheduleLiquidation(bankAccount);
+                liquidation.ScheduleLiquidation(originBankAccount);
             }
 
             await _liquidationRepository.UnitOfWork.CommitAsync();
 
             return bankFile;
         }
+
         public async Task PayLiquidation(int id, string voucher, DateTime paymentDate)
         {
             var liquidation = await _liquidationRepository.GetLiquidationWithCharges(id);

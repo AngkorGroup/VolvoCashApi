@@ -114,15 +114,15 @@ namespace VolvoCash.Application.MainContext.Users.Services
         #endregion        
 
         #region ApiWeb Public Methods       
-        public async Task<IList<UserDTO>> GetAllDTOAsync()
+        public async Task<IList<UserDTO>> GetAllDTOAsync(bool onlyActive)
         {
-            var admins = (await _adminRepository.GetAllAsync()).ProjectedAsCollection<AdminDTO>();
-            var cashiers = (await _cashierRepository.GetAllAsync()).ProjectedAsCollection<CashierDTO>();
-            var contacts = (await _contactRepository.GetAllAsync()).ProjectedAsCollection<ContactListDTO>();
+            var admins = (await _adminRepository.FilterAsync(filter: a => !onlyActive || a.Status == Status.Active)).ProjectedAsCollection<AdminDTO>();
+            var cashiers = (await _cashierRepository.FilterAsync(filter: c => !onlyActive || c.Status == Status.Active)).ProjectedAsCollection<CashierDTO>();
+            var contacts = (await _contactRepository.FilterAsync(filter: c => !onlyActive || c.Status == Status.Active)).ProjectedAsCollection<ContactListDTO>();
             var users = new List<UserDTO>();
-            users.AddRange(admins.Select(a => new UserDTO() { Admin = a, Id = a.UserId, Type = UserType.WebAdmin }));
-            users.AddRange(cashiers.Select(c => new UserDTO() { Cashier = c, Id = c.UserId, Type = UserType.Cashier }));
-            users.AddRange(contacts.Select(c => new UserDTO() { Contact = c, Id = c.UserId, Type = UserType.Contact }));
+            users.AddRange(admins.Select(a => new UserDTO() { Admin = a, Id = a.UserId, Type = UserType.WebAdmin, CreatedAt = a.CreatedAt }));
+            users.AddRange(cashiers.Select(c => new UserDTO() { Cashier = c, Id = c.UserId, Type = UserType.Cashier, CreatedAt = c.CreatedAt }));
+            users.AddRange(contacts.Select(c => new UserDTO() { Contact = c, Id = c.UserId, Type = UserType.Contact, CreatedAt = c.CreatedAt }));
             return users;
         }
 

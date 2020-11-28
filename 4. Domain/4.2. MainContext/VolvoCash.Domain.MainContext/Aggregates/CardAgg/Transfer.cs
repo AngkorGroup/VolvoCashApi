@@ -48,10 +48,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public Transfer(Card originCard, Card destinyCard, Money amount, string displayName)
         {
             DisplayName = displayName?.Substring(0, Math.Min(100, displayName.Length));
-            OriginCard      = originCard;
-            DestinyCard     = destinyCard;
-            Amount          = amount;
-            DisplayName     = displayName;
+            OriginCard = originCard;
+            DestinyCard = destinyCard;
+            Amount = amount;
+            DisplayName = displayName;
             GenerateOperationCode();
         }
         #endregion

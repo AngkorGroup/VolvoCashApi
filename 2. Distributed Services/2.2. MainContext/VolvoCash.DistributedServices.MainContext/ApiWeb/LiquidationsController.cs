@@ -29,11 +29,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet]
-        public async Task<IActionResult> GetLiquidations([FromQuery] string date, [FromQuery] string status)
+        public async Task<IActionResult> GetLiquidations([FromQuery] string beginDate,
+                                                         [FromQuery] string endDate, [FromQuery] string status)
         {
-            var _date = DateTimeParser.ParseString(date, DateTimeFormats.DateFormat);
+            var _beginDate = DateTimeParser.ParseString(beginDate, DateTimeFormats.DateFormat);
+            var _endDate = DateTimeParser.ParseString(endDate, DateTimeFormats.DateFormat);
             var liquidationStatus = (LiquidationStatus) Enum.Parse(typeof(LiquidationStatus), status);
-            var liquidations = await _liquidationAppService.GetLiquidations(_date, liquidationStatus);
+            var liquidations = await _liquidationAppService.GetLiquidations(_beginDate,_endDate, liquidationStatus);
             return Ok(liquidations);
         }
 

@@ -1,16 +1,19 @@
 using System;
-using VolvoCash.Application.Seedwork.Common;
-using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
-using VolvoCash.Application.MainContext.DTO.CardTypes;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
 
 namespace VolvoCash.Application.MainContext.CardTypes.Services
 {
-    public interface ICardTypeAppService : IService<CardType, CardTypeDTO>, IDisposable
+    public interface ICardTypeAppService : IDisposable
     {
         #region ApiWeb
         Task<List<CardTypeDTO>> GetCardTypes(bool onlyActive);
+
+        Task<CardTypeDTO> AddAsync(CardTypeDTO cardTypeDTO);
+
+        Task<CardTypeDTO> ModifyAsync(CardTypeDTO cardTypeDTO);
+
         Task Delete(int id);
         #endregion
     }

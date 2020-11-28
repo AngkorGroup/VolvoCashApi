@@ -10,7 +10,7 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
     public interface ILiquidationAppService : IDisposable
     {
         #region ApiWeb
-        Task<List<LiquidationDTO>> GetLiquidations(DateTime date, LiquidationStatus liquidationStatus);
+        Task<List<LiquidationDTO>> GetLiquidations(DateTime beginDate, DateTime endDate, LiquidationStatus liquidationStatus);
         Task<LiquidationDTO> GetLiquidation(int id);
         Task<List<LiquidationDTO>> GenerateLiquidations();
         Task<List<ChargeListDTO>> GetLiquidationCharges(int id);

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.CrossCutting.Utils;
@@ -40,9 +39,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpGet("{id}/cashiers")]
-        public async Task<ActionResult> GetDealerCashiers([FromRoute] int id)
+        public async Task<ActionResult> GetDealerCashiers([FromRoute] int id, [FromQuery] bool onlyActive = false)
         {
-            var charges = await _dealerAppService.GetDealerCashiers(id);
+            var charges = await _dealerAppService.GetDealerCashiers(id, onlyActive);
             return Ok(charges);
         }
 

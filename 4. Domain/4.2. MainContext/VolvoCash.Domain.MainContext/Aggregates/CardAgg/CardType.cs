@@ -43,5 +43,23 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public virtual ICollection<Card> Cards { get; set; }
         #endregion
+
+        #region Constructor
+        public CardType()
+        {
+
+        }
+
+        public CardType(string name, string displayName, int term, int? currencyId, string color, string tpCode)
+        {
+            Name = name;
+            DisplayName = displayName;
+            Term = term;
+            CurrencyId = currencyId;
+            Color = color;
+            TPCode = tpCode;
+            Status = Status.Active;
+        }
+        #endregion
     }
 }

@@ -27,6 +27,8 @@ namespace VolvoCash.Application.MainContext.DTO.Clients
         public DateTime CreatedAt { get; set; }
 
         public ContactListDTO MainContact { get; set; }
+        public string Email { get; set; }
+        public string TPCode { get; set; }
         #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace VolvoCash.Application.MainContext.DTO.POJOS
     public class Load
     {
         #region Properties
-        public ClientDTO Client { get; set; }
+        public ClientListDTO Client { get; set; }
 
         public ContactDTO Contact { get; set; }
 

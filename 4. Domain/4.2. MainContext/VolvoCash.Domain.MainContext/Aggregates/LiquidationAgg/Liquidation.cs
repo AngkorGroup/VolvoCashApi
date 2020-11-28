@@ -101,6 +101,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
             {
                 charge.LiquidationId = null;
             }
+            ChargesCount = 0;
             LiquidationStatus = LiquidationStatus.Canceled;
         }
         #endregion

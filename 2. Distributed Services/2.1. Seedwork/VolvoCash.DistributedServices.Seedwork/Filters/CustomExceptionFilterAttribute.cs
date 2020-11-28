@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VolvoCash.Application.Seedwork;
 
@@ -43,6 +44,13 @@ namespace VolvoCash.DistributedServices.Seedwork.Filters
                         message.Append(Environment.NewLine + error);
                     }
                 }
+            }
+
+
+            if (exception is DbUpdateException)
+            {
+                var updateException = exception as DbUpdateException;
+                message.Append(updateException?.InnerException?.Message);
             }
 
             var errorMessage = message.ToString();

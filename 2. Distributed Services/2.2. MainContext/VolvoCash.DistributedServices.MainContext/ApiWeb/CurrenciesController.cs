@@ -43,6 +43,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _currencyAppService.AddAsync(currencyDTO));
         }
 
+        [HttpPut]
         public async Task<IActionResult> PutCurrency([FromBody] CurrencyDTO currencyDTO)
         {
             return Ok(await _currencyAppService.ModifyAsync(currencyDTO));

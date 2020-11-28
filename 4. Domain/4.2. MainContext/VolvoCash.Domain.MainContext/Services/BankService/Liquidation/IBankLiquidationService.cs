@@ -6,6 +6,6 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
 {
     public interface IBankLiquidationService
     {
-        byte[] GenerateBankFile(BankAccount bankAccount, List<Liquidation> liquidations);
+        byte[] GenerateBankFile(BankAccount originBankAccount, List<Liquidation> liquidations);
     }
 }

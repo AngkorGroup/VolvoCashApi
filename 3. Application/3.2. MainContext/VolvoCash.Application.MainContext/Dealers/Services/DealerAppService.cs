@@ -47,9 +47,9 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
             return dealers.ProjectedAsCollection<DealerDTO>();
         }
 
-        public async Task<List<CashierDTO>> GetDealerCashiers(int id)
+        public async Task<List<CashierDTO>> GetDealerCashiers(int id, bool onlyActive)
         {
-            var cashiers = await _cashierRepository.FilterAsync(filter: c => c.DealerId == id);
+            var cashiers = await _cashierRepository.FilterAsync(filter: c => c.DealerId == id && (!onlyActive || c.Status == Status.Active) );
             return cashiers.ProjectedAsCollection<CashierDTO>();
         }
 
