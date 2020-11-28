@@ -9,6 +9,7 @@ using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 {
@@ -21,6 +22,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         [Required]
         public Money Balance { get; set; }
+
+        [ForeignKey("Currency")]
+        public int? CurrencyId { get; set; }
+
+        public virtual Currency Currency { get; set; }
 
         [MaxLength(100)]
         public string TPCode { get; set; }
@@ -97,6 +103,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         {
             Contact = contact;
             Balance = new Money(currency, 0);
+            Currency = currency;
             Status = Status.Active;
             CardTypeId = cardTypeId;
             Code = RandomGenerator.RandomDigits(20);
@@ -108,11 +115,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         #region Private Methods
         private List<BatchMovement> GetBatchMovementsList(List<BatchMovement> batchMovements)
         {
-            return batchMovements.Select(bm => new BatchMovement()
-            {
-                Amount = bm.Amount.Abs(),
-                BatchId = bm.BatchId,
-            }).ToList();
+            return batchMovements.Select(bm => new BatchMovement(
+                 bm.Amount.Abs(),
+                 bm.BatchId)
+            ).ToList();
         }
 
         private void AddMovement(Money amount, MovementType movementType, string description, string displayName)
@@ -160,11 +166,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             );
             var batchMovements = new List<BatchMovement>()
             {
-                new BatchMovement()
-                {
-                    Amount = batch.Amount,
-                    Batch = batch
-                }
+                new BatchMovement(batch.Amount, batch)
             };
             AddMovement(batch.Amount, MovementType.REC, description, displayName, batchMovements);
         }
@@ -179,13 +181,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
                 {
                     var amountRemaining = amountNeeded.Substract(amountTaken);
                     var amountToAdd = cardBatch.Balance.Min(amountRemaining);
-                    batchMovements.Add(new BatchMovement()
-                    {
-                        Batch = cardBatch.Batch,
-                        BatchId = cardBatch.BatchId,
-                        Amount = amountToAdd.Opposite(),
-                        Movement = movement
-                    });
+                    var batchMovement = new BatchMovement(amountToAdd.Opposite(), cardBatch.Batch, movement);
+                    batchMovements.Add(batchMovement);
                     cardBatch.SubstractToBalance(amountToAdd);
                     amountTaken = amountTaken.Add(amountToAdd);
                 }

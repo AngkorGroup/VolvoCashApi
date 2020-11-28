@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using VolvoCash.Application.MainContext.Charges.Services;
 using VolvoCash.Application.MainContext.DTO.Cards;
 using VolvoCash.Application.MainContext.DTO.Charges;
@@ -34,7 +34,8 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
 
         #region Public Methods
         [HttpGet]
-        public async Task<ActionResult> GetCharges([FromQuery] ChargeType chargeType, [FromQuery] int pageIndex = 0, [FromQuery] int pageLength = 10)
+        public async Task<ActionResult> GetCharges([FromQuery] ChargeType chargeType,
+                                                   [FromQuery] int pageIndex = 0, [FromQuery] int pageLength = 100)
         {
             var charges = await _chargeAppService.GetChargesByCashierId(int.Parse(_applicationUser.GetUserName()), chargeType, pageIndex, pageLength);
             return Ok(charges);
@@ -51,7 +52,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
         public async Task<ActionResult> AddCharge([FromBody] ChargeDTO request)
         {
             request.CashierId = int.Parse(_applicationUser.GetUserName());
-            request.CardId = JsonConvert.DeserializeObject<CardDTO>(CryptoMethods.DecryptString(request.CardToken)).Id;
+            var card = JsonConvert.DeserializeObject<CardDTO>(CryptoMethods.DecryptString(request.CardToken));
+            request.CardId = card.Id;
+            request.Amount.CurrencyId = card.CurrencyId;
             var charge = await _chargeAppService.AddCharge(request);
             return Ok(charge);
         }

@@ -43,6 +43,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _sectorAppService.AddAsync(sectorDTO));
         }
 
+        [HttpPut]
         public async Task<IActionResult> PutSector([FromBody] SectorDTO sectorDTO)
         {
             return Ok(await _sectorAppService.ModifyAsync(sectorDTO));

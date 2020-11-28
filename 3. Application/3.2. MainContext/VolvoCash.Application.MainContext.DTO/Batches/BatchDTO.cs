@@ -64,6 +64,8 @@ namespace VolvoCash.Application.MainContext.DTO.Batches
 
         [JsonConverter(typeof(DefaultDateTimeConverter))]
         public DateTime CreatedAt { get; set; }
+
+        public string CreatedBy { get; set; }
         #endregion
     }
 }

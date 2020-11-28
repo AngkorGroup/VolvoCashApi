@@ -19,6 +19,104 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Account")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<DateTime?>("ArchiveAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<int>("BankAccountTypeId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("CCI")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int?>("DealerId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("NUMBER(1)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankAccountTypeId");
+
+                    b.HasIndex("BankId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("DealerId");
+
+                    b.ToTable("BankAccounts");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccountType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("ArchiveAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BankAccountTypes");
+                });
+
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAgg.Bank", b =>
                 {
                     b.Property<int>("Id")
@@ -58,6 +156,120 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Banks");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAgg.BankBankAccountType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BankAccountTypeId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Equivalence")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankAccountTypeId");
+
+                    b.HasIndex("BankId");
+
+                    b.ToTable("BankBankAccountTypes");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAgg.BankCurrency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Equivalence")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("BankCurrencies");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAgg.BankDocumentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Equivalence")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankId");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.ToTable("BankDocumentTypes");
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BatchAgg.Batch", b =>
@@ -290,6 +502,9 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("NVARCHAR2(2000)");
 
+                    b.Property<int?>("CurrencyId")
+                        .HasColumnType("NUMBER(10)");
+
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("TIMESTAMP(7)");
 
@@ -308,6 +523,8 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.HasIndex("CardTypeId");
 
                     b.HasIndex("ContactId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Cards");
                 });
@@ -367,7 +584,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int>("Currency")
+                    b.Property<int?>("CurrencyId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("DisplayName")
@@ -401,6 +618,8 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CurrencyId");
+
                     b.ToTable("CardTypes");
                 });
 
@@ -427,11 +646,12 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("NVARCHAR2(200)")
+                        .HasMaxLength(200);
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("NVARCHAR2(100)")
+                        .HasMaxLength(100);
 
                     b.Property<bool>("HasBeenRefunded")
                         .HasColumnType("NUMBER(1)");
@@ -445,9 +665,15 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("NVARCHAR2(2000)");
 
+                    b.Property<int?>("LiquidationId")
+                        .HasColumnType("NUMBER(10)");
+
                     b.Property<string>("OperationCode")
                         .HasColumnType("NVARCHAR2(20)")
                         .HasMaxLength(20);
+
+                    b.Property<DateTime?>("OperationDate")
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<int>("Status")
                         .HasColumnType("NUMBER(10)");
@@ -457,6 +683,8 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.HasIndex("CardId");
 
                     b.HasIndex("CashierId");
+
+                    b.HasIndex("LiquidationId");
 
                     b.ToTable("Charges");
                 });
@@ -485,8 +713,8 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("NVARCHAR2(100)")
+                        .HasMaxLength(100);
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("TIMESTAMP(7)");
@@ -647,7 +875,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.Property<string>("DocumentNumber")
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int>("DocumentType")
+                    b.Property<int?>("DocumentTypeId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Email")
@@ -690,9 +918,55 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                     b.HasIndex("ContactParentId");
 
+                    b.HasIndex("DocumentTypeId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Abbreviation")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("ArchiveAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Symbol")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("TPCode")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.DealerAgg.Dealer", b =>
@@ -759,6 +1033,105 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Dealers");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg.DocumentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Abbreviation")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("ArchiveAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("SUNATCode")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("TPCode")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentTypes");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg.Liquidation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("BankAccountId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("ChargesCount")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("CompanyBankAccount")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("DealerBankAccount")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("DealerId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("LiquidationStatus")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("Voucher")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankAccountId");
+
+                    b.HasIndex("DealerId");
+
+                    b.ToTable("Liquidations");
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg.RechargeType", b =>
@@ -1051,6 +1424,76 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccount", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccountType", "BankAccountType")
+                        .WithMany()
+                        .HasForeignKey("BankAccountTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAgg.Bank", "Bank")
+                        .WithMany("BankAccounts")
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.DealerAgg.Dealer", "Dealer")
+                        .WithMany("BankAccounts")
+                        .HasForeignKey("DealerId");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAgg.BankBankAccountType", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccountType", "BankAccountType")
+                        .WithMany("BankBankAccountTypes")
+                        .HasForeignKey("BankAccountTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAgg.Bank", "Bank")
+                        .WithMany("BankBankAccountTypes")
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAgg.BankCurrency", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAgg.Bank", "Bank")
+                        .WithMany("BankCurrencies")
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                        .WithMany("BankCurrencies")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BankAgg.BankDocumentType", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAgg.Bank", "Bank")
+                        .WithMany("BankDocumentTypes")
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg.DocumentType", "DocumentType")
+                        .WithMany("BankDocumentTypes")
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.BatchAgg.Batch", b =>
                 {
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg.BusinessArea", "BusinessArea")
@@ -1090,7 +1533,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                                 .HasColumnType("NUMBER(10)")
                                 .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("Currency")
+                            b1.Property<int>("CurrencyId")
                                 .HasColumnType("NUMBER(10)");
 
                             b1.Property<double>("Value")
@@ -1098,10 +1541,18 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                             b1.HasKey("BatchId");
 
+                            b1.HasIndex("CurrencyId");
+
                             b1.ToTable("Batches");
 
                             b1.WithOwner()
                                 .HasForeignKey("BatchId");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
                         });
 
                     b.OwnsOne("VolvoCash.Domain.MainContext.Aggregates.CardAgg.Money", "Balance", b1 =>
@@ -1111,7 +1562,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                                 .HasColumnType("NUMBER(10)")
                                 .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("Currency")
+                            b1.Property<int>("CurrencyId")
                                 .HasColumnType("NUMBER(10)");
 
                             b1.Property<double>("Value")
@@ -1119,10 +1570,18 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                             b1.HasKey("BatchId");
 
+                            b1.HasIndex("CurrencyId");
+
                             b1.ToTable("Batches");
 
                             b1.WithOwner()
                                 .HasForeignKey("BatchId");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
                         });
                 });
 
@@ -1147,7 +1606,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                                 .HasColumnType("NUMBER(10)")
                                 .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("Currency")
+                            b1.Property<int>("CurrencyId")
                                 .HasColumnType("NUMBER(10)");
 
                             b1.Property<double>("Value")
@@ -1155,10 +1614,18 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                             b1.HasKey("BatchMovementId");
 
+                            b1.HasIndex("CurrencyId");
+
                             b1.ToTable("BatchMovements");
 
                             b1.WithOwner()
                                 .HasForeignKey("BatchMovementId");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
                         });
                 });
 
@@ -1176,6 +1643,10 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId");
+
                     b.OwnsOne("VolvoCash.Domain.MainContext.Aggregates.CardAgg.Money", "Balance", b1 =>
                         {
                             b1.Property<int>("CardId")
@@ -1183,7 +1654,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                                 .HasColumnType("NUMBER(10)")
                                 .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("Currency")
+                            b1.Property<int>("CurrencyId")
                                 .HasColumnType("NUMBER(10)");
 
                             b1.Property<double>("Value")
@@ -1191,10 +1662,18 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                             b1.HasKey("CardId");
 
+                            b1.HasIndex("CurrencyId");
+
                             b1.ToTable("Cards");
 
                             b1.WithOwner()
                                 .HasForeignKey("CardId");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
                         });
                 });
 
@@ -1219,7 +1698,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                                 .HasColumnType("NUMBER(10)")
                                 .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("Currency")
+                            b1.Property<int>("CurrencyId")
                                 .HasColumnType("NUMBER(10)");
 
                             b1.Property<double>("Value")
@@ -1227,11 +1706,26 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                             b1.HasKey("CardBatchId");
 
+                            b1.HasIndex("CurrencyId");
+
                             b1.ToTable("CardBatches");
 
                             b1.WithOwner()
                                 .HasForeignKey("CardBatchId");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
                         });
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.CardAgg.CardType", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId");
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.CardAgg.Charge", b =>
@@ -1248,6 +1742,11 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg.Liquidation", "Liquidation")
+                        .WithMany("Charges")
+                        .HasForeignKey("LiquidationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.OwnsOne("VolvoCash.Domain.MainContext.Aggregates.CardAgg.Money", "Amount", b1 =>
                         {
                             b1.Property<int>("ChargeId")
@@ -1255,7 +1754,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                                 .HasColumnType("NUMBER(10)")
                                 .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("Currency")
+                            b1.Property<int>("CurrencyId")
                                 .HasColumnType("NUMBER(10)");
 
                             b1.Property<double>("Value")
@@ -1263,10 +1762,18 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                             b1.HasKey("ChargeId");
 
+                            b1.HasIndex("CurrencyId");
+
                             b1.ToTable("Charges");
 
                             b1.WithOwner()
                                 .HasForeignKey("ChargeId");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
                         });
                 });
 
@@ -1293,7 +1800,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                                 .HasColumnType("NUMBER(10)")
                                 .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("Currency")
+                            b1.Property<int>("CurrencyId")
                                 .HasColumnType("NUMBER(10)");
 
                             b1.Property<double>("Value")
@@ -1301,7 +1808,15 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                             b1.HasKey("MovementId");
 
+                            b1.HasIndex("CurrencyId");
+
                             b1.ToTable("Movements");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
 
                             b1.WithOwner()
                                 .HasForeignKey("MovementId");
@@ -1329,7 +1844,7 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                                 .HasColumnType("NUMBER(10)")
                                 .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("Currency")
+                            b1.Property<int>("CurrencyId")
                                 .HasColumnType("NUMBER(10)");
 
                             b1.Property<double>("Value")
@@ -1337,7 +1852,15 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
 
                             b1.HasKey("TransferId");
 
+                            b1.HasIndex("CurrencyId");
+
                             b1.ToTable("Transfers");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
 
                             b1.WithOwner()
                                 .HasForeignKey("TransferId");
@@ -1363,11 +1886,57 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .WithMany("ContactChildren")
                         .HasForeignKey("ContactParentId");
 
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId");
+
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.UserAgg.User", "User")
                         .WithMany("Contacts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg.Liquidation", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccount", "BankAccount")
+                        .WithMany()
+                        .HasForeignKey("BankAccountId");
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.DealerAgg.Dealer", "Dealer")
+                        .WithMany()
+                        .HasForeignKey("DealerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("VolvoCash.Domain.MainContext.Aggregates.CardAgg.Money", "Amount", b1 =>
+                        {
+                            b1.Property<int>("LiquidationId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("NUMBER(10)")
+                                .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<int>("CurrencyId")
+                                .HasColumnType("NUMBER(10)");
+
+                            b1.Property<double>("Value")
+                                .HasColumnType("BINARY_DOUBLE");
+
+                            b1.HasKey("LiquidationId");
+
+                            b1.HasIndex("CurrencyId");
+
+                            b1.ToTable("Liquidations");
+
+                            b1.HasOne("VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("LiquidationId");
+                        });
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.UserAgg.Admin", b =>

@@ -17,6 +17,8 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         #region Properties
         public int Id { get; set; }
 
+        public int CurrencyId { get; set; }
+
         public string Code { get; set; }
 
         public MoneyDTO Balance { get; set; }
@@ -51,8 +53,8 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         {
             return new
             {
-                Code,
-                Id
+                Id,
+                CurrencyId
             };
         }
         #endregion

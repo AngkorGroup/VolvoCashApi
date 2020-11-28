@@ -23,6 +23,10 @@ using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
+using VolvoCash.Application.MainContext.DTO.Currencies;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -37,7 +41,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         private readonly IRechargeTypeRepository _rechargeTypeRepository;
         private readonly IBusinessAreaRepository _businessAreaRepository;
         private readonly IBatchRepository _batchRepository;
+        private readonly ICurrencyRepository _currencyRepository;
         private readonly IBatchErrorRepository _batchErrorRepository;
+        private readonly IDocumentTypeRepository _documentTypeRepository;
         private readonly ICardRechargeService _rechargeService;
         private readonly ILocalization _resources;
         #endregion
@@ -50,7 +56,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                                IRechargeTypeRepository rechargeTypeRepository,
                                IBusinessAreaRepository businessAreaRepository,
                                IBatchRepository batchRepository,
+                               ICurrencyRepository currencyRepository,
                                IBatchErrorRepository batchErrorRepository,
+                               IDocumentTypeRepository documentTypeRepository,
                                ICardRechargeService rechargeService)
         {
             _clientRepository = clientRepository;
@@ -60,7 +68,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             _businessAreaRepository = businessAreaRepository;
             _cardRepository = cardRepository;
             _batchRepository = batchRepository;
+            _currencyRepository = currencyRepository;
             _batchErrorRepository = batchErrorRepository;
+            _documentTypeRepository = documentTypeRepository;
             _rechargeService = rechargeService;
             _resources = LocalizationFactory.CreateLocalResources();
         }
@@ -86,15 +96,16 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             try
             {
+
                 var lineSegments = line.Split("|");
                 var batchTPCode = GetLineSegment(lineSegments, 0);
                 var clientTPCode = GetLineSegment(lineSegments, 1);
                 var clientName = GetLineSegment(lineSegments, 2);
                 var clientEmail = GetLineSegment(lineSegments, 3);
-                var contractDate = DateTime.ParseExact(GetLineSegment(lineSegments, 4), DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+                var contractDate = DateTimeParser.TryParseString(GetLineSegment(lineSegments, 4), DateTimeFormats.DateFormat);
                 var chasisNumber = GetLineSegment(lineSegments, 5);
                 var invoiceDocumentNumber = GetLineSegment(lineSegments, 6);
-                var invoiceDate = DateTime.ParseExact(GetLineSegment(lineSegments, 7), DateTimeFormats.DateFormat, System.Globalization.CultureInfo.InvariantCulture);
+                var invoiceDate = DateTimeParser.TryParseString(GetLineSegment(lineSegments, 7), DateTimeFormats.DateFormat); 
                 var batchAmount = double.Parse(GetLineSegment(lineSegments, 8));
                 var batchCurrency = GetLineSegment(lineSegments, 9);
                 var contactName = GetLineSegment(lineSegments, 10);
@@ -110,13 +121,14 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var businessDescription = GetLineSegment(lineSegments, 20);
                 var cardTypeCode = GetLineSegment(lineSegments, 21);
                 var cardTypeDescription = GetLineSegment(lineSegments, 22);
-                var clientAddress = "Mi direccion 1234";
-                var clientPhone = "987654321";
-                var contactLastName = "Apellidos";
-                var contactDocumentType = DocumentType.DNI;
+                var clientAddress = "-";
+                var clientPhone = "-";
+                var contactLastName = "-";
+                var contactDocumentTypeId = (_documentTypeRepository.Filter(filter: dt => dt.Abbreviation == "DNI")).FirstOrDefault().Id;
+
                 try
                 {
-                    var client = new ClientDTO()
+                    var client = new ClientListDTO()
                     {
                         Ruc = clientRuc,
                         Address = clientAddress,
@@ -132,11 +144,11 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                         LastName = contactLastName,
                         Phone = contactPhone,
                         Email = contactEmail,
-                        DocumentType = contactDocumentType,
+                        DocumentTypeId = contactDocumentTypeId,
                         DocumentNumber = contactDocumentNumber,
                     };
 
-                    var cardType = _cardTypeRepository.Filter(ct => ct.TPCode == cardTypeCode).FirstOrDefault();                  
+                    var cardType = _cardTypeRepository.Filter(ct => ct.TPCode == cardTypeCode).FirstOrDefault();
 
                     if (cardType == null)
                         throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidCardTypeCode));
@@ -151,27 +163,62 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     if (businessArea == null)
                         throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidBusinessAreaCode));
 
+                    var currency = _currencyRepository.Filter(c => c.TPCode == batchCurrency).FirstOrDefault();
+
+                    if (currency == null)
+                        throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidCurrencyCode));
+
+                    var existingBatch = _batchRepository.Filter(b => b.TPContractBatchNumber == batchTPCode && b.TPChasis == chasisNumber).FirstOrDefault();
+
+                    if (existingBatch != null)
+                    {
+                        var existingBatchMessage = _resources.GetStringResource(LocalizationKeys.Application.exception_BatchAlreadyExists);
+                        existingBatchMessage = string.Format(existingBatchMessage, batchTPCode, chasisNumber);
+                        throw new InvalidOperationException(existingBatchMessage);
+                    }
+
+                    var cardTypeDTO = new CardTypeDTO() { 
+                         DisplayName = cardType.DisplayName,
+                         Name = cardType.Name
+                    };
+
                     var card = new CardDTO()
                     {
                         CardTypeId = cardType.Id,
                         TPCode = batchTPCode,
+                        CardType = cardTypeDTO
                     };
 
+                    var currencyDTO = currency.ProjectedAs<CurrencyDTO>();
+
+                    var amount = new MoneyDTO() { Currency = currencyDTO, CurrencyId = currencyDTO.Id, Value = batchAmount };
+                    
                     var batch = new BatchDTO()
                     {
-                        Amount = new MoneyDTO((Currency)Enum.Parse(typeof(Currency), batchCurrency), batchAmount),
-                        TPContractDate = contractDate,
-                        TPChasis = chasisNumber,
-                        TPInvoiceDate = invoiceDate,
-                        TPInvoiceCode = invoiceDocumentNumber,
-                        RechargeTypeId = rechargeType.Id,
-                        TPContractNumber = contractNumber,
-                        TPContractBatchNumber = batchTPCode,
-                        DealerCode = dealerCode,
-                        DealerName = dealerName,
-                        BusinessAreaId = businessArea.Id,
-                        CardTypeId = cardType.Id,
-                        LineContent = line
+                        Amount                  = amount,
+                        TPContractDate          = contractDate,
+                        TPChasis                = chasisNumber,
+                        TPInvoiceDate           = invoiceDate,
+                        TPInvoiceCode           = invoiceDocumentNumber,
+                        RechargeTypeId          = rechargeType.Id,
+                        TPContractNumber        = contractNumber,
+                        TPContractBatchNumber   = batchTPCode,
+                        DealerCode              = dealerCode,
+                        DealerName              = dealerName,
+                        BusinessAreaId          = businessArea.Id,
+                        CardTypeId              = cardType.Id,
+                        LineContent             = line,
+                        Client                  = client,
+                        Balance                 = amount,
+                        CardType                = cardTypeDTO,
+                        RechargeType            = new DTO.RechargeTypes.RechargeTypeDTO()
+                        {
+                            Name = rechargeType.Name
+                        },
+                        BusinessArea            = new DTO.BusinessAreas.BusinessAreaDTO()
+                        {
+                            Name = businessArea.Name
+                        }
                     };
 
                     var load = new Load()
@@ -211,7 +258,10 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             var rowIndex = 1;
             foreach (var line in ReadLines(stream, Encoding.UTF8))
             {
-                loads.Add(GetLoadFromLine(line, rowIndex));
+                if (!string.IsNullOrEmpty(line?.Trim()))
+                {
+                    loads.Add(GetLoadFromLine(line, rowIndex));
+                }                
                 rowIndex++;
             }
             return loads;
@@ -222,8 +272,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<BatchDTO>> GetBatches(DateTime? beginDate, DateTime? endDate)
         {
             var batches = await _batchRepository.FilterAsync(
-                filter: b=> (beginDate == null || b.CreatedAt >= beginDate)
-                            &&  (endDate == null || b.CreatedAt <= endDate),
+                filter: b => (beginDate == null || b.CreatedAt >= beginDate)
+                            && (endDate == null || b.CreatedAt <= endDate),
                 includeProperties: "Client.Contacts,CardType,RechargeType,BusinessArea",
                 orderBy: bq => bq.OrderByDescending(b => b.CreatedAt));
             return batches.ProjectedAsCollection<BatchDTO>();
@@ -253,7 +303,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             {
                 foreach (var batch in batches)
                 {
-                    cardBatches.AddRange(batch.CardBatches.Where(cb=>cb.Balance.Value > 0).ProjectedAsCollection<CardBatchDTO>());
+                    cardBatches.AddRange(batch.CardBatches.Where(cb => cb.Balance.Value > 0).ProjectedAsCollection<CardBatchDTO>());
                 }
             }
             return cardBatches;
@@ -263,6 +313,16 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             var batchErrors = await _batchErrorRepository.FilterAsync(orderBy: beq => beq.OrderByDescending(be => be.CreatedAt));
             return batchErrors.ProjectedAsCollection<BatchErrorDTO>();
+        }
+
+        public List<Load> GetLoadsFromFileStream(string fileName, Stream stream)
+        {
+            if (stream == null)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_BatchFileIsNull));
+            }
+            var loads = GetLoadsFromStream(stream);
+            return loads;
         }
 
         public async Task<List<BatchErrorDTO>> PerformLoadsFromFileStreamAsync(string fileName, Stream stream)
@@ -301,7 +361,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             return batchsErrors.ProjectedAsCollection<BatchErrorDTO>();
         }
 
-        public async Task<BatchDTO> PerformLoadAsync(ClientDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO)
+        public async Task<BatchDTO> PerformLoadAsync(ClientListDTO clientDTO, ContactDTO contactDTO, CardDTO carDTO, BatchDTO batchDTO)
         {
             var client = (await _clientRepository.FilterAsync(filter: c => c.Ruc == clientDTO.Ruc && c.Status == Status.Active,
                                                               includeProperties: "Contacts.Cards")).FirstOrDefault();
@@ -313,7 +373,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             {
                 client.UpdateFields(clientDTO.Ruc, clientDTO.Address, clientDTO.Email, clientDTO.Name, clientDTO.Phone);
             }
-            var mainContact = await _contactRepository.CreateOrUpdateMainContact(client, contactDTO.Phone, contactDTO.DocumentType,
+            var mainContact = await _contactRepository.CreateOrUpdateMainContact(client, contactDTO.Phone, contactDTO.DocumentTypeId,
                                                                                  contactDTO.DocumentNumber, contactDTO.FirstName,
                                                                                  contactDTO.LastName, contactDTO.Email);
             var card = mainContact.Cards.FirstOrDefault(c => c.CardTypeId == carDTO.CardTypeId && c.Status == Status.Active);
@@ -326,11 +386,13 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             }
             batchDTO.TPContractReason += " " + batchReason;
             var expire = DateTime.Now.AddMonths(cardType.Term);
+            var batchCurrency = _currencyRepository.Filter(c => c.Id == batchDTO.Amount.CurrencyId).FirstOrDefault();
+
             var batch = new Batch(
                 mainContact,
                 card,
                 batchDTO.TPContractBatchNumber,
-                new Money(batchDTO.Amount.Currency, batchDTO.Amount.Value),
+                new Money(batchCurrency, batchDTO.Amount.Value),
                 expire,
                 batchDTO.TPChasis,
                 batchDTO.TPContractDate,

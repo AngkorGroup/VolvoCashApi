@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -32,8 +33,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
         [MaxLength(100)]
         public string Email { get; set; }
 
-        public DocumentType DocumentType { get; set; }
+        [ForeignKey("DocumentType")]
+        public int? DocumentTypeId { get; set; }
 
+        public virtual DocumentType DocumentType { get; set; }
+        
         public string DocumentNumber { get; set; }
 
         [Required]
@@ -79,12 +83,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
         {
         }
 
-        public Contact(Client client, ContactType type, DocumentType documentType,
+        public Contact(Client client, ContactType type, int documentTypeId,
                         string documentNumber, string phone, string firstName,
                         string lastName, string email, int? contactParentId = null)
         {
             Client = client;
-            DocumentType = documentType;
+            DocumentTypeId = documentTypeId;
             DocumentNumber = documentNumber;
             Phone = phone;
             FirstName = firstName;

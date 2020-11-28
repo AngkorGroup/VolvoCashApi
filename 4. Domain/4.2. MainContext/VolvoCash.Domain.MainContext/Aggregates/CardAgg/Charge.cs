@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.Utils;
+using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -15,15 +16,18 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         #region Properties
         [MaxLength(20)]
         public string OperationCode { get; set; }
+        
+        public DateTime? OperationDate { get; set; }
 
         [Required]
         public Money Amount { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string DisplayName { get; set; }
 
         public string ImageUrl { get; set; }
 
+        [MaxLength(200)]
         public string Description { get; set; }
 
         [Required]
@@ -47,6 +51,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public virtual Cashier Cashier { get; set; }
 
+        [ForeignKey("Liquidation")]
+        public int? LiquidationId { get; set; }
+
+        public virtual Liquidation Liquidation { get; set; }
+
         public virtual ICollection<Movement> Movements { get; set; } = new List<Movement>();
         #endregion
 
@@ -57,14 +66,14 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
 
         public Charge(int cashierId, Card card, ChargeType chargeType, Money amount, string displayName, string description)
         {
+            Description = description?.Substring(0, Math.Min(200, description.Length));
+            DisplayName = displayName?.Substring(0, Math.Min(100, displayName.Length));
             CashierId = cashierId;
             Card = card;
             Amount = amount;
-            DisplayName = displayName;
             ChargeType = chargeType;
-            Description = description;
             Status = ChargeStatus.Pending;
-            var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON,this);
+            var movement = new Movement(amount.Opposite(), displayName, displayName, MovementType.CON, this);
             movement.CardId = card.Id;
             Movements.Add(movement);
             if (!card.CanWithdraw(amount))
@@ -80,6 +89,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public void GenerateOperationCode()
         {
             OperationCode = RandomGenerator.RandomDigits(10);
+            OperationDate = DateTime.Now;
         }
         #endregion
     }

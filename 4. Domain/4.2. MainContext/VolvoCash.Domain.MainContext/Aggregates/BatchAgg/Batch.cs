@@ -7,7 +7,6 @@ using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
-using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
@@ -42,7 +41,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         public string TPReason { get; set; }
 
         [ForeignKey("RechargeType")]
-        public int ? RechargeTypeId { get; set; }
+        public int? RechargeTypeId { get; set; }
 
         public virtual RechargeType RechargeType { get; set; }
 
@@ -89,9 +88,9 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         }
 
         public Batch(Contact contact, Card card, string tpContractBatchNumber, Money amount, DateTime expire, string tpChasis,
-                    DateTime? tpContractDate, string tpInvoiceCode,DateTime? tpInvoiceDate, int rechargeTypeId, 
-                    string tpContractNumber, string tpContractReason, string dealerCode, string dealerName, 
-                    int businessAreaId,  int cardTypeId, string lineContent)
+                    DateTime? tpContractDate, string tpInvoiceCode, DateTime? tpInvoiceDate, int rechargeTypeId,
+                    string tpContractNumber, string tpContractReason, string dealerCode, string dealerName,
+                    int businessAreaId, int cardTypeId, string lineContent)
         {
             Contact = contact;
             Card = card;

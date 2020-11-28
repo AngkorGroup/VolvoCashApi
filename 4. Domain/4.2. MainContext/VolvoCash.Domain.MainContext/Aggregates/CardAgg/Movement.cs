@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,7 +17,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         [Required]
         public MovementType Type { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string DisplayName { get; set; }
 
         [MaxLength(200)]
@@ -50,8 +51,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public Movement(Money amount, string description, string displayName, MovementType movementType, Charge charge)
         {
             Amount = amount;
-            Description = description;
-            DisplayName = displayName;
+            Description = description?.Substring(0, Math.Min(200, description.Length));
+            DisplayName = displayName?.Substring(0, Math.Min(100, displayName.Length));
             BatchMovements = new List<BatchMovement>();
             Type = movementType;
             Charge = charge;
@@ -60,8 +61,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public Movement(Money amount, string description, string displayName, MovementType movementType)
         {
             Amount = amount;
-            Description = description;
-            DisplayName = displayName;
+            Description = description?.Substring(0, Math.Min(200, description.Length));
+            DisplayName = displayName?.Substring(0, Math.Min(100, displayName.Length));
             BatchMovements = new List<BatchMovement>();
             Type = movementType;
         }
@@ -69,8 +70,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public Movement(Money amount, string description, string displayName, MovementType movementType, ICollection<BatchMovement> batchMovements)
         {
             Amount = amount;
-            Description = description;
-            DisplayName = displayName;
+            Description = description?.Substring(0, Math.Min(200, description.Length));
+            DisplayName = displayName?.Substring(0, Math.Min(100, displayName.Length));
             BatchMovements = batchMovements;
             Type = movementType;
         }
@@ -78,8 +79,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public Movement(Money amount, string description, string displayName, MovementType movementType, ICollection<BatchMovement> batchMovements,Transfer transfer)
         {
             Amount = amount;
-            Description = description;
-            DisplayName = displayName;
+            Description = description?.Substring(0, Math.Min(200, description.Length));
+            DisplayName = displayName?.Substring(0, Math.Min(100, displayName.Length));
             BatchMovements = batchMovements;
             Type = movementType;
             Transfer = transfer;

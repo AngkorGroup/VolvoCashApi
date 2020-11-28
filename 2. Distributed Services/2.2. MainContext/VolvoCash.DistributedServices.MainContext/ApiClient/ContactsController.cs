@@ -1,6 +1,6 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Contacts.Services;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.CrossCutting.NetFramework.Identity;

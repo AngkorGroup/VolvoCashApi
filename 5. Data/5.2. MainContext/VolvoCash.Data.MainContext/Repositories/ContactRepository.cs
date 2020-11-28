@@ -29,7 +29,7 @@ namespace VolvoCash.Data.MainContext.Repositories
             return contact;
         }
 
-        public async Task<Contact> CreateOrUpdateMainContact(Client client, string phone, DocumentType documentType,
+        public async Task<Contact> CreateOrUpdateMainContact(Client client, string phone, int documentTypeId,
             string documentNumber, string firstName, string lastName, string email)
         {
             var mainContact = client.Contacts.FirstOrDefault(c => c.Type == ContactType.Primary && c.Status == Status.Active);
@@ -43,7 +43,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                 mainContact = new Contact(
                     client,
                     ContactType.Primary,
-                    documentType,
+                    documentTypeId,
                     documentNumber,
                     phone,
                     firstName,
@@ -55,7 +55,7 @@ namespace VolvoCash.Data.MainContext.Repositories
             {
                 if (mainContact.Phone == phone)
                 {
-                    mainContact.DocumentType = documentType;
+                    mainContact.DocumentTypeId = documentTypeId;
                     mainContact.DocumentNumber = documentNumber;
                     mainContact.Email = email;
                     mainContact.FirstName = firstName;
@@ -71,7 +71,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                             var newContact = new Contact(
                                 client,
                                 ContactType.Secondary,
-                                documentType,
+                                documentTypeId,
                                 documentNumber,
                                 phone,
                                 firstName,
@@ -82,7 +82,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                         }
                         else
                         {
-                            existingContact.DocumentType = documentType;
+                            existingContact.DocumentTypeId = documentTypeId;
                             existingContact.DocumentNumber = documentNumber;
                             existingContact.Email = email;
                             existingContact.FirstName = firstName;

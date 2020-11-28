@@ -87,7 +87,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                   || c.Contact.LastName.ToUpper().Contains(query)
                   || c.Contact.Phone.Trim().Contains(query)
                   || c.Contact.Client.Ruc.Trim().Contains(query)) && c.Contact.Status == Status.Active,
-                includeProperties: "Contact.Client,CardType");
+                includeProperties: "Contact.Client,CardType,Balance.Currency");
             cards = cards.Take(Math.Min(cards.Count(), maxRecords));
             if (cards != null && cards.Any())
             {

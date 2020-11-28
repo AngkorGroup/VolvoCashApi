@@ -1,12 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using VolvoCash.DistributedServices.Seedwork.Filters;
-using VolvoCash.Application.MainContext.CardTypes.Services;
-using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
-using VolvoCash.Application.MainContext.DTO.CardTypes;
-using VolvoCash.DistributedServices.Seedwork.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Application.MainContext.CardTypes.Services;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
+using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -14,26 +11,41 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
-    public class CardTypesController : AsyncBaseApiController<CardType, CardTypeDTO>
+    public class CardTypesController : ControllerBase
     {
+        private readonly ICardTypeAppService _cardTypeAppService;
 
         #region Constructor
-        public CardTypesController(ICardTypeAppService cardTypeAppService) : base(cardTypeAppService)
+        public CardTypesController(ICardTypeAppService cardTypeAppService) 
         {
+            _cardTypeAppService = cardTypeAppService;
         }
         #endregion
 
         #region Public Methods
-        [HttpPost]
-        public override async Task<CardTypeDTO> Post([FromBody] CardTypeDTO entityDTO)
+        [HttpGet]
+        public async Task<IActionResult> GetCardTypes([FromQuery] bool onlyActive = false)
         {
-            entityDTO.Status = Status.Active;
-            return await _service.AddAsync(entityDTO);
+            return Ok(await _cardTypeAppService.GetCardTypes(onlyActive));
         }
-        [HttpDelete("{id}")]
-        public override async Task Delete([FromRoute] int id)
+
+        [HttpPost]
+        public async Task<IActionResult> PostCardType([FromBody] CardTypeDTO cardTypeDTO)
         {
-             await (_service as ICardTypeAppService).Delete(id);            
+            return Ok(await _cardTypeAppService.AddAsync(cardTypeDTO));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutCardType([FromBody] CardTypeDTO cardTypeDTO)
+        {
+            return Ok(await _cardTypeAppService.ModifyAsync(cardTypeDTO));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCardType([FromRoute] int id)
+        {
+            await _cardTypeAppService.Delete(id);
+            return Ok();
         }
         #endregion
     }

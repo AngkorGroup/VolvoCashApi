@@ -1,12 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using VolvoCash.Application.MainContext.DTO.BankAccounts;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
 using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.Application.Seedwork.Common;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
@@ -19,15 +21,18 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         #region Members
         private readonly IChargeRepository _chargeRepository;
         private readonly ICashierRepository _cashierRepository;
+        private readonly IBankAccountRepository _bankAccountRepository;
         #endregion
 
         #region Constructor
         public DealerAppService(IDealerRepository dealerRepository,
                                 ICashierRepository cashierRepository,
-                                IChargeRepository chargeRepository) : base(dealerRepository)
+                                IChargeRepository chargeRepository,
+                                IBankAccountRepository bankAccountRepository) : base(dealerRepository)
         {
             _chargeRepository = chargeRepository;
             _cashierRepository = cashierRepository;
+            _bankAccountRepository = bankAccountRepository;
         }
         #endregion
 
@@ -42,9 +47,9 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
             return dealers.ProjectedAsCollection<DealerDTO>();
         }
 
-        public async Task<List<CashierDTO>> GetDealerCashiers(int id)
+        public async Task<List<CashierDTO>> GetDealerCashiers(int id, bool onlyActive)
         {
-            var cashiers = await _cashierRepository.FilterAsync(filter: c => c.DealerId == id);
+            var cashiers = await _cashierRepository.FilterAsync(filter: c => c.DealerId == id && (!onlyActive || c.Status == Status.Active) );
             return cashiers.ProjectedAsCollection<CashierDTO>();
         }
 
@@ -52,7 +57,7 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         {
             var charges = await _chargeRepository.FilterAsync(filter: c => c.Cashier.DealerId == id
                     && (beginDate == null || c.CreatedAt >= beginDate)
-                    && (endDate == null   || c.CreatedAt <= endDate)
+                    && (endDate == null || c.CreatedAt <= endDate)
                     && (cashierId == null || c.Cashier.Id == cashierId)
                     && (cardTypes == null || cardTypes.Count == 0 || cardTypes.Contains(c.Card.CardTypeId))
                     , includeProperties: "Cashier.Dealer,Card.CardType,Card.Contact.Client"
@@ -67,7 +72,22 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
             dealer.Status = Status.Inactive;
             _repository.Modify(dealer);
             await _repository.UnitOfWork.CommitAsync();
-        }        
+        }
+
+        public async Task<List<BankAccountDTO>> GetBankAccounts(int id)
+        {
+            var bankAccounts = await _bankAccountRepository.FilterAsync(filter: ba => ba.DealerId == id,
+                                                                        includeProperties: "Currency,BankAccountType,Bank",
+                                                                        orderBy: ba => ba.OrderByDescending(x => x.CreatedAt));
+            return bankAccounts.ProjectedAsCollection<BankAccountDTO>();
+        }
+
+        public async Task<BankAccountDTO> GetBankAccount(int id, int bankId)
+        {
+            var bankAccount = (await _bankAccountRepository.FilterAsync(filter: ba => ba.DealerId == id && ba.Bank.Id == bankId,
+                                                                        includeProperties: "Currency,BankAccountType,Bank")).FirstOrDefault();
+            return bankAccount.ProjectedAs<BankAccountDTO>();
+        }
         #endregion
     }
 }

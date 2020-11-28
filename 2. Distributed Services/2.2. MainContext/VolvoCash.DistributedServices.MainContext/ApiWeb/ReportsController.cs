@@ -239,7 +239,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
                     new ReportParameter("p_begin_date", reportRequest.StartDate),
                     new ReportParameter("p_end_date", reportRequest.EndDate),
                 },
-                Path = ""// Falta poner el nombre del reporte
+                Path = "Refund"// Falta poner el nombre del reporte
             };
             var reportContent = await _reportManager.GetReportAsync(report);
             var fileName = "ReporteReembolsos";

@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -45,6 +47,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
         public DateTime? ArchiveAt { get; set; }
 
         public virtual ICollection<Cashier> Cashiers { get; set; }
+        public virtual ICollection<BankAccount> BankAccounts { get; set; }
         #endregion
 
         #region Constructor
@@ -61,10 +64,27 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
             Address = address;
             ContactName = contactName;
             Name = name;
-            Ruc = ruc;           
+            Ruc = ruc;
             MaxCashiers = maxCashiers;
             Type = type;
             Status = Status.Active;
+        }
+        #endregion
+
+        #region Public Methods
+        public BankAccount GetBankAccount(int bankId, int currencyId)
+        {
+            var defaultBankAccount = BankAccounts.First(ba => ba.BankId == bankId && ba.CurrencyId == currencyId && ba.IsDefault);
+
+            if (defaultBankAccount == null)
+            {
+                defaultBankAccount = BankAccounts.First(ba => ba.BankId == bankId && ba.CurrencyId == currencyId);
+                if (defaultBankAccount == null)
+                {
+                    defaultBankAccount = BankAccounts.First(ba => ba.CurrencyId == currencyId);
+                }
+            }
+            return defaultBankAccount;
         }
         #endregion
     }

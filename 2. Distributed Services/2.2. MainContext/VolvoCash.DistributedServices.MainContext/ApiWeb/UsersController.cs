@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Contacts.Services;
 using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.Users.Services;
-using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Users;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
@@ -31,9 +30,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet]
-        public async Task<ActionResult> GetUsers()
+        public async Task<ActionResult> GetUsers(bool onlyActive = false)
         {
-            var users = await _userAppService.GetAllDTOAsync();
+            var users = await _userAppService.GetAllDTOAsync(onlyActive);
             return Ok(users);
         }
 

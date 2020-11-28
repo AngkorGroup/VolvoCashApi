@@ -21,8 +21,8 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             );
             admin.CreatedBy = "ADMIN";
             admin.CreatedAt = DateTime.Now;
-
             context.Admins.Add(admin);
+
             context.SaveChanges();
         }
     }

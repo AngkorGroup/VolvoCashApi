@@ -33,7 +33,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
                           || c.Address.Trim().ToUpper().Contains(query)
                           || c.Phone.Trim().Contains(query)
                           || string.IsNullOrEmpty(query),
-                includeProperties : "Contacts.Cards");
+                includeProperties : "Contacts.Cards.Currency");
             clients = clients.Take(Math.Min(clients.Count(), maxRecords));
             if (clients != null && clients.Any())
             {
@@ -67,7 +67,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
         {
             var client = (await _clientRepository.FilterAsync(
                 filter: c => c.Id == id,
-                includeProperties: "Contacts.Cards.CardType"
+                includeProperties: "Contacts.Cards.CardType.Currency"
             )).FirstOrDefault();
 
             if (client != null)

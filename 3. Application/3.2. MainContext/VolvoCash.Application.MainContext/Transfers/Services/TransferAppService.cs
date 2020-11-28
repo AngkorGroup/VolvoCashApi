@@ -8,6 +8,7 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Services.CardService;
 
 namespace VolvoCash.Application.MainContext.Transfers.Services
@@ -19,6 +20,7 @@ namespace VolvoCash.Application.MainContext.Transfers.Services
         private readonly IContactRepository _contactRepository;
         private readonly ICardRepository _cardRepository;
         private readonly ITransferRepository _transferRepository;
+        private readonly ICurrencyRepository _currencyRepository;
         private readonly ICardTransferService _transferService;
         private readonly IAmazonBucketService _amazonService;
         private readonly IUrlManager _urlManager;
@@ -29,6 +31,7 @@ namespace VolvoCash.Application.MainContext.Transfers.Services
         public TransferAppService(IContactRepository contactRepository,
                                   ICardRepository cardRepository,
                                   ITransferRepository transferRepository,
+                                  ICurrencyRepository currencyRepository,
                                   ICardTransferService transferService,
                                   IAmazonBucketService amazonService,
                                   IUrlManager urlManager)
@@ -36,6 +39,7 @@ namespace VolvoCash.Application.MainContext.Transfers.Services
             _contactRepository = contactRepository;
             _cardRepository = cardRepository;
             _transferRepository = transferRepository;
+            _currencyRepository = currencyRepository;
             _transferService = transferService;
             _amazonService = amazonService;
             _urlManager = urlManager;
@@ -61,19 +65,19 @@ namespace VolvoCash.Application.MainContext.Transfers.Services
 
         public async Task<TransferListDTO> PerformTransfer(string phone, TransferDTO transferDTO)
         {
-            var originCard = await _cardRepository.GetCardByIdWithBatchesAsync(transferDTO.OriginCardId,phone);     
-            
+            var originCard = await _cardRepository.GetCardByIdWithBatchesAsync(transferDTO.OriginCardId, phone);
+
             if (originCard == null)
             {
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CardNotFound));
             }
 
-            var destinyContact = await _contactRepository.GetContactById(transferDTO.DestinyCard.ContactId);    
-
-            var amountToTransfer = new Money(transferDTO.Amount.Currency, transferDTO.Amount.Value);
-
-            var transfer = await _transferService.PerformTransfer(originCard, destinyContact, amountToTransfer);
-
+            var destinyContact = await _contactRepository.GetContactById(transferDTO.DestinyCard.ContactId);
+            
+            var transferCurrency = _currencyRepository.Filter(c => c.Id == originCard.CurrencyId).FirstOrDefault();
+            
+            var transfer = await _transferService.PerformTransfer(originCard, destinyContact, new Money(transferCurrency, transferDTO.Amount.Value));
+            
             _transferRepository.Add(transfer);
 
             await _transferRepository.UnitOfWork.CommitAsync();

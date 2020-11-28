@@ -14,14 +14,14 @@ namespace VolvoCash.Data.MainContext.Repositories
         #endregion
 
         #region Constructor
-        public SessionRepository(MainDbContext dbContext,
-                                  ILogger<Repository<Session, MainDbContext>> logger) : base(dbContext, logger)
+        public SessionRepository(MainDbContext dbContext, ILogger<Repository<Session, MainDbContext>> logger) : base(dbContext, logger)
         {
         }
+
         public async Task<List<string>> GetActivePushDeviceTokensAsync(int userId)
         {
             var activeSessionsWithDeviceToken = await FilterAsync(s => s.UserId == userId && s.Status == Status.Active && !string.IsNullOrEmpty(s.PushDeviceToken));
-            return activeSessionsWithDeviceToken.Select(c => c.PushDeviceToken).ToList();
+            return activeSessionsWithDeviceToken.GroupBy(c => c.PushDeviceToken).Select(t => t.Key).ToList();
         }
         #endregion
     }

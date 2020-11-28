@@ -43,6 +43,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _businessAreaAppService.AddAsync(businessAreaDTO));
         }
 
+        [HttpPut]
         public async Task<IActionResult> PutBusinessArea([FromBody] BusinessAreaDTO businessAreaDTO)
         {
             return Ok(await _businessAreaAppService.ModifyAsync(businessAreaDTO));

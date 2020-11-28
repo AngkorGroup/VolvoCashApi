@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using VolvoCash.Data.MainContext;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
-using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 
 namespace VolvoCash.DistributedServices.MainContext.Seeders
 {
@@ -19,17 +18,16 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             );
             rechargeType1.CreatedBy = "ADMIN";
             rechargeType1.CreatedAt = DateTime.Now;
-
             context.RechargeTypes.Add(rechargeType1);
 
             var rechargeType2 = new RechargeType(
-               "Contrato",
-               "C"
-           );
+                "Contrato",
+                "C"
+            );
             rechargeType2.CreatedBy = "ADMIN";
             rechargeType2.CreatedAt = DateTime.Now;
-
             context.RechargeTypes.Add(rechargeType2);
+
             context.SaveChanges();
         }
     }
