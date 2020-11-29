@@ -107,9 +107,10 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
                 liquidation.ScheduleLiquidation(originBankAccount);
                 totalAmount.Value += liquidation.Amount.Value;
             }
-            var refund = new Refund(DateTime.Now, totalAmount, originBankAccount, liquidations);
-
             await _liquidationRepository.UnitOfWork.CommitAsync();
+            
+            var refund = new Refund(DateTime.Now, totalAmount, originBankAccount, liquidations);
+            _refundRepository.Add(refund);
             await _refundRepository.UnitOfWork.CommitAsync();
 
             return bankFile;

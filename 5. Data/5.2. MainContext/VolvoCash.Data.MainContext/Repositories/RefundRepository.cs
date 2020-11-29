@@ -24,7 +24,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                 filter: l => l.Date >= beginDate
                     && l.Date <= endDate
                     && l.RefundStatus == refundStatus,
-                includeProperties: "TotalAmount.Currency,BankAccount.Bank",
+                includeProperties: "Amount.Currency,BankAccount.Bank",
                 orderBy: lq => lq.OrderByDescending(l => l.Id));
         }
 
@@ -32,7 +32,7 @@ namespace VolvoCash.Data.MainContext.Repositories
         {
             return (await FilterAsync(
                 filter: l => l.Id == id,
-                includeProperties: "TotalAmount.Currency,BankAccount.Bank",
+                includeProperties: "Amount.Currency,BankAccount.Bank",
                 orderBy: lq => lq.OrderByDescending(l => l.Id))).FirstOrDefault();
         }
 
@@ -40,7 +40,7 @@ namespace VolvoCash.Data.MainContext.Repositories
         {
             return (await FilterAsync(
                 filter: l => l.Id == id,
-                includeProperties: "TotalAmount.Currency,BankAccount.Bank,Liquidations.Charges",
+                includeProperties: "Amount.Currency,BankAccount.Bank,Liquidations.Charges",
                 orderBy: lq => lq.OrderByDescending(l => l.Id))).FirstOrDefault();
         }
         #endregion

@@ -25,7 +25,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                            && l.Date <= endDate
                            && l.LiquidationStatus == liquidationStatus,
                 includeProperties: "Dealer,Amount.Currency,BankAccount.Bank",
-                orderBy: lq => lq.OrderByDescending(l => l.Id));
+                orderBy: lq => lq.OrderByDescending(l => l.Date));
         }
 
         public async Task<Liquidation> GetLiquidation(int id)

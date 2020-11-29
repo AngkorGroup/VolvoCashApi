@@ -9,6 +9,7 @@ namespace VolvoCash.Application.MainContext.DTO.Profiles
         public LiquidationProfile()
         {
             CreateMap<Liquidation, LiquidationDTO>().PreserveReferences();
+            CreateMap<Liquidation, LiquidationListDTO>().PreserveReferences();
         }
     }
 }

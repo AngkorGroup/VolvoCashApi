@@ -15,7 +15,7 @@ namespace VolvoCash.Application.MainContext.DTO.Refunds
         #region Properties
         public int Id { get; set; }
 
-        public MoneyDTO TotalAmount { get; set; }
+        public MoneyDTO Amount { get; set; }
 
         [JsonConverter(typeof(DefaultDateConverter))]
         public DateTime Date { get; set; }

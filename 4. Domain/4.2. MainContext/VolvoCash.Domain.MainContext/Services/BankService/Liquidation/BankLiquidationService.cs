@@ -42,6 +42,14 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             foreach (var liquidation in liquidations)
             {
                 var dealerBankAccount = liquidation.Dealer.GetBankAccount(bankAccount.Bank.Id, liquidation.Amount.CurrencyId);
+                // TODO: Validar que si la cuenta no existe como mostrar el error.
+                if (dealerBankAccount == null)
+                {
+                    var dealerBankAccountIsNullMessage = _resources.GetStringResource(LocalizationKeys.Application.exception_DealerBankAccountIsNull);
+                    dealerBankAccountIsNullMessage = string.Format(dealerBankAccountIsNullMessage, liquidation.Dealer.Name);
+                    throw new InvalidOperationException(dealerBankAccountIsNullMessage);
+                }
+
                 var isCCI = dealerBankAccount.Bank.Id != bankAccount.Bank.Id;
                 var accountType = dealerBankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bat => bat.BankId == bankAccount.Bank.Id).Equivalence;
 
@@ -81,17 +89,11 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
         private string GetBCPDetailLine(BankAccount bankAccount, Liquidation liquidation)
         {
             var dealerBankAccount = liquidation.Dealer.GetBankAccount(bankAccount.Bank.Id, liquidation.Amount.CurrencyId);
-
-            // TODO: Validar que si la cuenta no existe como mostrar el error.
-            if (dealerBankAccount == null)
-                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Domain.exception_BankAccountIsNull));
-
-            liquidation.SetDealerBankAccount(dealerBankAccount);
             var detailIndicator = _detailIndicator;
             var bankAccountType = dealerBankAccount.BankAccountType.BankBankAccountTypes.FirstOrDefault(bat => bat.BankId == bankAccount.Bank.Id).Equivalence.PadRight(1);
             var bankAccountNumber = dealerBankAccount.Bank.Id == bankAccount.Bank.Id ? dealerBankAccount.Account.PadRight(20) : dealerBankAccount.CCI.PadRight(20);
             var paymentMethod = "1";
-            var supplierDocumentTypeId = "6"; //TODO: Debería traerse del document Type, añadirlo en la tabla
+            var supplierDocumentTypeId = "6";
             var supplierDocumentTypeNumber = liquidation.Dealer.Ruc.PadRight(12);
             var supplierDocumentCorrelative = "".PadRight(3);
             var supplierName = liquidation.Dealer.Name.PadRight(75).Substring(0, 75);
@@ -100,6 +102,7 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
             var currencyPayment = liquidation.Amount.Currency.BankCurrencies.FirstOrDefault(bc => bc.BankId == bankAccount.Bank.Id).Equivalence.PadRight(4);
             var amount = liquidation.Amount.Value.ToString("0.00", CultureInfo.InvariantCulture).PadLeft(17, '0');
             var idcValidation = "S";
+            liquidation.SetDealerBankAccount(dealerBankAccount);
 
             var detailLine = $"{detailIndicator}{bankAccountType}{bankAccountNumber}{paymentMethod}{supplierDocumentTypeId}{supplierDocumentTypeNumber}{supplierDocumentCorrelative}{supplierName}{beneficiaryReference}{companyReference}{currencyPayment}{amount}{idcValidation}";
             return detailLine;
