@@ -45,12 +45,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RefundAgg
         {
             Date = date;
             Amount = amount;
-            LiquidationsCount = 0;
             BankAccount = bankAccount;
             BankAccountId = bankAccount.Id;
             CompanyBankAccount = bankAccount.ToString();
             RefundStatus = RefundStatus.Scheduled;
             Liquidations = liquidations;
+            LiquidationsCount = liquidations.Count;
         }
 
         public Refund()
