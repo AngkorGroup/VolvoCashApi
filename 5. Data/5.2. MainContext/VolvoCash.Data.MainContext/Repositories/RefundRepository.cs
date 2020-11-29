@@ -21,8 +21,8 @@ namespace VolvoCash.Data.MainContext.Repositories
         public async Task<IEnumerable<Refund>> GetRefunds(DateTime beginDate, DateTime endDate, RefundStatus refundStatus)
         {
             return await FilterAsync(
-                filter: l => l.Date >= beginDate
-                    && l.Date <= endDate
+                filter: l => l.Date.Date >= beginDate
+                    && l.Date.Date <= endDate
                     && l.RefundStatus == refundStatus,
                 includeProperties: "Amount.Currency,BankAccount.Bank",
                 orderBy: lq => lq.OrderByDescending(l => l.Id));
