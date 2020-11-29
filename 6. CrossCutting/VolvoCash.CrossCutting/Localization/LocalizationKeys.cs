@@ -68,7 +68,8 @@
             exception_InvalidLiquidationStatusForPay,
             exception_BankAccountNotFound,
             exception_LiquidationNotFound,
-            exception_InvalidLiquidationStatusForSchedule
+            exception_InvalidLiquidationStatusForSchedule,
+            exception_InvalidRefundStatusForPay
         }
 
         public enum Domain

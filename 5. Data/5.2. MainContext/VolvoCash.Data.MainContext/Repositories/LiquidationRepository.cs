@@ -1,10 +1,9 @@
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using VolvoCash.Data.Seedwork;
-using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
@@ -51,7 +50,12 @@ namespace VolvoCash.Data.MainContext.Repositories
                 filter: l => l.Id == id,
                 includeProperties: "Dealer,Amount.Currency,BankAccount.Bank,Charges",
                 orderBy: lq => lq.OrderByDescending(l => l.Id))).FirstOrDefault();
-        }               
+        }
+
+        public async Task<IEnumerable<Liquidation>> GetLiquidationsByRefundId(int refundId)
+        {
+            return await FilterAsync(filter: c => c.RefundId == refundId, includeProperties: "Dealer,Amount.Currency,BankAccount.Bank,Charges");
+        }
         #endregion
     }
 }

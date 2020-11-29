@@ -9,6 +9,7 @@ using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.BankService;
 
@@ -22,6 +23,7 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
         private readonly IBankLiquidationService _bankLiquidationService;
         private readonly IBankAccountRepository _bankAccountRepository;
         private readonly IChargeRepository _chargeRepository;
+        private readonly IRefundRepository _refundRepository;
         private readonly ILocalization _resources;
         #endregion
 
@@ -30,13 +32,15 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
                                      ILiquidationService liquidationService,
                                      IBankLiquidationService bankLiquidationService,
                                      IBankAccountRepository bankAccountRepository,
-                                     IChargeRepository chargeRepository)
+                                     IChargeRepository chargeRepository,
+                                     IRefundRepository refundRepository)
         {
             _liquidationService = liquidationService;
             _liquidationRepository = liquidationRepository;
             _bankLiquidationService = bankLiquidationService;
             _bankAccountRepository = bankAccountRepository;
             _chargeRepository = chargeRepository;
+            _refundRepository = refundRepository;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
@@ -63,7 +67,6 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
         public async Task<List<LiquidationDTO>> GenerateLiquidations()
         {
             var liquidations = await _liquidationService.GenerateLiquidationsAsync();
-
             _liquidationRepository.Add(liquidations);
             await _liquidationRepository.UnitOfWork.CommitAsync();
 
@@ -98,13 +101,16 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
             }
 
             var bankFile = _bankLiquidationService.GenerateBankFile(originBankAccount, liquidations);
-
+            var totalAmount = new Money(originBankAccount.Currency, 0.0);
             foreach (var liquidation in liquidations)
             {
                 liquidation.ScheduleLiquidation(originBankAccount);
+                totalAmount.Value += liquidation.Amount.Value;
             }
+            var refund = new Refund(DateTime.Now, totalAmount, originBankAccount, liquidations);
 
             await _liquidationRepository.UnitOfWork.CommitAsync();
+            await _refundRepository.UnitOfWork.CommitAsync();
 
             return bankFile;
         }

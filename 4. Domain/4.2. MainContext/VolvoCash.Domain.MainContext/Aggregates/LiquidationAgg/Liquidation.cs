@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
-using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
@@ -34,6 +34,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
         public string DealerBankAccount { get; set; }
 
         public LiquidationStatus LiquidationStatus { get; set; }
+
+        [ForeignKey("Refund")]
+        public int RefundId { get; set; }
+
+        public virtual Refund Refund { get; set; }
 
         public DateTime? PaymentDate { get; set; }
 
