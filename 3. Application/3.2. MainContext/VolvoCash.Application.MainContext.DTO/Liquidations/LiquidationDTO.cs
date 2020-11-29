@@ -44,6 +44,8 @@ namespace VolvoCash.Application.MainContext.DTO.Liquidations
         public int? BankAccountId { get; set; }
 
         public BankAccountDTO BankAccount { get; set; }
+
+        public int RefundId { get; set; }
         #endregion
     }
 }
