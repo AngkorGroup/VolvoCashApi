@@ -14,7 +14,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RefundAgg
     {
         #region Properties
         [Required]
-        public Money TotalAmount { get; set; }
+        public Money Amount { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
@@ -44,7 +44,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RefundAgg
         public Refund(DateTime date, Money amount, BankAccount bankAccount, List<Liquidation> liquidations)
         {
             Date = date;
-            TotalAmount = amount;
+            Amount = amount;
             LiquidationsCount = 0;
             BankAccount = bankAccount;
             BankAccountId = bankAccount.Id;
@@ -76,7 +76,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RefundAgg
                 }
             }
         }
-
         #endregion
     }
 }

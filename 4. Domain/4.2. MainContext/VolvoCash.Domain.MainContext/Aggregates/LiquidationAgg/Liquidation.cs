@@ -36,7 +36,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg
         public LiquidationStatus LiquidationStatus { get; set; }
 
         [ForeignKey("Refund")]
-        public int RefundId { get; set; }
+        public int? RefundId { get; set; }
 
         public virtual Refund Refund { get; set; }
 
