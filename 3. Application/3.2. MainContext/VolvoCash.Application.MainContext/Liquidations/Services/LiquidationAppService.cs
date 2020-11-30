@@ -69,7 +69,6 @@ namespace VolvoCash.Application.MainContext.Liquidations.Services
             var liquidations = await _liquidationService.GenerateLiquidationsAsync();
             _liquidationRepository.Add(liquidations);
             await _liquidationRepository.UnitOfWork.CommitAsync();
-
             return liquidations.ProjectedAsCollection<LiquidationDTO>();
         }
 
