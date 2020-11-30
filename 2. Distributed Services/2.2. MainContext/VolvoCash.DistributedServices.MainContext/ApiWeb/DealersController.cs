@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.CrossCutting.Utils;
@@ -41,7 +41,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         [HttpGet("{id}/cashiers")]
         public async Task<ActionResult> GetDealerCashiers([FromRoute] int id, [FromQuery] bool onlyActive = false)
         {
-            var charges = await _dealerAppService.GetDealerCashiers(id,onlyActive);
+            var charges = await _dealerAppService.GetDealerCashiers(id, onlyActive);
             return Ok(charges);
         }
 
@@ -75,13 +75,6 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         {
             var bankAccounts = await _dealerAppService.GetBankAccounts(id);
             return Ok(bankAccounts);
-        }
-
-        [HttpGet("{id}/bank_accounts/{bankId}")]
-        public async Task<ActionResult> GetBankAccount([FromRoute] int id, [FromRoute] int bankId)
-        {
-            var bankAccount = await _dealerAppService.GetBankAccount(id, bankId);
-            return Ok(bankAccount);
         }
         #endregion
     }

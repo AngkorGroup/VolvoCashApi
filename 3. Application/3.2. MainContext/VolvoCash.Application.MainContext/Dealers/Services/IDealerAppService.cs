@@ -18,7 +18,6 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         Task<List<ChargeListDTO>> GetDealerCharges(int id, DateTime? beginDate, DateTime? endDate, int? cashierId, List<int> cardTypes);
         Task Delete(int id);
         Task<List<BankAccountDTO>> GetBankAccounts(int id);
-        Task<BankAccountDTO> GetBankAccount(int id, int bankId);
         #endregion
     }
 }

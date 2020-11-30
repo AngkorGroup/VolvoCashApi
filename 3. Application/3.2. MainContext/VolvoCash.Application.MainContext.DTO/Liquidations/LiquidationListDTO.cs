@@ -1,7 +1,7 @@
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
 using VolvoCash.Application.MainContext.DTO.BankAccounts;
 using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Common;
@@ -11,7 +11,7 @@ using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Liquidations
 {
-    public class LiquidationDTO
+    public class LiquidationListDTO
     {
         #region Properties
         public int Id { get; set; }
@@ -44,8 +44,6 @@ namespace VolvoCash.Application.MainContext.DTO.Liquidations
         public int? BankAccountId { get; set; }
 
         public BankAccountDTO BankAccount { get; set; }
-
-        public int RefundId { get; set; }
         #endregion
     }
 }

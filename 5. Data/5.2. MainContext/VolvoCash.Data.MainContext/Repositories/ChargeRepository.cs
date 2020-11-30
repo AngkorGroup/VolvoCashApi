@@ -18,11 +18,13 @@ namespace VolvoCash.Data.MainContext.Repositories
 
         public async Task<IEnumerable<Charge>> GetChargesToLiquidate()
         {
-            return await FilterAsync(filter: c => c.LiquidationId == null 
-            && c.Status == ChargeStatus.Accepted 
-            && c.Cashier.Dealer.Type == DealerType.Internal
-            && c.OperationDate != null
-            && !c.HasBeenRefunded, includeProperties: "Cashier.Dealer,Amount.Currency");
+            return await FilterAsync(
+                filter: c => c.LiquidationId == null
+                    && c.Status == ChargeStatus.Accepted
+                    && c.Cashier.Dealer.Type == DealerType.Internal
+                    && c.OperationDate != null
+                    && !c.HasBeenRefunded,
+                includeProperties: "Cashier.Dealer,Amount.Currency");
         }
 
         public async Task<IEnumerable<Charge>> GetChargesByLiquidationId(int liquidationId)

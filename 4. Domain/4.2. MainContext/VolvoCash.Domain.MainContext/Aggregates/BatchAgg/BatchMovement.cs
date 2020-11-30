@@ -27,7 +27,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
         #region Constructor
         public BatchMovement()
         {
-
         }
 
         public BatchMovement(Money amount, int batchId)

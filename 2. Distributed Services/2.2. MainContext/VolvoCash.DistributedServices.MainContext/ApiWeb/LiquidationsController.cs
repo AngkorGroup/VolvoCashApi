@@ -21,7 +21,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Constructor
-        public LiquidationsController(ILiquidationAppService liquidationAppService) 
+        public LiquidationsController(ILiquidationAppService liquidationAppService)
         {
             _liquidationAppService = liquidationAppService;
         }
@@ -34,8 +34,8 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         {
             var _beginDate = DateTimeParser.ParseString(beginDate, DateTimeFormats.DateFormat);
             var _endDate = DateTimeParser.ParseString(endDate, DateTimeFormats.DateFormat);
-            var liquidationStatus = (LiquidationStatus) Enum.Parse(typeof(LiquidationStatus), status);
-            var liquidations = await _liquidationAppService.GetLiquidations(_beginDate,_endDate, liquidationStatus);
+            var liquidationStatus = (LiquidationStatus)Enum.Parse(typeof(LiquidationStatus), status);
+            var liquidations = await _liquidationAppService.GetLiquidations(_beginDate, _endDate, liquidationStatus);
             return Ok(liquidations);
         }
 
