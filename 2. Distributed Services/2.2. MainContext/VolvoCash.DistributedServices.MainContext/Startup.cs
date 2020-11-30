@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using VolvoCash.Application.MainContext.Authentication.Services;
+using VolvoCash.Application.MainContext.BankAccounts.Services;
 using VolvoCash.Application.MainContext.BankAccountTypes.Services;
 using VolvoCash.Application.MainContext.Banks.Services;
 using VolvoCash.Application.MainContext.Batches.Services;
@@ -154,6 +155,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IDealerAppService, DealerAppService>();
             services.AddScoped<IUserAppService, UserAppService>();
             services.AddScoped<IBankAppService, BankAppService>();
+            services.AddScoped<IBankAccountAppService, BankAccountAppService>();
             services.AddScoped<ISectorAppService, SectorAppService>();
             services.AddScoped<IBusinessAreaAppService, BusinessAreaAppService>();
             services.AddScoped<IRechargeTypeAppService, RechargeTypeAppService>();
@@ -190,6 +192,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICardBatchRepository, CardBatchRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<IBankRepository, BankRepository>();
+            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
             services.AddScoped<ISectorRepository, SectorRepository>();
             services.AddScoped<IBusinessAreaRepository, BusinessAreaRepository>();
             services.AddScoped<IRechargeTypeRepository, RechargeTypeRepository>();
@@ -198,7 +201,6 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<ILiquidationRepository, LiquidationRepository>();
             services.AddScoped<IRefundRepository, RefundRepository>();
-            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

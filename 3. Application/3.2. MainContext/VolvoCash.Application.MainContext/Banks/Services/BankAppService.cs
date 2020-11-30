@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.BankAccounts;
 using VolvoCash.Application.MainContext.DTO.Banks;
@@ -20,7 +19,8 @@ namespace VolvoCash.Application.MainContext.Banks.Services
         #endregion
 
         #region Constructor
-        public BankAppService(IBankRepository bankRepository, IBankAccountRepository bankAccountRepository)
+        public BankAppService(IBankRepository bankRepository,
+                              IBankAccountRepository bankAccountRepository)
         {
             _bankRepository = bankRepository;
             _bankAccountRepository = bankAccountRepository;
@@ -69,7 +69,7 @@ namespace VolvoCash.Application.MainContext.Banks.Services
 
         public async Task<List<BankAccountDTO>> GetBankAccounts(int id)
         {
-            var bankAccounts = (await _bankAccountRepository.FilterAsync(filter: ba => ba.BankId == id && ba.DealerId == null ,includeProperties: "BankAccountType,Currency"));
+            var bankAccounts = (await _bankAccountRepository.FilterAsync(filter: ba => ba.BankId == id && ba.DealerId == null, includeProperties: "BankAccountType,Currency"));
             return bankAccounts.ProjectedAsCollection<BankAccountDTO>();
         }
         #endregion

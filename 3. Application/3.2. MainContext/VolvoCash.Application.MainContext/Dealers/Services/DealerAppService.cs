@@ -49,7 +49,7 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
 
         public async Task<List<CashierDTO>> GetDealerCashiers(int id, bool onlyActive)
         {
-            var cashiers = await _cashierRepository.FilterAsync(filter: c => c.DealerId == id && (!onlyActive || c.Status == Status.Active) );
+            var cashiers = await _cashierRepository.FilterAsync(filter: c => c.DealerId == id && (!onlyActive || c.Status == Status.Active));
             return cashiers.ProjectedAsCollection<CashierDTO>();
         }
 
@@ -77,16 +77,9 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
         public async Task<List<BankAccountDTO>> GetBankAccounts(int id)
         {
             var bankAccounts = await _bankAccountRepository.FilterAsync(filter: ba => ba.DealerId == id,
-                                                                        includeProperties: "Currency,BankAccountType,Bank",
+                                                                        includeProperties: "Bank,BankAccountType,Currency",
                                                                         orderBy: ba => ba.OrderByDescending(x => x.CreatedAt));
             return bankAccounts.ProjectedAsCollection<BankAccountDTO>();
-        }
-
-        public async Task<BankAccountDTO> GetBankAccount(int id, int bankId)
-        {
-            var bankAccount = (await _bankAccountRepository.FilterAsync(filter: ba => ba.DealerId == id && ba.Bank.Id == bankId,
-                                                                        includeProperties: "Currency,BankAccountType,Bank")).FirstOrDefault();
-            return bankAccount.ProjectedAs<BankAccountDTO>();
         }
         #endregion
     }
