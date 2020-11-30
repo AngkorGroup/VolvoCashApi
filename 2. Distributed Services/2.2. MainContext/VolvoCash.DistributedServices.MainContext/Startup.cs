@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using VolvoCash.Application.MainContext.Authentication.Services;
+using VolvoCash.Application.MainContext.BankAccounts.Services;
 using VolvoCash.Application.MainContext.BankAccountTypes.Services;
 using VolvoCash.Application.MainContext.Banks.Services;
 using VolvoCash.Application.MainContext.Batches.Services;
@@ -28,6 +29,7 @@ using VolvoCash.Application.MainContext.DocumentTypes.Services;
 using VolvoCash.Application.MainContext.Liquidations.Services;
 using VolvoCash.Application.MainContext.Movements.Services;
 using VolvoCash.Application.MainContext.RechargeTypes.Services;
+using VolvoCash.Application.MainContext.Refunds.Services;
 using VolvoCash.Application.MainContext.Sectors.Services;
 using VolvoCash.Application.MainContext.Transfers.Services;
 using VolvoCash.Application.MainContext.Users.Services;
@@ -57,6 +59,7 @@ using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
@@ -152,12 +155,14 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IDealerAppService, DealerAppService>();
             services.AddScoped<IUserAppService, UserAppService>();
             services.AddScoped<IBankAppService, BankAppService>();
+            services.AddScoped<IBankAccountAppService, BankAccountAppService>();
             services.AddScoped<ISectorAppService, SectorAppService>();
             services.AddScoped<IBusinessAreaAppService, BusinessAreaAppService>();
             services.AddScoped<IRechargeTypeAppService, RechargeTypeAppService>();
             services.AddScoped<IDocumentTypeAppService, DocumentTypeAppService>();
             services.AddScoped<IBankAccountTypeAppService, BankAccountTypeAppService>();
             services.AddScoped<ILiquidationAppService, LiquidationAppService>();
+            services.AddScoped<IRefundAppService, RefundAppService>();
             services.AddScoped<ICurrencyAppService, CurrencyAppService>();
 
             // Domain Services
@@ -187,6 +192,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICardBatchRepository, CardBatchRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<IBankRepository, BankRepository>();
+            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
             services.AddScoped<ISectorRepository, SectorRepository>();
             services.AddScoped<IBusinessAreaRepository, BusinessAreaRepository>();
             services.AddScoped<IRechargeTypeRepository, RechargeTypeRepository>();
@@ -194,7 +200,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IBankAccountTypeRepository, BankAccountTypeRepository>();
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<ILiquidationRepository, LiquidationRepository>();
-            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
+            services.AddScoped<IRefundRepository, RefundRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

@@ -16,6 +16,7 @@ using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
 
 namespace VolvoCash.Data.MainContext
 {
@@ -43,6 +44,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<Liquidation> Liquidations { get; set; }
+        public DbSet<Refund> Refunds { get; set; }
         public DbSet<RechargeType> RechargeTypes { get; set; }
         public DbSet<BusinessArea> BusinessAreas { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -193,6 +195,9 @@ namespace VolvoCash.Data.MainContext
                 .OwnsOne(b => b.Balance);
 
             modelBuilder.Entity<Liquidation>()
+                .OwnsOne(m => m.Amount);
+
+            modelBuilder.Entity<Refund>()
                 .OwnsOne(m => m.Amount);
         }
         #endregion

@@ -1,6 +1,6 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Banks.Services;
 using VolvoCash.Application.MainContext.DTO.Banks;
 using VolvoCash.DistributedServices.Seedwork.Filters;
@@ -18,7 +18,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         #endregion
 
         #region Constructor
-        public BanksController(IBankAppService bankAppService) 
+        public BanksController(IBankAppService bankAppService)
         {
             _bankAppService = bankAppService;
         }
@@ -35,12 +35,6 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         public async Task<IActionResult> GetBank([FromRoute] int id)
         {
             return Ok(await _bankAppService.GetBank(id));
-        }
-
-        [HttpGet("{id}/accounts")]
-        public async Task<IActionResult> GetBankAccounts([FromRoute] int id)
-        {
-            return Ok(await _bankAppService.GetBankAccounts(id));
         }
 
         [HttpPost]
@@ -61,6 +55,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             await _bankAppService.Delete(id);
             return Ok();
         }
+
+        [HttpGet("{id}/accounts")]
+        public async Task<IActionResult> GetBankAccounts([FromRoute] int id)
+        {
+            return Ok(await _bankAppService.GetBankAccounts(id));
+        }
+
         #endregion
     }
 }

@@ -27,6 +27,7 @@ namespace VolvoCash.Domain.MainContext.Services.BankService
         {
             var charges = await _chargeRepository.GetChargesToLiquidate();
             var liquidationsToGenerate = new List<Liquidation>();
+            
             foreach (var charge in charges)
             {
                 var liquidation = liquidationsToGenerate.Where(l => l.Date == charge.OperationDate.Value.Date
