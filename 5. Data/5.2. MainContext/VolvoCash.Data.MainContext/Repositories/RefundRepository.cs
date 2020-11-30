@@ -43,6 +43,14 @@ namespace VolvoCash.Data.MainContext.Repositories
                 includeProperties: "Amount.Currency,BankAccount.Bank,Liquidations.Charges",
                 orderBy: lq => lq.OrderByDescending(l => l.Id))).FirstOrDefault();
         }
+
+        public async Task<Refund> GetRefundWithLiquidations(int id)
+        {
+            return (await FilterAsync(
+                filter: l => l.Id == id,
+                includeProperties: "Amount.Currency,BankAccount.Bank,Liquidations",
+                orderBy: lq => lq.OrderByDescending(l => l.Id))).FirstOrDefault();
+        }
         #endregion
     }
 }

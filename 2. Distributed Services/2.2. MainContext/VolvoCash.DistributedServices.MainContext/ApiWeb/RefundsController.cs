@@ -58,6 +58,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             await _refundAppService.PayRefund(id, request.Voucher, paymentDate);
             return Ok();
         }
+
+        [HttpPost("{id}/cancel")]
+        public async Task<IActionResult> CancelRefund([FromRoute] int id)
+        {
+            await _refundAppService.CancelRefund(id);
+            return Ok();
+        }
         #endregion
     }
 }
