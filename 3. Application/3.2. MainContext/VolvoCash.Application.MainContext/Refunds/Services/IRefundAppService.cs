@@ -14,7 +14,7 @@ namespace VolvoCash.Application.MainContext.Refunds.Services
         Task<List<LiquidationListDTO>> GetRefundLiquidations(int id);
         Task<RefundDTO> GetRefund(int id);
         Task PayRefund(int id, string voucher, DateTime paymentDate);
-        Task CancelRefund(int id);       
+        Task CancelRefund(int id);
         #endregion
     }
 }

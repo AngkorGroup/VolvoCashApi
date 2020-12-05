@@ -19,7 +19,8 @@ namespace VolvoCash.Data.MainContext.Repositories
         public async Task<Admin> LoginAsync(string email, string passwordHash)
         {
             var admin = (await FilterAsync(filter: c => c.Email == email
-            && c.PasswordHash == passwordHash, includeProperties:"Dealer")).FirstOrDefault();
+                                                && c.PasswordHash == passwordHash,
+                                           includeProperties: "Dealer")).FirstOrDefault();
             return admin;
         }
         #endregion
