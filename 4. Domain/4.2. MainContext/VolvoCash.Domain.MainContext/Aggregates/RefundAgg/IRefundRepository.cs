@@ -11,5 +11,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RefundAgg
         Task<IEnumerable<Refund>> GetRefunds(DateTime beginDate, DateTime endDate, RefundStatus refundStatus);
         Task<Refund> GetRefund(int id);
         Task<Refund> GetRefundWithLiquidationsAndCharges(int id);
+        Task<Refund> GetRefundWithLiquidations(int id);
     }
 }

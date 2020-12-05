@@ -58,6 +58,17 @@ namespace VolvoCash.Application.MainContext.Refunds.Services
             refund.PayRefund(voucher, paymentDate);
             await _refundRepository.UnitOfWork.CommitAsync();
         }
+
+        public async Task CancelRefund(int id)
+        {
+            var refund = await _refundRepository.GetRefundWithLiquidationsAndCharges(id);
+            if (refund.RefundStatus != RefundStatus.Scheduled)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidRefundStatusForCancel));
+            }
+            refund.CancelRefund();
+            await _liquidationRepository.UnitOfWork.CommitAsync();
+        }
         #endregion
 
         #region IDisposable Members

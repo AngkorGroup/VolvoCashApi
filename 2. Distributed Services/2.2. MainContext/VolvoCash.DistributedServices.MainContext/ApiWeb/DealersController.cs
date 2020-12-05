@@ -32,7 +32,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet("by_filter")]
-        public async Task<ActionResult> GetDealers([FromQuery] string query = "", int maxRecords = 5)
+        public async Task<ActionResult> GetDealers([FromQuery] string query = "", int maxRecords = 50)
         {
             var charges = await _dealerAppService.GetDealers(query, maxRecords);
             return Ok(charges);

@@ -11,9 +11,10 @@ namespace VolvoCash.Application.MainContext.Refunds.Services
     {
         #region ApiWeb
         Task<List<RefundDTO>> GetRefunds(DateTime beginDate, DateTime endDate, RefundStatus refundStatus);
+        Task<List<LiquidationListDTO>> GetRefundLiquidations(int id);
         Task<RefundDTO> GetRefund(int id);
         Task PayRefund(int id, string voucher, DateTime paymentDate);
-        Task<List<LiquidationListDTO>> GetRefundLiquidations(int id);
+        Task CancelRefund(int id);
         #endregion
     }
 }

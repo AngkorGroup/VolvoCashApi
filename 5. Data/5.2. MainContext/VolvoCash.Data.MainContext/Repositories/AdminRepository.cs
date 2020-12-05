@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using System.Linq;
+using System.Threading.Tasks;
 using VolvoCash.Data.Seedwork;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 
@@ -18,7 +18,9 @@ namespace VolvoCash.Data.MainContext.Repositories
         #region Public Methods
         public async Task<Admin> LoginAsync(string email, string passwordHash)
         {
-            var admin = await _context.Admins.FirstOrDefaultAsync(c => c.Email == email && c.PasswordHash == passwordHash);
+            var admin = (await FilterAsync(filter: c => c.Email == email
+                                                && c.PasswordHash == passwordHash,
+                                           includeProperties: "Dealer")).FirstOrDefault();
             return admin;
         }
         #endregion
