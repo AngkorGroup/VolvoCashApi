@@ -2,7 +2,7 @@ namespace VolvoCash.Domain.MainContext.Enums
 {
     public enum Status
     {
-        Active = 1,
-        Inactive = 0
+        Inactive = 0,
+        Active = 1
     }
 }
