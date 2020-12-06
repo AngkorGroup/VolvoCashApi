@@ -26,6 +26,7 @@ namespace VolvoCash.Application.MainContext.Menus.Services
         {
             var menus = await _menuRepository.FilterAsync(
                 filter: m => (m.Status == Status.Active && m.Type == MenuType.Children),
+                includeProperties: "MenuParent",
                 orderBy: m => m.OrderBy(m => m.Order));
             return menus.ProjectedAsCollection<MenuListDTO>();
         }

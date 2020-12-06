@@ -25,7 +25,7 @@ namespace VolvoCash.Application.MainContext.DTO.Menus
 
         public int MenuParentId { get; set; }
 
-        public virtual MenuListDTO MenuParent { get; set; }
+        public string DisplayName { get; set; }
         #endregion
     }
 }
