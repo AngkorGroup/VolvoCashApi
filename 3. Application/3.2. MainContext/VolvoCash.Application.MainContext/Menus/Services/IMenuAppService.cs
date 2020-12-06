@@ -8,7 +8,7 @@ namespace VolvoCash.Application.MainContext.Menus.Services
     public interface IMenuAppService : IDisposable
     {
         #region ApiWeb
-        Task<List<MenuListDTO>> GetMenus();
+        Task<List<MenuDTO>> GetMenus();
         #endregion
     }
 }

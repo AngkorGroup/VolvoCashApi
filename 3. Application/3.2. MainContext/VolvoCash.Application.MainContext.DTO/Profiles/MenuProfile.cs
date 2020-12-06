@@ -8,7 +8,7 @@ namespace VolvoCash.Application.MainContext.DTO.Profiles
     {
         public MenuProfile()
         {
-            CreateMap<Menu, MenuListDTO>().PreserveReferences();
+            CreateMap<Menu, MenuDTO>().PreserveReferences();
         }
     }
 }

@@ -4,7 +4,7 @@ using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.DTO.Menus
 {
-    public class MenuListDTO
+    public class MenuDTO
     {
         #region Properties
         public int Id { get; set; }

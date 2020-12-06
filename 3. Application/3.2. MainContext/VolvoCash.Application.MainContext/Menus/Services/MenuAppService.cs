@@ -22,13 +22,13 @@ namespace VolvoCash.Application.MainContext.Menus.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<MenuListDTO>> GetMenus()
+        public async Task<List<MenuDTO>> GetMenus()
         {
             var menus = await _menuRepository.FilterAsync(
                 filter: m => (m.Status == Status.Active && m.Type == MenuType.Children),
                 includeProperties: "MenuParent",
                 orderBy: m => m.OrderBy(m => m.Order));
-            return menus.ProjectedAsCollection<MenuListDTO>();
+            return menus.ProjectedAsCollection<MenuDTO>();
         }
         #endregion
 

@@ -18,9 +18,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RoleAgg
         {
         }
 
-        public Role(string name)
+        public Role(string name, List<int> MenuIds)
         {
             Name = name;
+            MenuIds.ForEach(menuId => RoleMenus.Add(new RoleMenu(Id, menuId)));
         }
         #endregion
     }

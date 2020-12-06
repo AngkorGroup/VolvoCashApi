@@ -20,5 +20,13 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RoleAgg
 
         public Menu Menu { get; set; }
         #endregion
+
+        #region Constructor
+        public RoleMenu(int roleId, int menuId)
+        {
+            RoleId = roleId;
+            MenuId = menuId;
+        }
+        #endregion
     }
 }
