@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 
 namespace VolvoCash.Application.MainContext.DTO.Roles
@@ -10,9 +9,9 @@ namespace VolvoCash.Application.MainContext.DTO.Roles
 
         public string Name { get; set; }
 
-        public List<RoleMenuDTO> RoleMenus { get; }
+        public List<RoleMenuDTO> RoleMenus { get; set; }
 
-        public List<int> MenuIds { get; }
+        public List<int> MenuIds { get; set; }
         #endregion
     }
 }

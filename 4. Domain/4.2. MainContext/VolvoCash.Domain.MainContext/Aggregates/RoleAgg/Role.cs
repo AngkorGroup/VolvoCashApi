@@ -10,7 +10,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RoleAgg
         [Required]
         public string Name { get; set; }
 
-        public virtual ICollection<RoleMenu> RoleMenus { get; } = new List<RoleMenu>();
+        public virtual ICollection<RoleMenu> RoleMenus { get; set; } = new List<RoleMenu>();
         #endregion
 
         #region Constructor

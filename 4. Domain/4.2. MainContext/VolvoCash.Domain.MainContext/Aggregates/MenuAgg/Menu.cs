@@ -34,7 +34,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.MenuAgg
 
         public virtual ICollection<Menu> MenuChildren { get; set; } = new List<Menu>();
 
-        public virtual ICollection<RoleMenu> RoleMenus { get; } = new List<RoleMenu>();
+        public virtual ICollection<RoleMenu> RoleMenus { get; set; } = new List<RoleMenu>();
         #endregion
 
         #region NotMapped Properties

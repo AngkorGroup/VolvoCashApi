@@ -1,4 +1,3 @@
-
 using VolvoCash.Application.MainContext.DTO.Menus;
 
 namespace VolvoCash.Application.MainContext.DTO.Roles
