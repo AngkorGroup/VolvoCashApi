@@ -3,15 +3,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
 using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.MenuAgg
 {
-    public class Menu
+    public class Menu : Entity
     {
         #region Properties
         [Required]
         public int Id { get; set; }
-        
+
         [Required]
         public string Key { get; set; }
 
