@@ -58,6 +58,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<Role> Roles { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<RoleMenu> RoleMenus { get; set; }
+        public DbSet<RoleAdmin> RoleAdmins { get; set; }
         #endregion
 
         #region Constructor
@@ -185,6 +186,18 @@ namespace VolvoCash.Data.MainContext
                 .HasMany(m => m.RoleMenus)
                 .WithOne(rm => rm.Menu)
                 .HasForeignKey(rm => rm.MenuId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Role>()
+                .HasMany(r => r.RoleAdmins)
+                .WithOne(ra => ra.Role)
+                .HasForeignKey(ra => ra.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Admin>()
+                .HasMany(m => m.RoleAdmins)
+                .WithOne(ra => ra.Admin)
+                .HasForeignKey(ra => ra.AdminId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Movement>()

@@ -4,10 +4,10 @@ using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
 
 namespace VolvoCash.Data.MainContext.Repositories
 {
-    public class RoleMenuRepository : Repository<RoleMenu, MainDbContext>, IRoleMenuRepository
+    public class RoleAdminRepository : Repository<RoleAdmin, MainDbContext>, IRoleAdminRepository
     {
         #region Constructor
-        public RoleMenuRepository(MainDbContext dbContext, ILogger<Repository<RoleMenu, MainDbContext>> logger) : base(dbContext, logger)
+        public RoleAdminRepository(MainDbContext dbContext, ILogger<Repository<RoleAdmin, MainDbContext>> logger) : base(dbContext, logger)
         {
         }
         #endregion

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using VolvoCash.Data.MainContext;
@@ -9,9 +10,10 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201207024855_AddUserHasSignIn")]
+    partial class AddUserHasSignIn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1293,40 +1295,6 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.RoleAdmin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
-                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AdminId")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TIMESTAMP(7)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("NVARCHAR2(2000)");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("TIMESTAMP(7)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("NVARCHAR2(2000)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleAdmins");
-                });
-
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.RoleMenu", b =>
                 {
                     b.Property<int>("Id")
@@ -2175,21 +2143,6 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("RefundId");
                         });
-                });
-
-            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.RoleAdmin", b =>
-                {
-                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.UserAgg.Admin", "Admin")
-                        .WithMany("RoleAdmins")
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.Role", "Role")
-                        .WithMany("RoleAdmins")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.RoleMenu", b =>

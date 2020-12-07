@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using VolvoCash.Data.MainContext;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
@@ -12,12 +13,14 @@ namespace VolvoCash.DistributedServices.MainContext.Seeders
             if (context.Admins.Any())
                 return;
 
+            var roleIds = new List<int> { 1 };
             var admin = new Admin(
                 "Admin",
                 "Prueba",
                 "Holi1234$",
                 "912456783",
-                "admin@volvo.com"
+                "admin@volvo.com",
+                roleIds
             );
             admin.CreatedBy = "ADMIN";
             admin.CreatedAt = DateTime.Now;

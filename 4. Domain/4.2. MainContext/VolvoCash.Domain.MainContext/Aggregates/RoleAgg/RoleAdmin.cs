@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using VolvoCash.Domain.MainContext.Aggregates.MenuAgg;
+using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.RoleAgg
 {
-    public class RoleMenu : AuditableEntityWithKey<int>
+    public class RoleAdmin : AuditableEntityWithKey<int>
     {
         #region Properties
         [Required]
@@ -15,21 +15,21 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RoleAgg
         public virtual Role Role { get; set; }
 
         [Required]
-        [ForeignKey("Menu")]
-        public int MenuId { get; set; }
+        [ForeignKey("Admin")]
+        public int AdminId { get; set; }
 
-        public virtual Menu Menu { get; set; }
+        public virtual Admin Admin { get; set; }
         #endregion
 
         #region Constructor
-        public RoleMenu()
+        public RoleAdmin()
         {
         }
 
-        public RoleMenu(int roleId, int menuId)
+        public RoleAdmin(int roleId, int adminId)
         {
             RoleId = roleId;
-            MenuId = menuId;
+            AdminId = adminId;
         }
         #endregion
     }

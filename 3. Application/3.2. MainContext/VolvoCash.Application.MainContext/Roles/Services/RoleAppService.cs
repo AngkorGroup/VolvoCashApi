@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Roles;
 using VolvoCash.Application.Seedwork;
+using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
 
 namespace VolvoCash.Application.MainContext.Roles.Services
@@ -10,12 +13,14 @@ namespace VolvoCash.Application.MainContext.Roles.Services
     {
         #region Members
         private readonly IRoleRepository _roleRepository;
+        private readonly ILocalization _resources;
         #endregion
 
         #region Constructor
         public RoleAppService(IRoleRepository roleRepository)
         {
             _roleRepository = roleRepository;
+            _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
 
@@ -34,6 +39,12 @@ namespace VolvoCash.Application.MainContext.Roles.Services
 
         public async Task<RoleDTO> AddAsync(RoleDTO roleDTO)
         {
+            var existingRole = _roleRepository.Filter(r => (r.Name.ToUpper() == roleDTO.Name.ToUpper())).FirstOrDefault();
+            if (existingRole != null)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_RoleAlreadyExists));
+            }
+            
             var role = new Role(roleDTO.Name, roleDTO.MenuIds);
             _roleRepository.Add(role);
             await _roleRepository.UnitOfWork.CommitAsync();

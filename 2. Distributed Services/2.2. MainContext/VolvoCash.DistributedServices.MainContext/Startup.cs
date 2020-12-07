@@ -210,6 +210,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleMenuRepository, RoleMenuRepository>();
+            services.AddScoped<IRoleAdminRepository, RoleAdminRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

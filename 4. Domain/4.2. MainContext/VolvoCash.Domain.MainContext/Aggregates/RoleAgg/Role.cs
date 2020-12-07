@@ -11,6 +11,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RoleAgg
         public string Name { get; set; }
 
         public virtual ICollection<RoleMenu> RoleMenus { get; set; } = new List<RoleMenu>();
+        public virtual ICollection<RoleAdmin> RoleAdmins { get; set; } = new List<RoleAdmin>();
         #endregion
 
         #region Constructor
@@ -18,17 +19,17 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RoleAgg
         {
         }
 
-        public Role(string name, List<int> MenuIds)
+        public Role(string name, List<int> menuIds)
         {
             Name = name;
-            MenuIds.ForEach(menuId => RoleMenus.Add(new RoleMenu(Id, menuId)));
+            menuIds.ForEach(menuId => RoleMenus.Add(new RoleMenu(Id, menuId)));
         }
         #endregion
 
         #region Public Methods
-        public void SetNewRoleMenus(List<int> MenuIds)
+        public void SetNewRoleMenus(List<int> menuIds)
         {
-            MenuIds.ForEach(menuId => RoleMenus.Add(new RoleMenu(Id, menuId)));
+            menuIds.ForEach(menuId => RoleMenus.Add(new RoleMenu(Id, menuId)));
         }
         #endregion
     }

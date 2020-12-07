@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
@@ -44,6 +46,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         public DateTime? ArchiveAt { get; set; }
 
         public Status Status { get; set; }
+
+        public virtual ICollection<RoleAdmin> RoleAdmins { get; set; } = new List<RoleAdmin>();
         #endregion
 
         #region NotMapped Properties
@@ -55,8 +59,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         public Admin()
         {
         }
-
-        public Admin(string firstName, string lastName, string password, string phone, string email, Dealer dealer = null)
+        
+        public Admin(string firstName, string lastName, string password, string phone, string email, List<int> roleIds, Dealer dealer = null)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -65,6 +69,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             Email = email;
             Status = Status.Active;
             User = new User(UserType.WebAdmin);
+            roleIds.ForEach(roleId => RoleAdmins.Add(new RoleAdmin(roleId, Id)));
             Dealer = dealer;
         }
         #endregion
@@ -73,6 +78,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         public void SetPasswordHash(string password)
         {
             PasswordHash = CryptoMethods.HashText(password);
+        }
+
+        public void SetNewRoleAdmins(List<int> roleIds)
+        {
+            roleIds.ForEach(roleId => RoleAdmins.Add(new RoleAdmin(roleId, Id)));
         }
 
         public void Delete()

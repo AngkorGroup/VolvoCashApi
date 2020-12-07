@@ -116,7 +116,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
         #region ApiWeb Public Methods       
         public async Task<IList<UserDTO>> GetAllDTOAsync(bool onlyActive)
         {
-            var admins = (await _adminRepository.FilterAsync(filter: a => !onlyActive || a.Status == Status.Active)).ProjectedAsCollection<AdminDTO>();
+            var admins = (await _adminRepository.FilterAsync(filter: a => !onlyActive || a.Status == Status.Active,
+                    includeProperties: "RoleAdmins.Role"
+                )).ProjectedAsCollection<AdminDTO>();
             var cashiers = (await _cashierRepository.FilterAsync(filter: c => !onlyActive || c.Status == Status.Active)).ProjectedAsCollection<CashierDTO>();
             var contacts = (await _contactRepository.FilterAsync(filter: c => !onlyActive || c.Status == Status.Active)).ProjectedAsCollection<ContactListDTO>();
             var users = new List<UserDTO>();
@@ -138,7 +140,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
                 adminDTO.Password = RandomGenerator.RandomDigits(6);
             }
             var dealer = await _dealerRepository.GetAsync(adminDTO.DealerId);
-            var admin = new Admin(adminDTO.FirstName, adminDTO.LastName, adminDTO.Password, adminDTO.Phone, adminDTO.Email, dealer);
+            var admin = new Admin(adminDTO.FirstName, adminDTO.LastName, adminDTO.Password, adminDTO.Phone, adminDTO.Email, adminDTO.RoleIds, dealer);
             _adminRepository.Add(admin);
             await _adminRepository.UnitOfWork.CommitAsync();
             SendCreateUserEmailToAdmin(adminDTO);
@@ -163,6 +165,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
             admin.Phone = adminDTO.Phone;
             admin.Email = adminDTO.Email;
             admin.DealerId = adminDTO.DealerId;
+            await _adminRepository.RemoveRolAdmins(admin);
+
+            admin.SetNewRoleAdmins(adminDTO.RoleIds);
             _adminRepository.Modify(admin);
             await _adminRepository.UnitOfWork.CommitAsync();
             return admin.ProjectedAs<AdminDTO>();
@@ -225,7 +230,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
         #endregion
 
         #region Common Public Methods
-        public async Task ChangePassword(int id,string oldPassword, string password, string confirmPassword)
+        public async Task ChangePassword(int id, string oldPassword, string password, string confirmPassword)
         {
             if (password != confirmPassword)
             {
