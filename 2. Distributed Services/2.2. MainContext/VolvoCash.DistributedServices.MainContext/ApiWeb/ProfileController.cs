@@ -36,7 +36,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         [Route("change_password")]
         public async Task<ActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
-            await _userAppService.ChangePassword(_applicationUser.GetUserId(),changePasswordRequest.OldPassword, changePasswordRequest.NewPassword,changePasswordRequest.ConfirmNewPassword);
+            await _userAppService.ChangePassword(_applicationUser.GetUserId(),changePasswordRequest.OldPassword, changePasswordRequest.NewPassword,changePasswordRequest.ConfirmPassword);
             return Ok();
         }
         #endregion
