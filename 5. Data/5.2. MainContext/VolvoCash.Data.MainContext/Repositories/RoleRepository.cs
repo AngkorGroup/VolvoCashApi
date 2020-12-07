@@ -28,7 +28,7 @@ namespace VolvoCash.Data.MainContext.Repositories
             var roles = await FilterAsync(includeProperties: "RoleMenus.Menu.MenuParent");
             foreach (var role in roles)
             {
-                role.RoleMenus = role.RoleMenus.OrderBy(rm => rm.MenuId).ToList();
+                role.RoleMenus = role.RoleMenus.OrderBy(rm => rm.Menu.Order).ToList();
             }
             return roles;
         }
@@ -40,7 +40,7 @@ namespace VolvoCash.Data.MainContext.Repositories
                     includeProperties: "RoleMenus.Menu.MenuParent"
                 )).FirstOrDefault();
 
-            role.RoleMenus = role.RoleMenus.OrderBy(rm => rm.MenuId).ToList();
+            role.RoleMenus = role.RoleMenus.OrderBy(rm => rm.Menu.Order).ToList();
             return role;
         }
 

@@ -94,7 +94,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             var menuOptions = new List<string>();
             foreach (var roleAdmin in RoleAdmins)
             {
-                var roleMenus = roleAdmin.Role.RoleMenus.OrderBy(rm => rm.MenuId).ToList();
+                var roleMenus = roleAdmin.Role.RoleMenus.OrderBy(rm => rm.Menu.Order).ToList();
                 foreach (var roleMenu in roleMenus)
                 {
                     var key = roleMenu.Menu.Key;
