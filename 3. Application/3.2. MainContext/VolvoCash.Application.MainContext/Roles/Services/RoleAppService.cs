@@ -23,7 +23,7 @@ namespace VolvoCash.Application.MainContext.Roles.Services
         #region ApiWeb Public Methods
         public async Task<List<RoleDTO>> GetRoles()
         {
-            var roles = await _roleRepository.FilterAsync(includeProperties: "RoleMenus.Menu");
+            var roles = await _roleRepository.FilterAsync(includeProperties: "RoleMenus.Menu.MenuParent");
             return roles.ProjectedAsCollection<RoleDTO>();
         }
 

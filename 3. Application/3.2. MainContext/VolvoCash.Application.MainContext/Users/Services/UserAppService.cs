@@ -225,7 +225,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
         #endregion
 
         #region Common Public Methods
-        public async Task ChangePassword(int id, string password, string confirmPassword)
+        public async Task ChangePassword(int id,string oldPassword, string password, string confirmPassword)
         {
             if (password != confirmPassword)
             {

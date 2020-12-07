@@ -7,17 +7,16 @@ using VolvoCash.CrossCutting.NetFramework.Identity;
 using VolvoCash.DistributedServices.MainContext.ApiPOS.Requests.Authentication;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
-namespace VolvoCash.DistributedServices.MainContext.ApiPOS
+namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
     [ApiController]
     [Authorize]
-    [Route("api_pos/[controller]")]
+    [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
     public class ProfileController : ControllerBase
     {
         #region Members
         private readonly IUserAppService _userAppService;
-        private readonly ICashierAppService _cashierAppService;     
         private readonly IApplicationUser _applicationUser;
         #endregion
 
@@ -27,18 +26,11 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
                                  IApplicationUser applicationUser)
         {
             _userAppService = userAppService;
-            _cashierAppService = cashierAppService;
             _applicationUser = applicationUser;
         }
         #endregion
 
         #region Public Methods
-        [HttpGet]
-        public async Task<ActionResult> GetProfile()
-        {
-            var cashier = await _cashierAppService.GetByUserId(_applicationUser.GetUserId());
-            return Ok(cashier);
-        }
 
         [HttpPost]
         [Route("change_password")]

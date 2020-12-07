@@ -12,16 +12,20 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RoleAgg
         [ForeignKey("Role")]
         public int RoleId { get; set; }
 
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
 
         [Required]
         [ForeignKey("Menu")]
         public int MenuId { get; set; }
 
-        public Menu Menu { get; set; }
+        public virtual Menu Menu { get; set; }
         #endregion
 
         #region Constructor
+        public RoleMenu()
+        {
+
+        }
         public RoleMenu(int roleId, int menuId)
         {
             RoleId = roleId;

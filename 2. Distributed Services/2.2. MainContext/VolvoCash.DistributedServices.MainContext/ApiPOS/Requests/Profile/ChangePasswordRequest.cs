@@ -6,10 +6,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS.Requests.Authenticati
     {
         #region Properties
         [Required]
-        public string Password { get; set; }
+        public string OldPassword { get; set; }
 
         [Required]
-        public string ConfirmPassword { get; set; }
+        public string NewPassword { get; set; }
+
+        [Required]
+        public string ConfirmNewPassword { get; set; }
         #endregion
     }
 }
