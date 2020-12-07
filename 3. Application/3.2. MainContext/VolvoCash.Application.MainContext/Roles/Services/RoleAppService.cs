@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Roles;
@@ -23,24 +22,19 @@ namespace VolvoCash.Application.MainContext.Roles.Services
         #region ApiWeb Public Methods
         public async Task<List<RoleDTO>> GetRoles()
         {
-            var roles = await _roleRepository.FilterAsync(includeProperties: "RoleMenus.Menu.MenuParent");
+            var roles = await _roleRepository.GetRolesAsync();
             return roles.ProjectedAsCollection<RoleDTO>();
         }
 
         public async Task<RoleDTO> GetRole(int id)
         {
-            var role = (await _roleRepository.FilterAsync(
-                filter: r => r.Id == id,
-                includeProperties: "RoleMenus")).FirstOrDefault();
+            var role = await _roleRepository.GetRoleAsync(id);
             return role.ProjectedAs<RoleDTO>();
         }
 
         public async Task<RoleDTO> AddAsync(RoleDTO roleDTO)
         {
-            var role = new Role(
-                roleDTO.Name,
-                roleDTO.MenuIds
-            );
+            var role = new Role(roleDTO.Name, roleDTO.MenuIds);
             _roleRepository.Add(role);
             await _roleRepository.UnitOfWork.CommitAsync();
             return role.ProjectedAs<RoleDTO>();
@@ -48,15 +42,19 @@ namespace VolvoCash.Application.MainContext.Roles.Services
 
         public async Task<RoleDTO> ModifyAsync(RoleDTO roleDTO)
         {
-            var role = await _roleRepository.GetAsync(roleDTO.Id);
+            var role = await _roleRepository.GetRoleAsync(roleDTO.Id);
             role.Name = roleDTO.Name;
+            await _roleRepository.RemoveRolMenus(role);
+
+            role.SetNewRoleMenus(roleDTO.MenuIds);
             await _roleRepository.UnitOfWork.CommitAsync();
             return roleDTO;
         }
 
         public async Task Delete(int id)
         {
-            var role = await _roleRepository.GetAsync(id);
+            var role = await _roleRepository.GetRoleAsync(id);
+            await _roleRepository.RemoveRolMenus(role);
             _roleRepository.Remove(role);
             await _roleRepository.UnitOfWork.CommitAsync();
         }
