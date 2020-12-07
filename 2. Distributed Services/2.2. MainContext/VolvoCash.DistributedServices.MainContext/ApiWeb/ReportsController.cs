@@ -278,7 +278,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
                 Path = "UnsignedContacts"
             };
             var reportContent = await _reportManager.GetReportAsync(report);
-            var fileName = "ReporteContactosNoLogeados";
+            var fileName = "ReporteContactosNoLogueados";
             return GetFileResponse(reportContent, reportRequest.Type, fileName);
         }
         #endregion
