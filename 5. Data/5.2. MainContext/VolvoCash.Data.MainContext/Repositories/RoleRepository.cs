@@ -25,15 +25,23 @@ namespace VolvoCash.Data.MainContext.Repositories
         #region Public Methods
         public async Task<IEnumerable<Role>> GetRolesAsync()
         {
-            return await FilterAsync(includeProperties: "RoleMenus.Menu.MenuParent");
+            var roles = await FilterAsync(includeProperties: "RoleMenus.Menu.MenuParent");
+            foreach (var role in roles)
+            {
+                role.RoleMenus = role.RoleMenus.OrderBy(rm => rm.MenuId).ToList();
+            }
+            return roles;
         }
 
         public async Task<Role> GetRoleAsync(int id)
         {
-            return (await FilterAsync(
+            var role = (await FilterAsync(
                     filter: r => r.Id == id,
                     includeProperties: "RoleMenus.Menu.MenuParent"
                 )).FirstOrDefault();
+
+            role.RoleMenus = role.RoleMenus.OrderBy(rm => rm.MenuId).ToList();
+            return role;
         }
 
         public async Task RemoveRolMenus(Role role)
