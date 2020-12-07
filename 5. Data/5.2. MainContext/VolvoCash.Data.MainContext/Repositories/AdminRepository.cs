@@ -16,8 +16,9 @@ namespace VolvoCash.Data.MainContext.Repositories
         #region Constructor
         public AdminRepository(MainDbContext dbContext,
                                ILogger<Repository<Admin, MainDbContext>> logger,
-                              IRoleAdminRepository roleAdminRepository) : base(dbContext, logger)
+                               IRoleAdminRepository roleAdminRepository) : base(dbContext, logger)
         {
+            _roleAdminRepository = roleAdminRepository;
         }
         #endregion
 
@@ -26,8 +27,9 @@ namespace VolvoCash.Data.MainContext.Repositories
         {
             var admin = (await FilterAsync(
                     filter: c => c.Email == email && c.PasswordHash == passwordHash,
-                    includeProperties: "Dealer")
+                    includeProperties: "Dealer,RoleAdmins.Role.RoleMenus.Menu.MenuParent")
                 ).FirstOrDefault();
+            admin.SetMenuOptions();
             return admin;
         }
 

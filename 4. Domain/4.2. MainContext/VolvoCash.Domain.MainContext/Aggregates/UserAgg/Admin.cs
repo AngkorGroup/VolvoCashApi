@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
@@ -53,13 +54,16 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         #region NotMapped Properties
         [NotMapped]
         public string FullName { get => $"{FirstName} {LastName}"; }
+
+        [NotMapped]
+        public List<string> MenuOptions { get; set; } = new List<string>();
         #endregion
 
         #region Constructor
         public Admin()
         {
         }
-        
+
         public Admin(string firstName, string lastName, string password, string phone, string email, List<int> roleIds, Dealer dealer = null)
         {
             FirstName = firstName;
@@ -83,6 +87,25 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         public void SetNewRoleAdmins(List<int> roleIds)
         {
             roleIds.ForEach(roleId => RoleAdmins.Add(new RoleAdmin(roleId, Id)));
+        }
+
+        public void SetMenuOptions()
+        {
+            var menuOptions = new List<string>();
+            foreach (var roleAdmin in RoleAdmins)
+            {
+                var roleMenus = roleAdmin.Role.RoleMenus.OrderBy(rm => rm.MenuId).ToList();
+                foreach (var roleMenu in roleMenus)
+                {
+                    var key = roleMenu.Menu.Key;
+                    if (!menuOptions.Contains(key))
+                    {
+                        menuOptions.Add(key);
+                    }
+                }
+            }
+            
+            MenuOptions = menuOptions;
         }
 
         public void Delete()
