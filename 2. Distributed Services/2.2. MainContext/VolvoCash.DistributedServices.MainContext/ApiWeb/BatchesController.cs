@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Batches.Services;
@@ -32,6 +31,15 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             var _beginDate = DateTimeParser.TryParseString(beginDate, DateTimeFormats.DateFormat);
             var _endDate = DateTimeParser.TryParseString(endDate, DateTimeFormats.DateFormat);
             var loads = await _batchAppService.GetBatches(_beginDate, _endDate);
+            return Ok(loads);
+        }
+
+        [HttpGet("expires_at_extent")]
+        public async Task<ActionResult> GetBatchesByExpiresAtExtent([FromQuery] string clientId = "all", [FromQuery] string beginDate = "", [FromQuery] string endDate = "")
+        {
+            var _beginDate = DateTimeParser.TryParseString(beginDate, DateTimeFormats.DateFormat);
+            var _endDate = DateTimeParser.TryParseString(endDate, DateTimeFormats.DateFormat);
+            var loads = await _batchAppService.GetBatchesByExpiresAtExtent(clientId, _beginDate, _endDate);
             return Ok(loads);
         }
 
@@ -70,7 +78,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             var file = Request.Form.Files["file"];
             var batchErrors = await _batchAppService.PerformLoadsFromFileStreamAsync(file?.FileName, file?.OpenReadStream());
             return Ok(batchErrors);
-        }       
+        }
         #endregion
     }
 }

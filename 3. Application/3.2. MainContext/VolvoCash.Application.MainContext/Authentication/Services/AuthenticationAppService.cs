@@ -64,6 +64,8 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
             if (smsCode != null)
             {
                 var contact = await _contactRepository.GetByPhoneAsync(phone);
+                contact.HasSignedIn = true;
+                await _contactRepository.UnitOfWork.CommitAsync();
                 return contact.ProjectedAs<ContactListDTO>();
             }
             else

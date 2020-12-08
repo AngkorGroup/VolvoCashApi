@@ -74,11 +74,13 @@ namespace VolvoCash.Application.MainContext.Dealers.Services
             await _repository.UnitOfWork.CommitAsync();
         }
 
-        public async Task<List<BankAccountDTO>> GetBankAccounts(int id)
+        public async Task<List<BankAccountDTO>> GetBankAccounts(int id, bool onlyActive)
         {
-            var bankAccounts = await _bankAccountRepository.FilterAsync(filter: ba => ba.DealerId == id,
-                                                                        includeProperties: "Bank,BankAccountType,Currency",
-                                                                        orderBy: ba => ba.OrderByDescending(x => x.CreatedAt));
+            var bankAccounts = await _bankAccountRepository.FilterAsync(
+                filter: ba => (!onlyActive || ba.Status == Status.Active) && ba.DealerId == id,
+                includeProperties: "Bank,BankAccountType,Currency",
+                orderBy: ba => ba.OrderByDescending(x => x.CreatedAt)
+            );
             return bankAccounts.ProjectedAsCollection<BankAccountDTO>();
         }
         #endregion

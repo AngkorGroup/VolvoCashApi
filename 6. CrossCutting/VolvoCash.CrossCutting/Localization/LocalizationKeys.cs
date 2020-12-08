@@ -72,7 +72,8 @@
             exception_InvalidRefundStatusForPay,
             exception_DealerBankAccountIsNull,
             exception_BankAccountAlreadyExists,
-            exception_InvalidRefundStatusForCancel
+            exception_InvalidRefundStatusForCancel,
+            exception_RoleAlreadyExists
         }
 
         public enum Domain

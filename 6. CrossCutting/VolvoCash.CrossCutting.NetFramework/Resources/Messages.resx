@@ -342,4 +342,7 @@
   <data name="Application_exception_BankAccountAlreadyExists" xml:space="preserve">
     <value>La cuenta bancaria: {0}, CCI: {1} ya existe.</value>
   </data>
+  <data name="Application_exception_RoleAlreadyExists" xml:space="preserve">
+    <value>El nombre del rol ingresado ya existe.</value>
+  </data>
 </root>

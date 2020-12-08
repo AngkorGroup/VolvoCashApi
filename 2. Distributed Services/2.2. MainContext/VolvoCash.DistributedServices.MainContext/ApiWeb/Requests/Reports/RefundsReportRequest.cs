@@ -2,11 +2,9 @@ using System.Collections.Generic;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Reports
 {
-    public class RefundsReportRequest
+    public class RefundsReportRequest : ReportRequest
     {
         #region Properties
-        public string Type { get; set; }
-
         public string StartDate { get; set; }
 
         public string EndDate { get; set; }

@@ -1,6 +1,8 @@
+using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
+using VolvoCash.Application.MainContext.DTO.Roles;
 using VolvoCash.Application.Seedwork.DateConverters;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
@@ -38,6 +40,12 @@ namespace VolvoCash.Application.MainContext.DTO.Admins
 
         [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }
+
+        public List<RoleAdminDTO> RoleAdmins { get; set; }
+
+        public List<int> RoleIds { get; set; }
+
+        public List<string> MenuOptions { get; set; }
         #endregion
     }
 }

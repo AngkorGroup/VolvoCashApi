@@ -68,6 +68,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.ContactAgg
 
         public virtual User User { get; set; }
 
+        public bool HasSignedIn { get; set; }
         #endregion
 
         #region NotMapped Properties

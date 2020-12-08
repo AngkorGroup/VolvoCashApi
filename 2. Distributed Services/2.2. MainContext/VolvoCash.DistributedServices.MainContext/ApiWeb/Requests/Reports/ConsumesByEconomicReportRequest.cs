@@ -2,11 +2,9 @@ using System.Collections.Generic;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Reports
 {
-    public class ConsumesByEconomicReportRequest
+    public class ConsumesByEconomicReportRequest : ReportRequest
     {
         #region Properties
-        public string Type { get; set; }
-
         public List<string> CardTypes { get; set; }
 
         public List<string> Sectors { get; set; }

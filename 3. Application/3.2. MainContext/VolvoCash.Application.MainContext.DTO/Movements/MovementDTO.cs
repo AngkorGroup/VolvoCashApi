@@ -1,6 +1,6 @@
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 using VolvoCash.Application.MainContext.DTO.Charges;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Transfers;
@@ -29,6 +29,8 @@ namespace VolvoCash.Application.MainContext.DTO.Movements
 
         [JsonConverter(typeof(DefaultLiterallyDateConverter))]
         public DateTime CreatedAt { get; set; }
+
+        public int? BatchId { get; set; }
         #endregion
     }
 }

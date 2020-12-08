@@ -29,7 +29,6 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<MovementDTO>> GetMovementsByCardId(int cardId)
         {
             var movements = await _movementRepository.GetMovementsByCard( cardId);
-
             if (movements != null && movements.Any())
             {
                 return movements.ProjectedAsCollection<MovementDTO>();

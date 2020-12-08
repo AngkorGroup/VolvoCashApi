@@ -887,6 +887,9 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .HasColumnType("NVARCHAR2(100)")
                         .HasMaxLength(100);
 
+                    b.Property<bool>("HasSignedIn")
+                        .HasColumnType("NUMBER(1)");
+
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("TIMESTAMP(7)");
 
@@ -1139,6 +1142,43 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.ToTable("Liquidations");
                 });
 
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.MenuAgg.Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int?>("MenuParentId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int?>("Order")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuParentId");
+
+                    b.ToTable("Menus");
+                });
+
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg.RechargeType", b =>
                 {
                     b.Property<int>("Id")
@@ -1223,6 +1263,102 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.HasIndex("BankAccountId");
 
                     b.ToTable("Refunds");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.RoleAdmin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AdminId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleAdmins");
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.RoleMenu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasAnnotation("Oracle:ValueGenerationStrategy", OracleValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleMenus");
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg.SMSCode", b =>
@@ -1996,6 +2132,13 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         });
                 });
 
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.MenuAgg.Menu", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.MenuAgg.Menu", "MenuParent")
+                        .WithMany("MenuChildren")
+                        .HasForeignKey("MenuParentId");
+                });
+
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RefundAgg.Refund", b =>
                 {
                     b.HasOne("VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg.BankAccount", "BankAccount")
@@ -2032,6 +2175,36 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("RefundId");
                         });
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.RoleAdmin", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.UserAgg.Admin", "Admin")
+                        .WithMany("RoleAdmins")
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.Role", "Role")
+                        .WithMany("RoleAdmins")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.RoleMenu", b =>
+                {
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.MenuAgg.Menu", "Menu")
+                        .WithMany("RoleMenus")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.RoleAgg.Role", "Role")
+                        .WithMany("RoleMenus")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.UserAgg.Admin", b =>

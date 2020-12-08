@@ -17,6 +17,8 @@ using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
+using VolvoCash.Domain.MainContext.Aggregates.MenuAgg;
 
 namespace VolvoCash.Data.MainContext
 {
@@ -53,6 +55,10 @@ namespace VolvoCash.Data.MainContext
         public DbSet<BankDocumentType> BankDocumentTypes { get; set; }
         public DbSet<BankBankAccountType> BankBankAccountTypes { get; set; }
         public DbSet<BankCurrency> BankCurrencies { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<RoleMenu> RoleMenus { get; set; }
+        public DbSet<RoleAdmin> RoleAdmins { get; set; }
         #endregion
 
         #region Constructor
@@ -168,6 +174,30 @@ namespace VolvoCash.Data.MainContext
                 .HasMany(c => c.BankCurrencies)
                 .WithOne(bc => bc.Currency)
                 .HasForeignKey(bc => bc.CurrencyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Role>()
+                .HasMany(r => r.RoleMenus)
+                .WithOne(rm => rm.Role)
+                .HasForeignKey(rm => rm.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Menu>()
+                .HasMany(m => m.RoleMenus)
+                .WithOne(rm => rm.Menu)
+                .HasForeignKey(rm => rm.MenuId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Role>()
+                .HasMany(r => r.RoleAdmins)
+                .WithOne(ra => ra.Role)
+                .HasForeignKey(ra => ra.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Admin>()
+                .HasMany(m => m.RoleAdmins)
+                .WithOne(ra => ra.Admin)
+                .HasForeignKey(ra => ra.AdminId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Movement>()

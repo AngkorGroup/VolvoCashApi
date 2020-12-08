@@ -27,9 +27,11 @@ using VolvoCash.Application.MainContext.Currencies.Services;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DocumentTypes.Services;
 using VolvoCash.Application.MainContext.Liquidations.Services;
+using VolvoCash.Application.MainContext.Menus.Services;
 using VolvoCash.Application.MainContext.Movements.Services;
 using VolvoCash.Application.MainContext.RechargeTypes.Services;
 using VolvoCash.Application.MainContext.Refunds.Services;
+using VolvoCash.Application.MainContext.Roles.Services;
 using VolvoCash.Application.MainContext.Sectors.Services;
 using VolvoCash.Application.MainContext.Transfers.Services;
 using VolvoCash.Application.MainContext.Users.Services;
@@ -58,8 +60,10 @@ using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
+using VolvoCash.Domain.MainContext.Aggregates.MenuAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
@@ -164,6 +168,8 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ILiquidationAppService, LiquidationAppService>();
             services.AddScoped<IRefundAppService, RefundAppService>();
             services.AddScoped<ICurrencyAppService, CurrencyAppService>();
+            services.AddScoped<IMenuAppService, MenuAppService>();
+            services.AddScoped<IRoleAppService, RoleAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();
@@ -201,6 +207,10 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<ILiquidationRepository, LiquidationRepository>();
             services.AddScoped<IRefundRepository, RefundRepository>();
+            services.AddScoped<IMenuRepository, MenuRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IRoleMenuRepository, RoleMenuRepository>();
+            services.AddScoped<IRoleAdminRepository, RoleAdminRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

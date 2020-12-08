@@ -263,6 +263,24 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             var fileName = "ReporteCobrosPendReembolso";
             return GetFileResponse(reportContent, reportRequest.Type, fileName);
         }
+
+        [HttpPost("unsigned_contacts")]
+        public async Task<IActionResult> GetUnsignedContactsReport([FromBody] UnsignedContactsReportRequest reportRequest)
+        {
+            var report = new CustomReport
+            {
+                Extension = reportRequest.Type,
+                Parameters = new List<ReportParameter>() {
+                    new ReportParameter("p_clients", reportRequest.Clients, 8),
+                    new ReportParameter("p_begin_date", reportRequest.StartDate),
+                    new ReportParameter("p_end_date", reportRequest.EndDate),
+                },
+                Path = "UnsignedContacts"
+            };
+            var reportContent = await _reportManager.GetReportAsync(report);
+            var fileName = "ReporteContactosNoLogueados";
+            return GetFileResponse(reportContent, reportRequest.Type, fileName);
+        }
         #endregion
     }
 }

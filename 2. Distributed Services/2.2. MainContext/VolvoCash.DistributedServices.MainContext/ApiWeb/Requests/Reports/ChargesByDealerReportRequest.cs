@@ -2,11 +2,9 @@ using System.Collections.Generic;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Reports
 {
-    public class ChargesByDealerReportRequest
+    public class ChargesByDealerReportRequest : ReportRequest
     {
         #region Properties
-        public string Type { get; set; }
-
         public string DealerId { get; set; }
 
         public string StartDate { get; set; }
