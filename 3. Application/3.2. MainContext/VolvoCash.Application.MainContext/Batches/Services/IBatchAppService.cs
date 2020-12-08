@@ -11,7 +11,8 @@ namespace VolvoCash.Application.MainContext.Batches.Services
     public interface IBatchAppService : IDisposable
     {
         #region ApiWeb 
-        Task<List<BatchDTO>> GetBatches(string clientId, DateTime? beginDate, DateTime? endDate);
+        Task<List<BatchDTO>> GetBatches(DateTime? beginDate, DateTime? endDate);
+        Task<List<BatchDTO>> GetBatchesByExpiresAtExtent(string clientId, DateTime? beginDate, DateTime? endDate);
         Task<List<CardBatchDTO>> GetBatchesByCardId(int cardId);
         Task<List<CardBatchDTO>> GetBatchesByClientId(int clientId);
         Task<List<BatchErrorDTO>> GetErrorBatches();
