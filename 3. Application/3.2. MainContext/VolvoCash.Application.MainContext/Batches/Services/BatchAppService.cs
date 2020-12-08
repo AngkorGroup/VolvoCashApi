@@ -27,6 +27,7 @@ using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Application.MainContext.DTO.Currencies;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
+using VolvoCash.CrossCutting.Utils.Constants;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {

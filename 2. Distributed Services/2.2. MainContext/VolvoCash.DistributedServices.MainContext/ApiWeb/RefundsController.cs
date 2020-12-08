@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolvoCash.Application.MainContext.Refunds.Services;
 using VolvoCash.CrossCutting.Utils;
+using VolvoCash.CrossCutting.Utils.Constants;
 using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Refunds;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Domain.MainContext.Enums;
@@ -34,7 +35,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         {
             var _beginDate = DateTimeParser.ParseString(beginDate, DateTimeFormats.DateFormat);
             var _endDate = DateTimeParser.ParseString(endDate, DateTimeFormats.DateFormat);
-            var refundStatus = (RefundStatus)Enum.Parse(typeof(RefundStatus), status);
+            var refundStatus = (RefundStatus)EnumParser.ToEnum<RefundStatus>(status);
             var refunds = await _refundAppService.GetRefunds(_beginDate, _endDate, refundStatus);
             return Ok(refunds);
         }

@@ -1,8 +1,13 @@
+using System.Runtime.Serialization;
+
 namespace VolvoCash.Domain.MainContext.Enums
 {
     public enum ContactType
     {
-        Primary,
-        Secondary
+        [EnumMember(Value = "Principal")]
+        Primary = 0,
+
+        [EnumMember(Value = "Auxiliar")]
+        Secondary = 1
     }
 }

@@ -1,8 +1,13 @@
+using System.Runtime.Serialization;
+
 namespace VolvoCash.Domain.MainContext.Enums
 {
     public enum DealerType
     {
-        Internal,
-        External
+        [EnumMember(Value = "Own Dealer")]
+        Internal = 0,
+
+        [EnumMember(Value = "Private")]
+        External = 1
     }
 }

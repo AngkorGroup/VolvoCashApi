@@ -1,5 +1,5 @@
 ﻿
-namespace VolvoCash.CrossCutting.Utils
+namespace VolvoCash.CrossCutting.Utils.Constants
 {
     public static class DateTimeFormats
     {
