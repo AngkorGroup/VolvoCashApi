@@ -71,9 +71,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpGet("{id}/bank_accounts")]
-        public async Task<ActionResult> GetBankAccounts([FromRoute] int id)
+        public async Task<ActionResult> GetBankAccounts([FromRoute] int id, [FromQuery] bool onlyActive = false)
         {
-            var bankAccounts = await _dealerAppService.GetBankAccounts(id);
+            var bankAccounts = await _dealerAppService.GetBankAccounts(id, onlyActive);
             return Ok(bankAccounts);
         }
         #endregion

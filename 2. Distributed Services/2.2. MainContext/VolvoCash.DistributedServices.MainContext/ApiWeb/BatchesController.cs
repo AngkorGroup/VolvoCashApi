@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Batches.Services;
@@ -27,11 +26,11 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 
         #region Public Methods
         [HttpGet]
-        public async Task<ActionResult> GetBatches([FromQuery] string beginDate = "", [FromQuery] string endDate = "")
+        public async Task<ActionResult> GetBatches([FromQuery] string clientId = "all", [FromQuery] string beginDate = "", [FromQuery] string endDate = "")
         {
             var _beginDate = DateTimeParser.TryParseString(beginDate, DateTimeFormats.DateFormat);
             var _endDate = DateTimeParser.TryParseString(endDate, DateTimeFormats.DateFormat);
-            var loads = await _batchAppService.GetBatches(_beginDate, _endDate);
+            var loads = await _batchAppService.GetBatches(clientId, _beginDate, _endDate);
             return Ok(loads);
         }
 

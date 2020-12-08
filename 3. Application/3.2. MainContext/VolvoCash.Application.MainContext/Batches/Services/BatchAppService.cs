@@ -105,7 +105,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var contractDate = DateTimeParser.TryParseString(GetLineSegment(lineSegments, 4), DateTimeFormats.DateFormat);
                 var chasisNumber = GetLineSegment(lineSegments, 5);
                 var invoiceDocumentNumber = GetLineSegment(lineSegments, 6);
-                var invoiceDate = DateTimeParser.TryParseString(GetLineSegment(lineSegments, 7), DateTimeFormats.DateFormat); 
+                var invoiceDate = DateTimeParser.TryParseString(GetLineSegment(lineSegments, 7), DateTimeFormats.DateFormat);
                 var batchAmount = double.Parse(GetLineSegment(lineSegments, 8));
                 var batchCurrency = GetLineSegment(lineSegments, 9);
                 var contactName = GetLineSegment(lineSegments, 10);
@@ -177,9 +177,10 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                         throw new InvalidOperationException(existingBatchMessage);
                     }
 
-                    var cardTypeDTO = new CardTypeDTO() { 
-                         DisplayName = cardType.DisplayName,
-                         Name = cardType.Name
+                    var cardTypeDTO = new CardTypeDTO()
+                    {
+                        DisplayName = cardType.DisplayName,
+                        Name = cardType.Name
                     };
 
                     var card = new CardDTO()
@@ -192,30 +193,30 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     var currencyDTO = currency.ProjectedAs<CurrencyDTO>();
 
                     var amount = new MoneyDTO() { Currency = currencyDTO, CurrencyId = currencyDTO.Id, Value = batchAmount };
-                    
+
                     var batch = new BatchDTO()
                     {
-                        Amount                  = amount,
-                        TPContractDate          = contractDate,
-                        TPChasis                = chasisNumber,
-                        TPInvoiceDate           = invoiceDate,
-                        TPInvoiceCode           = invoiceDocumentNumber,
-                        RechargeTypeId          = rechargeType.Id,
-                        TPContractNumber        = contractNumber,
-                        TPContractBatchNumber   = batchTPCode,
-                        DealerCode              = dealerCode,
-                        DealerName              = dealerName,
-                        BusinessAreaId          = businessArea.Id,
-                        CardTypeId              = cardType.Id,
-                        LineContent             = line,
-                        Client                  = client,
-                        Balance                 = amount,
-                        CardType                = cardTypeDTO,
-                        RechargeType            = new DTO.RechargeTypes.RechargeTypeDTO()
+                        Amount = amount,
+                        TPContractDate = contractDate,
+                        TPChasis = chasisNumber,
+                        TPInvoiceDate = invoiceDate,
+                        TPInvoiceCode = invoiceDocumentNumber,
+                        RechargeTypeId = rechargeType.Id,
+                        TPContractNumber = contractNumber,
+                        TPContractBatchNumber = batchTPCode,
+                        DealerCode = dealerCode,
+                        DealerName = dealerName,
+                        BusinessAreaId = businessArea.Id,
+                        CardTypeId = cardType.Id,
+                        LineContent = line,
+                        Client = client,
+                        Balance = amount,
+                        CardType = cardTypeDTO,
+                        RechargeType = new DTO.RechargeTypes.RechargeTypeDTO()
                         {
                             Name = rechargeType.Name
                         },
-                        BusinessArea            = new DTO.BusinessAreas.BusinessAreaDTO()
+                        BusinessArea = new DTO.BusinessAreas.BusinessAreaDTO()
                         {
                             Name = businessArea.Name
                         }
@@ -261,7 +262,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 if (!string.IsNullOrEmpty(line?.Trim()))
                 {
                     loads.Add(GetLoadFromLine(line, rowIndex));
-                }                
+                }
                 rowIndex++;
             }
             return loads;
@@ -269,13 +270,14 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiWeb Public Methods
-        public async Task<List<BatchDTO>> GetBatches(DateTime? beginDate, DateTime? endDate)
+        public async Task<List<BatchDTO>> GetBatches(string clientId, DateTime? beginDate, DateTime? endDate)
         {
             var batches = await _batchRepository.FilterAsync(
-                filter: b => (beginDate == null || b.CreatedAt >= beginDate)
-                            && (endDate == null || b.CreatedAt <= endDate),
+                filter: b => (beginDate == null || b.ExpiresAtExtent >= beginDate) &&
+                             (endDate == null || b.ExpiresAtExtent <= endDate) &&
+                             (clientId == "all" || b.ClientId.ToString() == clientId),
                 includeProperties: "Client.Contacts,CardType,RechargeType,BusinessArea",
-                orderBy: bq => bq.OrderByDescending(b => b.CreatedAt));
+                orderBy: bq => bq.OrderBy(b => b.ExpiresAtExtent));
             return batches.ProjectedAsCollection<BatchDTO>();
         }
 
