@@ -273,18 +273,18 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<BatchDTO>> GetBatches(DateTime? beginDate, DateTime? endDate)
         {
             var batches = await _batchRepository.FilterAsync(
-                filter: b => (beginDate == null || b.CreatedAt >= beginDate) &&
-                             (endDate == null || b.CreatedAt <= endDate),
+                filter: b => (beginDate == null || b.CreatedAt.Date >= beginDate) &&
+                             (endDate == null || b.CreatedAt.Date <= endDate),
                 includeProperties: "Client.Contacts,CardType,RechargeType,BusinessArea",
-                orderBy: bq => bq.OrderByDescending(b => b.ExpiresAtExtent));
+                orderBy: bq => bq.OrderByDescending(b => b.CreatedAt));
             return batches.ProjectedAsCollection<BatchDTO>();
         }
 
         public async Task<List<BatchDTO>> GetBatchesByExpiresAtExtent(string clientId, DateTime? beginDate, DateTime? endDate)
         {
             var batches = await _batchRepository.FilterAsync(
-                filter: b => (beginDate == null || b.ExpiresAtExtent >= beginDate) &&
-                             (endDate == null || b.ExpiresAtExtent <= endDate) &&
+                filter: b => (beginDate == null || b.ExpiresAtExtent.Date >= beginDate) &&
+                             (endDate == null || b.ExpiresAtExtent.Date <= endDate) &&
                              (clientId == "all" || b.ClientId.ToString() == clientId),
                 includeProperties: "Client.Contacts,CardType,RechargeType,BusinessArea",
                 orderBy: bq => bq.OrderBy(b => b.ExpiresAtExtent));
