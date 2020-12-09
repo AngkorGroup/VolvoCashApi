@@ -18,6 +18,7 @@ namespace VolvoCash.Application.MainContext.Batches.Services
         Task<List<BatchErrorDTO>> GetErrorBatches();
         List<Load> GetLoadsFromFileStream(string fileName, Stream stream);
         Task<List<BatchErrorDTO>> PerformLoadsFromFileStreamAsync(string fileName, Stream stream);
+        Task ExtendExpiredDate(int id, DateTime newExpiredDate);
         #endregion
     }
 }

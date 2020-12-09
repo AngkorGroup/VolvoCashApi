@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Utils.Constants;
+using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Batches;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
@@ -79,6 +80,14 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             var file = Request.Form.Files["file"];
             var batchErrors = await _batchAppService.PerformLoadsFromFileStreamAsync(file?.FileName, file?.OpenReadStream());
             return Ok(batchErrors);
+        }
+
+        [HttpPost("{id}/extend_expired_date")]
+        public async Task<ActionResult> ExtendExpiredDate([FromRoute] int id, [FromBody] ExtendExpiredDateRequest request )
+        {
+            var newExpiredDate = DateTimeParser.ParseString(request.NewExpiredDate, DateTimeFormats.DateFormat);
+            await _batchAppService.ExtendExpiredDate(id, newExpiredDate);
+            return Ok();
         }
         #endregion
     }

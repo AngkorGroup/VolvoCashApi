@@ -434,6 +434,13 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             await _clientRepository.UnitOfWork.CommitAsync();
             return batch.ProjectedAs<BatchDTO>();
         }
+
+        public async Task ExtendExpiredDate(int id, DateTime newExpiredDate)
+        {
+            var batch = _batchRepository.Get(id);
+            batch.ExpiresAtExtent = newExpiredDate;
+            await _batchRepository.UnitOfWork.CommitAsync();
+        }
         #endregion
 
         #region IDisposable Members
