@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Converters;
-using VolvoCash.CrossCutting.Utils;
+using VolvoCash.CrossCutting.Utils.Constants;
 
 namespace VolvoCash.Application.Seedwork.DateConverters
 {

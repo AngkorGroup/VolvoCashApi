@@ -9,6 +9,7 @@ namespace VolvoCash.Application.MainContext.BankAccounts.Services
     {
         #region ApiWeb
         Task<List<BankAccountDTO>> GetBankAccounts(bool onlyActive);
+        Task<List<BankAccountDTO>> GetBankAccountsForVolvo(bool onlyActive);
         Task<BankAccountDTO> GetBankAccount(int id);
         Task<BankAccountDTO> AddAsync(BankAccountDTO bankAccountDTO);
         Task<BankAccountDTO> ModifyAsync(BankAccountDTO bankAccountDTO);

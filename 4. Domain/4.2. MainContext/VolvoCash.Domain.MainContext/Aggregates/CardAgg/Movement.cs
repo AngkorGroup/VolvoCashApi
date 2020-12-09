@@ -42,6 +42,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public virtual Transfer Transfer { get; set; }
         #endregion
 
+        #region Not Mapped Properties
+        [NotMapped]
+        public int? BatchId { get; set; }
+        #endregion
+
         #region Constructor
         public Movement()
         {

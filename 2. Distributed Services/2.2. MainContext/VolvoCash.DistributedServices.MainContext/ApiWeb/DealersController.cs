@@ -10,6 +10,7 @@ using VolvoCash.DistributedServices.Seedwork.Controllers;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Enums;
+using VolvoCash.CrossCutting.Utils.Constants;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -71,9 +72,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpGet("{id}/bank_accounts")]
-        public async Task<ActionResult> GetBankAccounts([FromRoute] int id)
+        public async Task<ActionResult> GetBankAccounts([FromRoute] int id, [FromQuery] bool onlyActive = false)
         {
-            var bankAccounts = await _dealerAppService.GetBankAccounts(id);
+            var bankAccounts = await _dealerAppService.GetBankAccounts(id, onlyActive);
             return Ok(bankAccounts);
         }
         #endregion

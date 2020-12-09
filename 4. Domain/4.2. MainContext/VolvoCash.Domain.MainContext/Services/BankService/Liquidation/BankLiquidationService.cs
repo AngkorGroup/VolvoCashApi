@@ -4,10 +4,10 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using VolvoCash.CrossCutting.Localization;
-using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
+using VolvoCash.CrossCutting.Utils.Constants;
 
 namespace VolvoCash.Domain.MainContext.Services.BankService
 {

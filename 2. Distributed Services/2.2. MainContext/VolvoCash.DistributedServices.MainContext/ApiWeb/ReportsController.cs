@@ -144,7 +144,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
                 Extension = reportRequest.Type,
                 Parameters = new List<ReportParameter>() {
                     new ReportParameter("p_clients", reportRequest.ClientId, 8),
-                    new ReportParameter("p_card_types", reportRequest.CardTypes, 4)
+                    new ReportParameter("p_card_types", reportRequest.CardTypes, 4),
+                    new ReportParameter("p_begin_date", reportRequest.StartDate),
+                    new ReportParameter("p_end_date", reportRequest.EndDate)
                 },
                 Path = "ClientsMatrixvsCardUsage"
             };
