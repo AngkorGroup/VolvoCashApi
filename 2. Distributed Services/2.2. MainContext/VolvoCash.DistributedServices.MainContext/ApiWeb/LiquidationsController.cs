@@ -1,9 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolvoCash.Application.MainContext.Liquidations.Services;
 using VolvoCash.CrossCutting.Utils;
+using VolvoCash.CrossCutting.Utils.Constants;
 using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Liquidations;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 using VolvoCash.Domain.MainContext.Enums;
@@ -34,7 +34,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         {
             var _beginDate = DateTimeParser.ParseString(beginDate, DateTimeFormats.DateFormat);
             var _endDate = DateTimeParser.ParseString(endDate, DateTimeFormats.DateFormat);
-            var liquidationStatus = (LiquidationStatus)Enum.Parse(typeof(LiquidationStatus), status);
+            var liquidationStatus = (LiquidationStatus)EnumParser.ToEnum<LiquidationStatus>(status);
             var liquidations = await _liquidationAppService.GetLiquidations(_beginDate, _endDate, liquidationStatus);
             return Ok(liquidations);
         }

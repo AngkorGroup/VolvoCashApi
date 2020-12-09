@@ -30,7 +30,7 @@ namespace VolvoCash.Application.MainContext.DTO.BankAccounts
 
         public BankDTO Bank { get; set; }
 
-        public int DealerId { get; set; }
+        public int? DealerId { get; set; }
 
         public DealerDTO Dealer { get; set; }
 

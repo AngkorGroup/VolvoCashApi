@@ -2,12 +2,12 @@ namespace VolvoCash.Domain.MainContext.Enums
 {
     public enum MovementType
     {
-        CTA, // Creación de tarjeta
-        REC, // Recarga
-        ITR, // Ingreso por transferencia
-        STR, // Salida por transferencia
-        CON, // Consumo
-        CVT, // Cancela por vencimiento
-        AVT  // Amplía vencimiento
+        CTA = 0, // Creación de tarjeta
+        REC = 1, // Recarga
+        ITR = 2, // Ingreso por transferencia
+        STR = 3, // Salida por transferencia
+        CON = 4, // Consumo
+        CVT = 5, // Cancela por vencimiento
+        AVT = 6  // Amplía vencimiento
     }
 }
