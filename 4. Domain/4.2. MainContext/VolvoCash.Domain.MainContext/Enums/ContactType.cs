@@ -4,10 +4,10 @@ namespace VolvoCash.Domain.MainContext.Enums
 {
     public enum ContactType
     {
-        [EnumMember(Value = "Principal")]
+        //[EnumMember(Value = "Principal")]
         Primary = 0,
 
-        [EnumMember(Value = "Auxiliar")]
+        //[EnumMember(Value = "Auxiliar")]
         Secondary = 1
     }
 }

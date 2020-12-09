@@ -4,16 +4,16 @@ namespace VolvoCash.Domain.MainContext.Enums
 {
     public enum ChargeStatus
     {
-        [EnumMember(Value = "Pendiente")]
+        //[EnumMember(Value = "Pendiente")]
         Pending = 1,
 
-        [EnumMember(Value = "Aceptado")]
+        //[EnumMember(Value = "Aceptado")]
         Accepted = 2,
 
-        [EnumMember(Value = "Rechazado")]
+        //[EnumMember(Value = "Rechazado")]
         Rejected = 3,
 
-        [EnumMember(Value = "Cancelado")]
+        //[EnumMember(Value = "Cancelado")]
         Canceled = 4
     }
 }
