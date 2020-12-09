@@ -43,7 +43,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<CardListDTO>> GetCardsByPhone(string phone)
         {
             var contactAndAdditionalCards = (await _cardRepository.FilterAsync(
-                filter : c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Status == Status.Active,
+                filter: c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Status == Status.Active,
                 includeProperties: "CardType,Contact"))
                 .ToList();
             if (contactAndAdditionalCards != null && contactAndAdditionalCards.Any())
@@ -80,13 +80,14 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region ApiWeb Public Methods
         public async Task<List<CardListDTO>> GetCardsByFilter(string query, int maxRecords)
         {
-            query= query?.Trim().ToUpper();
+            query = query?.Trim().ToUpper();
             var cards = await _cardRepository.FilterAsync(
                 filter: c => (c.Code.Trim().ToUpper().Contains(query)
                   || c.Contact.FirstName.ToUpper().Contains(query)
                   || c.Contact.LastName.ToUpper().Contains(query)
                   || c.Contact.Phone.Trim().Contains(query)
-                  || c.Contact.Client.Ruc.Trim().Contains(query)) && c.Contact.Status == Status.Active,
+                  || c.Contact.Client.Ruc.Trim().Contains(query)
+                  || string.IsNullOrEmpty(query)) && c.Contact.Status == Status.Active,
                 includeProperties: "Contact.Client,CardType,Balance.Currency");
             cards = cards.Take(Math.Min(cards.Count(), maxRecords));
             if (cards != null && cards.Any())
@@ -99,8 +100,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<CardListDTO>> GetCardsByClientId(int? clientId, int? contactId)
         {
             var cards = await _cardRepository.FilterAsync(
-                filter: c => (  clientId == null ||  c.Contact.ClientId == clientId) &&
-                              (contactId == null ||  c.Contact.Id == contactId) && c.Contact.Status == Status.Active,
+                filter: c => (clientId == null || c.Contact.ClientId == clientId) &&
+                             (contactId == null || c.Contact.Id == contactId) && c.Contact.Status == Status.Active,
                 includeProperties: "Contact,CardType");
 
             if (cards != null && cards.Any())
@@ -113,7 +114,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         public async Task<List<CardListDTO>> GetCardsByClientIdAndCardTypeId(int clientId, int cardTypeId)
         {
             var cards = await _cardRepository.FilterAsync(
-                filter: c => c.Contact.ClientId == clientId && c.CardTypeId == cardTypeId &&  c.Contact.Status == Status.Active,
+                filter: c => c.Contact.ClientId == clientId && c.CardTypeId == cardTypeId && c.Contact.Status == Status.Active,
                 includeProperties: "Contact,CardType");
 
             if (cards != null && cards.Any())
