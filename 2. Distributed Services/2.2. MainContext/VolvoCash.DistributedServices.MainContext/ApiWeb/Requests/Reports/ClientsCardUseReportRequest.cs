@@ -8,6 +8,10 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Reports
         public List<string> CardTypes { get; set; }
 
         public string ClientId { get; set; }
+        
+        public string StartDate { get; set; }
+
+        public string EndDate { get; set; }
         #endregion
     }
 }
