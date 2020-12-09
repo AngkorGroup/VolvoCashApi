@@ -31,6 +31,12 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _bankAccountAppService.GetBankAccounts(onlyActive));
         }
 
+        [HttpGet("volvo")]
+        public async Task<IActionResult> GetBankAccountsForVolvo([FromQuery] bool onlyActive = false)
+        {
+            return Ok(await _bankAccountAppService.GetBankAccountsForVolvo(onlyActive));
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBankAccount([FromRoute] int id)
         {

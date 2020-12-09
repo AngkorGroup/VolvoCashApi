@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using VolvoCash.Application.MainContext.DTO.BankAccounts;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
@@ -30,6 +30,14 @@ namespace VolvoCash.Application.MainContext.BankAccounts.Services
         {
             var bankAccounts = await _bankAccountRepository.FilterAsync(
                 filter: b => !onlyActive || b.Status == Status.Active,
+                includeProperties: "Bank,BankAccountType,Currency");
+            return bankAccounts.ProjectedAsCollection<BankAccountDTO>();
+        }
+
+        public async Task<List<BankAccountDTO>> GetBankAccountsForVolvo(bool onlyActive)
+        {
+            var bankAccounts = await _bankAccountRepository.FilterAsync(
+                filter: b => (!onlyActive || b.Status == Status.Active) && b.DealerId == null,
                 includeProperties: "Bank,BankAccountType,Currency");
             return bankAccounts.ProjectedAsCollection<BankAccountDTO>();
         }
