@@ -40,15 +40,22 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiClient Public Methods
-        public async Task<List<CardListDTO>> GetCardsByPhone(string phone)
+        public async Task<List<CardListDTO>> GetCardsByPhone(string phone, int? clientId = null)
         {
-            var contactAndAdditionalCards = (await _cardRepository.FilterAsync(
-                filter: c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Status == Status.Active,
-                includeProperties: "CardType,Contact"))
-                .ToList();
-            if (contactAndAdditionalCards != null && contactAndAdditionalCards.Any())
+            List<Card> cards = null;
+            if (clientId == null)
             {
-                var cardsDTO = contactAndAdditionalCards.ProjectedAsCollection<CardListDTO>();
+                cards = (await _cardRepository.FilterAsync(
+                                    filter: c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Status == Status.Active,
+                                    includeProperties: "CardType,Contact.Client")).ToList();
+            }else{
+                cards = (await _cardRepository.FilterAsync(
+                                    filter: c => (c.Contact.Phone == phone) && c.Status == Status.Active,
+                                    includeProperties: "CardType,Contact.Client")).ToList();
+            }                       
+            if (cards != null && cards.Any())
+            {
+                var cardsDTO = cards.ProjectedAsCollection<CardListDTO>();
                 foreach (var cardDTO in cardsDTO)
                 {
                     cardDTO.Contact.Type = cardDTO.Contact.Phone == phone ? ContactType.Primary : ContactType.Secondary;
@@ -60,7 +67,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
         public async Task<CardDTO> GetCardByPhone(string phone, int id)
         {
-            var cards = await _cardRepository.FilterAsync(filter: c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Id == id, includeProperties: "CardType,CardBatches.Batch,Contact");
+            var cards = await _cardRepository.FilterAsync(filter: c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Id == id, includeProperties: "CardType,CardBatches.Batch,Contact.Client");
             if (cards != null && cards.Any())
             {
                 var card = cards.FirstOrDefault();

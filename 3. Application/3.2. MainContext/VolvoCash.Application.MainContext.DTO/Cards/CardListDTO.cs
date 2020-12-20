@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System;
 using VolvoCash.Application.MainContext.DTO.CardTypes;
+using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.Seedwork.DateConverters;
@@ -44,10 +45,10 @@ namespace VolvoCash.Application.MainContext.DTO.Cards
         #region Public Methods
         public dynamic GetCardForQr()
         {
-            return new 
+            return new
             {
-                CurrencyId ,
-                Id 
+                CurrencyId,
+                Id
             };
         }
         #endregion

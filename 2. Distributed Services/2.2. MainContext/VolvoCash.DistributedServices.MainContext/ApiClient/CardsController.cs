@@ -22,7 +22,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
 
         #region Constructor
         public CardsController(ICardAppService cardAppService,
-                               IUrlManager urlManager, 
+                               IUrlManager urlManager,
                                IApplicationUser applicationUser)
         {
             _cardAppService = cardAppService;
@@ -33,9 +33,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
 
         #region Public Methods
         [HttpGet]
-        public async Task<ActionResult> GetCards()
+        public async Task<ActionResult> GetCards([FromQuery] int? client_id = null)
         {
-            var cards = await _cardAppService.GetCardsByPhone(_applicationUser.GetUserName());
+            var cards = await _cardAppService.GetCardsByPhone(_applicationUser.GetUserName(), client_id);
             return Ok(cards);
         }
 
@@ -43,7 +43,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         public async Task<ActionResult> GetCard([FromRoute] int id)
         {
             var card = await _cardAppService.GetCardByPhone(_applicationUser.GetUserName(), id);
-             card.QrUrl = _urlManager.GetQrUrl(card.GetCardForQr());
+            card.QrUrl = _urlManager.GetQrUrl(card.GetCardForQr());
             return Ok(card);
         }
         #endregion

@@ -4,6 +4,7 @@
     {
         #region Properties
         public bool IsValidPhoneNumber { get; set; }
+        public int SmsCode { get; set; }
         #endregion
     }
 }
