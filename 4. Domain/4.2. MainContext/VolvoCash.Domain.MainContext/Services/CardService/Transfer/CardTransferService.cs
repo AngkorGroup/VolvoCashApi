@@ -46,9 +46,6 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
             if (originCard.Id == destinyCard.Id)
                 throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_InvalidTransferToSameCard));
 
-            if (originCard.Contact.ClientId != destinyCard.Contact.ClientId)
-                throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_InvalidTransferDifferentContactClient));
-
             var fromContact = originCard.Contact.FullName;
             var toContact = destinyCard.Contact.FullName;
 

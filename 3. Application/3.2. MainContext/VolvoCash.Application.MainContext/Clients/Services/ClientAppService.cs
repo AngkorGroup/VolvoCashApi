@@ -7,6 +7,7 @@ using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Application.MainContext.Clients.Services
 {
@@ -23,6 +24,14 @@ namespace VolvoCash.Application.MainContext.Clients.Services
         }
         #endregion
 
+        #region ApiClient Public Methods
+        public async Task<List<ClientListDTO>> GetClientsByPhone(string phone)
+        {
+            var clients = (await _clientRepository.FilterAsync(filter: c => c.Contacts.Where(c => c.Phone == phone).Any() && c.Status == Status.Active)).ToList();
+            return clients.ProjectedAsCollection<ClientListDTO>();
+        }
+        #endregion
+
         #region ApiWeb Public Methods
         public async Task<List<ClientFilterDTO>> GetClientsByFilter(string query, int maxRecords)
         {
@@ -33,7 +42,7 @@ namespace VolvoCash.Application.MainContext.Clients.Services
                           || c.Address.Trim().ToUpper().Contains(query)
                           || c.Phone.Trim().Contains(query)
                           || string.IsNullOrEmpty(query),
-                includeProperties : "Contacts.Cards.Currency");
+                includeProperties: "Contacts.Cards.Currency");
             clients = clients.Take(Math.Min(clients.Count(), maxRecords));
             if (clients != null && clients.Any())
             {

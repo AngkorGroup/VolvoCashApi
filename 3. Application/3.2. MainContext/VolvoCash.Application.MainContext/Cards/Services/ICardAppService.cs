@@ -9,7 +9,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
     public interface ICardAppService : IDisposable
     {
         #region ApiClient
-        Task<List<CardListDTO>> GetCardsByPhone(string phone);
+        Task<List<CardListDTO>> GetCardsByPhone(string phone, int? clientId);
         Task<CardDTO> GetCardByPhone(string phone, int id);
         #endregion
 
