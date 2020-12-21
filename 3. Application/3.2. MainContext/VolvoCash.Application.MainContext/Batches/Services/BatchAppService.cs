@@ -122,10 +122,11 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var businessDescription = GetLineSegment(lineSegments, 20);
                 var cardTypeCode = GetLineSegment(lineSegments, 21);
                 var cardTypeDescription = GetLineSegment(lineSegments, 22);
+                var documentTypeId = GetLineSegment(lineSegments, 23);
+                var contactLastName = GetLineSegment(lineSegments, 24);
                 var clientAddress = "-";
                 var clientPhone = "-";
-                var contactLastName = "-";
-                var contactDocumentTypeId = (_documentTypeRepository.Filter(filter: dt => dt.Abbreviation == "DNI")).FirstOrDefault().Id;
+                var contactDocumentTypeId = (_documentTypeRepository.Filter(filter: dt => dt.TPCode == documentTypeId)).FirstOrDefault().Id;
 
                 try
                 {

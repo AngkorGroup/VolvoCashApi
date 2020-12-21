@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
@@ -117,8 +115,11 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         public async Task DestroySessionAsync(Guid sessionId)
         {
             var session = _sessionRepository.Get(sessionId);
-            session.Status = Status.Inactive;
-            await _sessionRepository.UnitOfWork.CommitAsync();
+            if (session != null)
+            {
+                session.Status = Status.Inactive;
+                await _sessionRepository.UnitOfWork.CommitAsync();
+            }            
         }
         #endregion
 

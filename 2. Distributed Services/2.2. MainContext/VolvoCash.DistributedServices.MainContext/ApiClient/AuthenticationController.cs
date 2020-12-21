@@ -92,7 +92,12 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         [Route("logout")]
         public async Task<ActionResult> Logout()
         {
-            await _authenticationAppService.DestroySessionAsync(_applicationUser.GetSessionId());
+            try
+            {
+                await _authenticationAppService.DestroySessionAsync(_applicationUser.GetSessionId());
+            } catch 
+            {
+            }            
             return Ok();
         }
         #endregion
