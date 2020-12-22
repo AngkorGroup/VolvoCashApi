@@ -50,7 +50,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                                     includeProperties: "CardType,Contact.Client")).ToList();
             }else{
                 cards = (await _cardRepository.FilterAsync(
-                                    filter: c => (c.Contact.Phone == phone) && c.Status == Status.Active,
+                                    filter: c => (c.Contact.Phone == phone && c.Contact.ClientId == clientId) && c.Status == Status.Active,
                                     includeProperties: "CardType,Contact.Client")).ToList();
             }                       
             if (cards != null && cards.Any())
