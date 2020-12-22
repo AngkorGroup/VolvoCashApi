@@ -33,13 +33,9 @@ namespace VolvoCash.Data.MainContext.Repositories
             string documentNumber, string firstName, string lastName, string email)
         {
             var mainContact = client.Contacts.FirstOrDefault(c => c.Type == ContactType.Primary && c.Status == Status.Active);
-            var existingContactInOtherClient = (await FilterAsync(c => c.ClientId != client.Id && c.Phone == phone && c.Status == Status.Active)).FirstOrDefault();
+            //var existingContactInOtherClient = (await FilterAsync(c => c.ClientId != client.Id && c.Phone == phone && c.Status == Status.Active)).FirstOrDefault();
             if (mainContact == null)
             {
-                if (existingContactInOtherClient != null)
-                {
-                    throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Infraestructure.exception_ContactAlreadyExistsForOtherClient));
-                }
                 mainContact = new Contact(
                     client,
                     ContactType.Primary,
@@ -63,31 +59,37 @@ namespace VolvoCash.Data.MainContext.Repositories
                 }
                 else
                 {
-                    if (existingContactInOtherClient == null)
+                    var existingContact = client.Contacts.Where(c => c.Phone == phone && c.Status == Status.Active).FirstOrDefault();
+                    if (existingContact == null)
                     {
-                        var existingContact = client.Contacts.Where(c => c.Phone == phone && c.Status == Status.Active).FirstOrDefault();
-                        if (existingContact == null)
-                        {
-                            var newContact = new Contact(
-                                client,
-                                ContactType.Secondary,
-                                documentTypeId,
-                                documentNumber,
-                                phone,
-                                firstName,
-                                lastName,
-                                email
-                            );
-                            client.Contacts.Add(newContact);
-                        }
-                        else
-                        {
-                            existingContact.DocumentTypeId = documentTypeId;
-                            existingContact.DocumentNumber = documentNumber;
-                            existingContact.Email = email;
-                            existingContact.FirstName = firstName;
-                            existingContact.LastName = lastName;
-                        }
+                        var newContact = new Contact(
+                            client,
+                            ContactType.Secondary,
+                            documentTypeId,
+                            documentNumber,
+                            phone,
+                            firstName,
+                            lastName,
+                            email
+                        );
+                        client.Contacts.Add(newContact);
+                    }
+                    else
+                    {
+                        existingContact.DocumentTypeId = documentTypeId;
+                        existingContact.DocumentNumber = documentNumber;
+                        existingContact.Email = email;
+                        existingContact.FirstName = firstName;
+                        existingContact.LastName = lastName;
+                    }
+                    var allOtherContacts = await FilterAsync(c => c.Phone == phone && c.Status == Status.Active && c.ClientId != client.Id);
+                    foreach(var contact in allOtherContacts)
+                    {
+                        contact.DocumentTypeId = documentTypeId;
+                        contact.DocumentNumber = documentNumber;
+                        contact.Email = email;
+                        contact.FirstName = firstName;
+                        contact.LastName = lastName;
                     }
                 }
             }
