@@ -33,9 +33,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
 
         #region Public Methods
         [HttpGet]
-        public async Task<ActionResult> GetCards([FromQuery] int? contact_id = null)
+        public async Task<ActionResult> GetCards([FromQuery] int? contactId = null)
         {
-            var cards = await _cardAppService.GetCardsByPhone(_applicationUser.GetUserName(), contact_id);
+            var cards = await _cardAppService.GetCardsByPhone(_applicationUser.GetUserName(), contactId);
             return Ok(cards);
         }
 
