@@ -9,7 +9,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
 {
     [Authorize(Roles = "Contact")]
     [ApiController]
-    [Route("api_client/document_types")]
+    [Route("api_client/clients")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
     public class ClientsController : ControllerBase
     {
