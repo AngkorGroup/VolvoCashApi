@@ -42,12 +42,14 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         #region ApiClient Public Methods
         public async Task<List<ContactListDTO>> GetContactsByPhone(string phone)
         {
-            var currentContact = (await _contactRepository.FilterAsync(
-                filter: c => c.Phone == phone && c.Status == Status.Active,
-                includeProperties: "Client" 
-            )).FirstOrDefault();
+        //    var currentContact = (await _contactRepository.FilterAsync(
+        //        filter: c => c.Phone == phone && c.Status == Status.Active,
+        //        includeProperties: "Client" 
+        //    )).FirstOrDefault();
 
-            var contacts = await _contactRepository.FilterAsync(filter: c => c.ClientId == currentContact.ClientId && c.Id != currentContact.Id && c.Status == Status.Active);
+            var contacts = await _contactRepository.FilterAsync(
+                filter: c => c.Phone != phone && c.Status == Status.Active,
+                includeProperties:"Client");
 
             if (contacts != null && contacts.Any())
             {
