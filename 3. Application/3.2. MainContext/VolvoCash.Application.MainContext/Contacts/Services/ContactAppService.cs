@@ -8,6 +8,7 @@ using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
 using VolvoCash.CrossCutting.NetFramework.Utils;
+using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
@@ -17,15 +18,18 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
     {
         #region Members
         private readonly IContactRepository _contactRepository;
+        private readonly IClientRepository _clientRepository;
         private readonly ISMSManager _smsManager;
         private readonly ILocalization _resources;
         #endregion
 
         #region Constructor
         public ContactAppService(IContactRepository contactRepository,
+                                IClientRepository clientRepository,
                                 ISMSManager smsManager)
         {
             _contactRepository = contactRepository;
+            _clientRepository = clientRepository;
             _smsManager = smsManager;
             _resources = LocalizationFactory.CreateLocalResources();
         }
@@ -42,20 +46,20 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
         #region ApiClient Public Methods
         public async Task<List<ContactListDTO>> GetContactsByPhone(string phone)
         {
-        //    var currentContact = (await _contactRepository.FilterAsync(
-        //        filter: c => c.Phone == phone && c.Status == Status.Active,
-        //        includeProperties: "Client" 
-        //    )).FirstOrDefault();
+            var clients = (await _clientRepository.FilterAsync(c=> c.Contacts.Where(c=>c.Phone == phone).Any() )).Select(c=> c.Id);
 
             var contacts = await _contactRepository.FilterAsync(
-                filter: c => c.Phone != phone && c.Status == Status.Active,
-                includeProperties:"Client");
+               filter: c => c.Phone != phone && c.Status == Status.Active && clients.Contains(c.ClientId),
+               includeProperties: "Client");
 
-            if (contacts != null && contacts.Any())
+            if (clients.Count() != 1)
             {
-                return contacts.ProjectedAsCollection<ContactListDTO>();
+                contacts = await _contactRepository.FilterAsync(                    
+                    filter: c =>  c.Status == Status.Active && clients.Contains(c.ClientId),                
+                    includeProperties: "Client");
             }
-            return new List<ContactListDTO>();
+
+            return contacts.ProjectedAsCollection<ContactListDTO>();
         }
 
         public async Task<ContactListDTO> AddContact(ContactDTO contactDTO)

@@ -78,9 +78,9 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region Private Methods
-        public IEnumerable<string> ReadLines(Stream stream, Encoding encoding)
+        public IEnumerable<string> ReadLines(Stream stream)
         {
-            using (var reader = new StreamReader(stream, encoding))
+            using (var reader = new StreamReader(stream))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -259,7 +259,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             var loads = new List<Load>();
             var rowIndex = 1;
-            foreach (var line in ReadLines(stream, Encoding.UTF8))
+            foreach (var line in ReadLines(stream))
             {
                 if (!string.IsNullOrEmpty(line?.Trim()))
                 {

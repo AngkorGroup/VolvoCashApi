@@ -40,17 +40,17 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #endregion
 
         #region ApiClient Public Methods
-        public async Task<List<CardListDTO>> GetCardsByPhone(string phone, int? clientId = null)
+        public async Task<List<CardListDTO>> GetCardsByPhone(string phone, int? contactId = null)
         {
             List<Card> cards = null;
-            if (clientId == null)
+            if (contactId == null)
             {
                 cards = (await _cardRepository.FilterAsync(
                                     filter: c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Status == Status.Active,
                                     includeProperties: "CardType,Contact.Client")).ToList();
             }else{
                 cards = (await _cardRepository.FilterAsync(
-                                    filter: c => (c.Contact.Phone == phone && c.Contact.ClientId == clientId) && c.Status == Status.Active,
+                                    filter: c => (c.Contact.Phone == phone && c.ContactId != contactId) && c.Status == Status.Active,
                                     includeProperties: "CardType,Contact.Client")).ToList();
             }                       
             if (cards != null && cards.Any())
