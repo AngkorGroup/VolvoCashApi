@@ -19,6 +19,8 @@ using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
 using VolvoCash.Domain.MainContext.Aggregates.MenuAgg;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 
 namespace VolvoCash.Data.MainContext
 {
@@ -43,6 +45,7 @@ namespace VolvoCash.Data.MainContext
         public DbSet<SMSCode> SMSCodes { get; set; }
         public DbSet<BatchError> BatchErrors { get; set; }
         public DbSet<Session> Sessions { get; set; }
+        public DbSet<ResetPasswordToken> ResetPasswordTokens { get; set; }
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<Liquidation> Liquidations { get; set; }
@@ -229,6 +232,34 @@ namespace VolvoCash.Data.MainContext
 
             modelBuilder.Entity<Refund>()
                 .OwnsOne(m => m.Amount);
+
+            //var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+            //                            v => v.ToUniversalTime(),
+            //                            v => DateTime.SpecifyKind(v, DateTimeKind.Local));
+
+            //var nullableDateTimeConverter = new ValueConverter<DateTime?, DateTime?>(
+            //    v => v.HasValue ? v.Value.ToUniversalTime() : v,
+            //    v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Local) : v);
+
+            //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            //{
+            //    if (entityType.IsKeyless)
+            //    {
+            //        continue;
+            //    }
+
+            //    foreach (var property in entityType.GetProperties())
+            //    {
+            //        if (property.ClrType == typeof(DateTime))
+            //        {
+            //            property.SetValueConverter(dateTimeConverter);
+            //        }
+            //        else if (property.ClrType == typeof(DateTime?))
+            //        {
+            //            property.SetValueConverter(nullableDateTimeConverter);
+            //        }
+            //    }
+            //}
         }
         #endregion
     }

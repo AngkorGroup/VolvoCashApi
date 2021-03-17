@@ -18,9 +18,14 @@ namespace VolvoCash.Data.MainContext.Repositories
         #region Public Methods
         public async Task<Cashier> LoginAsync(string email, string passwordHash)
         {
-            var cashier = await _context.Cashiers.FirstOrDefaultAsync(c => c.Email == email && c.PasswordHash == passwordHash);
+            var cashier = await _context.Cashiers.FirstOrDefaultAsync(c => c.Email.ToUpper().Trim() == email.ToUpper().Trim() && c.PasswordHash == passwordHash);
             return cashier;
         }
+        public async Task<Cashier> GetCashierByEmailAsync(string email)
+        {
+            var cashier = await _context.Cashiers.FirstOrDefaultAsync(c => c.Email.ToUpper().Trim() == email.ToUpper().Trim());
+            return cashier;
+        }        
         #endregion
     }
 }

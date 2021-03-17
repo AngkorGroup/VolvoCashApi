@@ -2,32 +2,31 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.MainContext.DTO.Batches;
+using VolvoCash.Application.MainContext.DTO.CardBatches;
 using VolvoCash.Application.MainContext.DTO.Cards;
+using VolvoCash.Application.MainContext.DTO.CardTypes;
 using VolvoCash.Application.MainContext.DTO.Clients;
 using VolvoCash.Application.MainContext.DTO.Common;
 using VolvoCash.Application.MainContext.DTO.Contacts;
+using VolvoCash.Application.MainContext.DTO.Currencies;
 using VolvoCash.Application.MainContext.DTO.POJOS;
-using VolvoCash.Application.MainContext.DTO.CardBatches;
-using VolvoCash.Application.MainContext.Batches.Services;
 using VolvoCash.Application.Seedwork;
+using VolvoCash.CrossCutting.Localization;
+using VolvoCash.CrossCutting.Utils;
+using VolvoCash.CrossCutting.Utils.Constants;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
+using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
+using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
+using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
-using VolvoCash.CrossCutting.Utils;
-using VolvoCash.CrossCutting.Localization;
-using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
-using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
-using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
-using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
-using VolvoCash.Application.MainContext.DTO.Currencies;
-using VolvoCash.Application.MainContext.DTO.CardTypes;
-using VolvoCash.CrossCutting.Utils.Constants;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -216,7 +215,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                         CardType = cardTypeDTO,
                         RechargeType = new DTO.RechargeTypes.RechargeTypeDTO()
                         {
-                            Name = rechargeType.Name
+                            Name = rechargeType.Name,
+                            TPCode = rechargeType.TPCode
                         },
                         BusinessArea = new DTO.BusinessAreas.BusinessAreaDTO()
                         {
@@ -289,7 +289,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                              (endDate == null || b.ExpiresAtExtent.Date <= endDate) &&
                              (clientId == "all" || b.ClientId.ToString() == clientId),
                 includeProperties: "Client.Contacts,CardType,RechargeType,BusinessArea",
-                orderBy: bq => bq.OrderBy(b => b.ExpiresAtExtent));
+                orderBy: bq => bq.OrderByDescending(b => b.Id));
             return batches.ProjectedAsCollection<BatchDTO>();
         }
 
@@ -302,7 +302,8 @@ namespace VolvoCash.Application.MainContext.Cards.Services
 
             if (card != null && card.CardBatches.Any())
             {
-                return card.CardBatches.Where(cb => cb.Balance.Value > 0).ProjectedAsCollection<CardBatchDTO>();
+                var cardBatchDTOs= card.CardBatches.Where(cb => cb.Balance.Value > 0).ProjectedAsCollection<CardBatchDTO>();
+                return cardBatchDTOs.OrderByDescending(c => c.BatchId).ToList();
             }
             return new List<CardBatchDTO>();
         }
@@ -320,7 +321,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     cardBatches.AddRange(batch.CardBatches.Where(cb => cb.Balance.Value > 0).ProjectedAsCollection<CardBatchDTO>());
                 }
             }
-            return cardBatches;
+            return cardBatches.OrderByDescending(c => c.BatchId).ToList(); 
         }
 
         public async Task<List<BatchErrorDTO>> GetErrorBatches()
@@ -421,6 +422,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 batchDTO.CardTypeId,
                 batchDTO.LineContent
             );
+            batch.BusinessArea = _businessAreaRepository.Filter(ba => ba.Id == batchDTO.BusinessAreaId).FirstOrDefault();
             client.Batches.Add(batch);
             _rechargeService.PerformRecharge(card, batch);
 

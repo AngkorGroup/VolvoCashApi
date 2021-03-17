@@ -7,5 +7,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
     public interface ISessionRepository : IRepository<Session>
     {
         Task<List<string>> GetActivePushDeviceTokensAsync(int userId);
+        Task<List<string>> GetActivePushDeviceTokensByPhoneAsync(string phone);
     }
 }

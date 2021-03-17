@@ -52,13 +52,7 @@ namespace VolvoCash.Application.MainContext.Contacts.Services
                filter: c => c.Phone != phone && c.Status == Status.Active && clients.Contains(c.ClientId),
                includeProperties: "Client");
 
-            if (clients.Count() != 1)
-            {
-                contacts = await _contactRepository.FilterAsync(                    
-                    filter: c =>  c.Status == Status.Active && clients.Contains(c.ClientId),                
-                    includeProperties: "Client");
-            }
-
+           
             return contacts.ProjectedAsCollection<ContactListDTO>();
         }
 

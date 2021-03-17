@@ -190,11 +190,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
             return batchMovements;
         }
 
-        public void WithdrawMoney(Movement movement, Money amountNeeded)
+        public List<BatchMovement> WithdrawMoney(Movement movement, Money amountNeeded)
         {
             var batchMovements = CalculateBatchesMoney(amountNeeded, movement);
             movement.BatchMovements = batchMovements;
             Balance = Balance.Add(amountNeeded.Opposite());
+            return batchMovements;
         }
 
         public List<BatchMovement> WithdrawMoney(MovementType movementType, Money amountNeeded, string description, string displayName, Transfer transfer)

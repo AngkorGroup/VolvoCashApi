@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VolvoCash.Application.MainContext.Clients.Services;
 using VolvoCash.Application.MainContext.Contacts.Services;
 using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.CrossCutting.NetFramework.Identity;
@@ -16,14 +17,17 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
     {
         #region Members
         private readonly IContactAppService _contactAppService;
+        private readonly IClientAppService _clientAppService;
         private readonly IApplicationUser _applicationUser;
         #endregion
 
         #region Constructor
         public ContactsController(IContactAppService contactAppService,
+            IClientAppService clientAppService,
                                   IApplicationUser applicationUser)
         {
             _contactAppService = contactAppService;
+            _clientAppService = clientAppService;
             _applicationUser = applicationUser;
         }
         #endregion
@@ -32,8 +36,13 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         [HttpGet]
         public async Task<ActionResult> GetContacts()
         {
+            var clients = await _clientAppService.GetClientsByPhone(_applicationUser.GetUserName());
             var contacts = await _contactAppService.GetContactsByPhone(_applicationUser.GetUserName());
-            return Ok(contacts);
+            return Ok(new
+            {
+                ShowButton = (clients.Count > 0),
+                Data = contacts
+            });
         }
 
         [HttpPost]

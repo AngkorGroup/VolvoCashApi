@@ -17,8 +17,9 @@ namespace VolvoCash.DistributedServices.Seedwork.Utils
         public static byte[] DownloadContentAsImage(string url)
         {
             var imgConverter = new HtmlToImage();
-            imgConverter.WebPageWidth = 430;
-            imgConverter.WebPageHeight = 800;
+            imgConverter.WebPageWidth       = 410;
+            imgConverter.WebPageHeight      = 750;
+            imgConverter.WebPageFixedSize   = false;
             var image = imgConverter.ConvertUrl(url);
             return image.ImageToByteArray();
         }

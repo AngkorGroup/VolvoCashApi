@@ -20,7 +20,12 @@ namespace VolvoCash.Data.MainContext.Repositories
 
         public async Task<List<string>> GetActivePushDeviceTokensAsync(int userId)
         {
-            var activeSessionsWithDeviceToken = await FilterAsync(s => s.UserId == userId && s.Status == Status.Active && !string.IsNullOrEmpty(s.PushDeviceToken));
+            var activeSessionsWithDeviceToken = await FilterAsync(s => s.UserId == userId  &&s.Status == Status.Active && !string.IsNullOrEmpty(s.PushDeviceToken));
+            return activeSessionsWithDeviceToken.GroupBy(c => c.PushDeviceToken).Select(t => t.Key).ToList();
+        }
+        public async Task<List<string>> GetActivePushDeviceTokensByPhoneAsync(string phone)
+        {
+            var activeSessionsWithDeviceToken = await FilterAsync(s => s.User.Contacts.Any(c=>c.Phone == phone) && s.Status == Status.Active && !string.IsNullOrEmpty(s.PushDeviceToken));
             return activeSessionsWithDeviceToken.GroupBy(c => c.PushDeviceToken).Select(t => t.Key).ToList();
         }
         #endregion

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VolvoCash.Application.MainContext.DTO.Liquidations;
 using VolvoCash.Application.MainContext.Liquidations.Services;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Utils.Constants;
@@ -32,10 +34,11 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         public async Task<IActionResult> GetLiquidations([FromQuery] string beginDate,
                                                          [FromQuery] string endDate, [FromQuery] string status)
         {
-            var _beginDate = DateTimeParser.ParseString(beginDate, DateTimeFormats.DateFormat);
-            var _endDate = DateTimeParser.ParseString(endDate, DateTimeFormats.DateFormat);
-            var liquidationStatus = (LiquidationStatus)EnumParser.ToEnum<LiquidationStatus>(status);
-            var liquidations = await _liquidationAppService.GetLiquidations(_beginDate, _endDate, liquidationStatus);
+            var _beginDate = DateTimeParser.TryParseString(beginDate, DateTimeFormats.DateFormat);
+            var _endDate = DateTimeParser.TryParseString(endDate, DateTimeFormats.DateFormat);
+            if (_beginDate == null || _endDate == null) return Ok(new List<LiquidationDTO>());
+            var liquidationStatus = EnumParser.ToEnum<LiquidationStatus>(status);
+            var liquidations = await _liquidationAppService.GetLiquidations(_beginDate.Value, _endDate.Value, liquidationStatus);
             return Ok(liquidations);
         }
 

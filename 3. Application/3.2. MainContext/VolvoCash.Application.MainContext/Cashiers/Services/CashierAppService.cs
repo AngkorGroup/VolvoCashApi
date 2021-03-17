@@ -88,10 +88,10 @@ namespace VolvoCash.Application.MainContext.Cashiers.Services
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierNotFound));
             }
 
-            var existingCashier = _cashierRepository.Filter(c => (c.Email == cashierDTO.Email || c.Phone == cashierDTO.Phone) && c.ArchiveAt == null).FirstOrDefault();
+            var existingCashier = _cashierRepository.Filter(c => (c.Email == cashierDTO.Email) && c.Status == Status.Active && c.ArchiveAt == null).FirstOrDefault();
             if (existingCashier != null  && existingCashier.Id != cashierDTO.Id)
             {
-                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_AdminAlreadyExists));
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_CashierAlreadyExists));
             }
 
             cashier.Email = cashierDTO.Email;

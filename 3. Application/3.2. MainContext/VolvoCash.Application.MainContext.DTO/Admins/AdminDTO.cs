@@ -32,6 +32,8 @@ namespace VolvoCash.Application.MainContext.DTO.Admins
 
         public int? DealerId { get; set; }
 
+        public int? CashierId { get; set; }
+
         [JsonConverter(typeof(DefaultDateTimeConverter))]
         public new DateTime CreatedAt { get; set; }
 

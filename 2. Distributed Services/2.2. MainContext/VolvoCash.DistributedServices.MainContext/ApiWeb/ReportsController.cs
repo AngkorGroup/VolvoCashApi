@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolvoCash.CrossCutting.NetFramework.Utils;
+using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Liquidations;
 using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Reports;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
@@ -282,6 +283,22 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             var reportContent = await _reportManager.GetReportAsync(report);
             var fileName = "ReporteContactosNoLogueados";
             return GetFileResponse(reportContent, reportRequest.Type, fileName);
+        }
+
+        [HttpPost("chasis_detail")]
+        public async Task<IActionResult> GetLiquidationDetailReport([FromBody] LiquidationDetailReportRequest reportRequest)
+        {
+            var report = new CustomReport
+            {
+                Extension = "pdf",
+                Parameters = new List<ReportParameter>() {
+                    new ReportParameter("p_liquidations", reportRequest.Ids, 8)
+                },
+                Path = "DetailedCollections"
+            };
+            var reportContent = await _reportManager.GetReportAsync(report);
+            var fileName = "ReporteLiquidaciones";
+            return GetFileResponse(reportContent, "pdf", fileName);
         }
         #endregion
     }

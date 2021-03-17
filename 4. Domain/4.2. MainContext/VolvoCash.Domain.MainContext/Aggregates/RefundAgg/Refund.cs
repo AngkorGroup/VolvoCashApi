@@ -80,15 +80,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RefundAgg
         public void CancelRefund()
         {
             RefundStatus = RefundStatus.Canceled;
+            LiquidationsCount = 0;
 
             foreach (var liquidation in Liquidations)
             {
-                foreach (var charge in liquidation.Charges)
-                {
-                    charge.LiquidationId = null;
-                }
-                liquidation.ChargesCount = 0;
-                liquidation.LiquidationStatus = LiquidationStatus.Canceled;
+                liquidation.RefundId = null;
+                liquidation.LiquidationStatus = LiquidationStatus.Generated;
             }            
         }
         #endregion

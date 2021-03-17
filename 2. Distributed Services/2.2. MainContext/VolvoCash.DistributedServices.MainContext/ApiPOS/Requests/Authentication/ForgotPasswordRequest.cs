@@ -2,15 +2,15 @@
 
 namespace VolvoCash.DistributedServices.MainContext.ApiPOS.Requests.Authentication
 {
-    public class ChangePasswordRequest
+    public class ForgotPasswordRequest
     {
         #region Properties
         [Required]
-        public string OldPassword { get; set; }
+        public string Email { get; set; }
         [Required]
-        public string NewPassword { get; set; }
+        public string Password { get; set; }
         [Required]
-        public string ConfirmPassword { get; set; }
+        public string Code { get; set; }
         #endregion
     }
 }

@@ -16,10 +16,14 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
 
         #region ApiPOS
         Task<CashierDTO> LoginCashierAsync(string email, string password);
+        Task SendRecoverPasswordEmailToCashier(string email);
+        Task RecoverPasswordCashier(string email, string code, string newPassword);
         #endregion
 
         #region ApiWeb
         Task<AdminDTO> LoginAdminAsync(string email, string password);
+        Task SendRecoverPasswordEmailToAdmin(string email);
+        Task RecoverPasswordAdmin(string token, string newPassword, string confirmPassword);
         #endregion
 
         #region Common

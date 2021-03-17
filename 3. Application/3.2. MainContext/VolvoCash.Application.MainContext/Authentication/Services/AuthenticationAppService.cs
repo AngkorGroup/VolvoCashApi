@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Admins;
 using VolvoCash.Application.MainContext.DTO.Cashiers;
@@ -6,6 +8,7 @@ using VolvoCash.Application.MainContext.DTO.Contacts;
 using VolvoCash.Application.MainContext.DTO.Sessions;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
@@ -22,6 +25,9 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         private readonly ICashierRepository _cashierRepository;
         private readonly IAdminRepository _adminRepository;
         private readonly ISessionRepository _sessionRepository;
+        private readonly IConfiguration _configuration;
+        private readonly IEmailManager _emailManager;
+        private readonly IResetPasswordTokenRepository _resetPasswordTokenRepository;
         private readonly ILocalization _resources;
         #endregion
 
@@ -30,13 +36,19 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
                                         ISMSCodeRepository smsCodeRepository,
                                         ICashierRepository cashierRepository,
                                         IAdminRepository adminRepository,
-                                        ISessionRepository sessionRepository)
+                                        ISessionRepository sessionRepository,
+                                        IConfiguration configuration,
+                                        IEmailManager emailManager,
+                                        IResetPasswordTokenRepository resetPasswordTokenRepository)
         {
             _contactRepository = contactRepository;
             _smsCodeRepository = smsCodeRepository;
             _cashierRepository = cashierRepository;
             _adminRepository = adminRepository;
             _sessionRepository = sessionRepository;
+            _configuration = configuration;
+            _emailManager = emailManager;
+            _resetPasswordTokenRepository = resetPasswordTokenRepository;
             _resources = LocalizationFactory.CreateLocalResources();
         }
         #endregion
@@ -86,6 +98,27 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
                 throw new UnauthorizedAccessException();
             }
         }
+
+        public async Task SendRecoverPasswordEmailToCashier(string email)
+        {
+            var cashier = await _cashierRepository.GetCashierByEmailAsync(email);
+            var resetPasswordToken = new ResetPasswordToken(cashier);
+            _resetPasswordTokenRepository.Add(resetPasswordToken);
+            await _resetPasswordTokenRepository.UnitOfWork.CommitAsync();
+            var subject = _resources.GetStringResource(LocalizationKeys.Application.messages_RecoverCashierPasswordEmailSubject);
+            var body = _resources.GetStringResource(LocalizationKeys.Application.messages_RecoverCashierPasswordEmailBody);
+            body = body.Replace("{{Code}}", resetPasswordToken.Token);
+            _emailManager.SendEmail(email, subject, body);
+        }
+
+        public async Task RecoverPasswordCashier(string email, string code, string newPassword)
+        {
+            var resetPasswordToken = _resetPasswordTokenRepository.Filter(filter: pt => pt.Token == code && pt.Cashier.Email== email, includeProperties: "Cashier").FirstOrDefault();
+            var cashier = resetPasswordToken.Cashier;
+            cashier.SetPasswordHash(newPassword);
+            await _resetPasswordTokenRepository.UnitOfWork.CommitAsync();
+            await _cashierRepository.UnitOfWork.CommitAsync();
+        }
         #endregion
 
         #region ApiWeb Public Methods
@@ -100,6 +133,33 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
             {
                 throw new UnauthorizedAccessException();
             }
+        }
+        public async Task SendRecoverPasswordEmailToAdmin(string email)
+        {
+            var admin = await _adminRepository.GetAdminByEmailAsync(email);
+            var resetPasswordToken = new ResetPasswordToken(admin);
+            _resetPasswordTokenRepository.Add(resetPasswordToken);
+            await _resetPasswordTokenRepository.UnitOfWork.CommitAsync();
+
+            var subject = _resources.GetStringResource(LocalizationKeys.Application.messages_RecoverAdminPasswordEmailSubject);
+            var body = _resources.GetStringResource(LocalizationKeys.Application.messages_RecoverAdminPasswordEmailBody);
+            var recoverUrl = _configuration["Application:BaseWebAdminUrl"] + _configuration["Application:AdminRecoverPasswordUrl"];
+            recoverUrl = string.Format(recoverUrl, resetPasswordToken.Token);
+            body = string.Format(body, recoverUrl);
+
+            _emailManager.SendEmail(email, subject, body);
+        }
+
+        public async Task RecoverPasswordAdmin(string token, string password, string confirmPassword)
+        {
+            if (password != confirmPassword)
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_PasswordAndConfirmNotMatch));
+            }
+            var resetPasswordToken = _resetPasswordTokenRepository.Filter(filter: pt => pt.Token == token, includeProperties: "Admin").FirstOrDefault();
+            var admin = resetPasswordToken.Admin;
+            admin.SetPasswordHash(password);
+            await _adminRepository.UnitOfWork.CommitAsync();
         }
         #endregion
 
@@ -121,6 +181,7 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
                 await _sessionRepository.UnitOfWork.CommitAsync();
             }            
         }
+        
         #endregion
 
         #region IDisposable Members

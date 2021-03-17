@@ -122,9 +122,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
             var cashiers = (await _cashierRepository.FilterAsync(filter: c => !onlyActive || c.Status == Status.Active)).ProjectedAsCollection<CashierDTO>();
             var contacts = (await _contactRepository.FilterAsync(filter: c => !onlyActive || c.Status == Status.Active)).ProjectedAsCollection<ContactListDTO>();
             var users = new List<UserDTO>();
-            users.AddRange(admins.Select(a => new UserDTO() { Admin = a, Id = a.UserId, Type = UserType.WebAdmin, CreatedAt = a.CreatedAt }));
-            users.AddRange(cashiers.Select(c => new UserDTO() { Cashier = c, Id = c.UserId, Type = UserType.Cashier, CreatedAt = c.CreatedAt }));
-            users.AddRange(contacts.Select(c => new UserDTO() { Contact = c, Id = c.UserId, Type = UserType.Contact, CreatedAt = c.CreatedAt }));
+            users.AddRange(admins.Select(a => new UserDTO() {   Admin =     a, Id = a.UserId, Type = UserType.WebAdmin, CreatedAt = a.CreatedAt }));
+            users.AddRange(cashiers.Select(c => new UserDTO() { Cashier =   c, Id = c.UserId, Type = UserType.Cashier, CreatedAt = c.CreatedAt }));
+            users.AddRange(contacts.Select(c => new UserDTO() { Contact =   c, Id = c.UserId, Type = UserType.Contact, CreatedAt = c.CreatedAt }));
             return users;
         }
 
@@ -140,7 +140,9 @@ namespace VolvoCash.Application.MainContext.Users.Services
                 adminDTO.Password = RandomGenerator.RandomDigits(6);
             }
             var dealer = await _dealerRepository.GetAsync(adminDTO.DealerId);
-            var admin = new Admin(adminDTO.FirstName, adminDTO.LastName, adminDTO.Password, adminDTO.Phone, adminDTO.Email, adminDTO.RoleIds, dealer);
+            var cashier = await _cashierRepository.GetAsync(adminDTO.CashierId);
+            var admin = new Admin(adminDTO.FirstName, adminDTO.LastName, adminDTO.Password,
+                                  adminDTO.Phone, adminDTO.Email, adminDTO.RoleIds, dealer, cashier);
             _adminRepository.Add(admin);
             await _adminRepository.UnitOfWork.CommitAsync();
             SendCreateUserEmailToAdmin(adminDTO);
@@ -170,6 +172,7 @@ namespace VolvoCash.Application.MainContext.Users.Services
             admin.Phone = adminDTO.Phone;
             admin.Email = adminDTO.Email;
             admin.DealerId = adminDTO.DealerId;
+            admin.CashierId = adminDTO.CashierId;
             await _adminRepository.RemoveRolAdmins(admin);
 
             admin.SetNewRoleAdmins(adminDTO.RoleIds);

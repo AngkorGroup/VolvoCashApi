@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Batches;
 using VolvoCash.Application.MainContext.DTO.Cards;
+using VolvoCash.Application.MainContext.DTO.Common;
 
 namespace VolvoCash.Application.MainContext.Cards.Services
 {
@@ -10,6 +11,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
     {
         #region ApiClient
         Task<List<CardListDTO>> GetCardsByPhone(string phone, int? contactId);
+        Task<MoneyDTO> GetTotalBalance(string phone, int? contactId);
         Task<CardDTO> GetCardByPhone(string phone, int id);
         #endregion
 

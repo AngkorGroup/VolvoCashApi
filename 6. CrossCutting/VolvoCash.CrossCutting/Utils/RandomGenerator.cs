@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace VolvoCash.CrossCutting.Utils
 {
@@ -13,6 +14,13 @@ namespace VolvoCash.CrossCutting.Utils
                 code = string.Concat(code, random.Next(1,9).ToString());
             }
             return code;
+        }
+        public static string RandomString(int length)
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

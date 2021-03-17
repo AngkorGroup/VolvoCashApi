@@ -6,5 +6,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
     public interface ICashierRepository : IRepository<Cashier>
     {
         Task<Cashier> LoginAsync(string email, string passwordHash);
+        Task<Cashier> GetCashierByEmailAsync(string email);
     }
 }

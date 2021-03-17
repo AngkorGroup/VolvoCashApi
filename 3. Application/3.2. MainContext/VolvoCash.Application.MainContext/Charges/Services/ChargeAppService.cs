@@ -10,6 +10,7 @@ using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.MainContext.Services.CardService;
 using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
+using System.Runtime.Serialization;
 
 namespace VolvoCash.Application.MainContext.Charges.Services
 {
@@ -107,12 +108,29 @@ namespace VolvoCash.Application.MainContext.Charges.Services
             return charges.ProjectedAsCollection<ChargeListDTO>();
         }
 
+        public string GetEnumMemberAttrValue<T>(T enumVal)
+        {
+            var enumType = typeof(T);
+            var memInfo = enumType.GetMember(enumVal.ToString());
+            var attr = memInfo.FirstOrDefault()?.GetCustomAttributes(false).OfType<EnumMemberAttribute>().FirstOrDefault();
+            if (attr != null)
+            {
+                return attr.Value;
+            }
+
+            return null;
+        }
+
         public async Task<ChargeDTO> AddCharge(ChargeDTO chargeDTO)
         {
             var card = _cardRepository.Filter(filter: c => c.Id == chargeDTO.CardId, includeProperties: "Contact.Client,CardBatches.Batch,CardType").FirstOrDefault();
-            
+
             var displayName = _resources.GetStringResource(LocalizationKeys.Application.messages_CreateChargeDisplayName);
-            displayName = string.Format(displayName, $"{card.Contact.Client.Ruc} {card.Contact.Client.Name}" , card.Contact.FullName);
+            var clientName = card.Contact.Client.Name;
+            var contactName = card.Contact.FullName;
+            clientName = clientName.Substring(0, Math.Min(20, clientName.Length));
+            contactName = contactName.Substring(0, Math.Min(20, contactName.Length));
+            displayName = string.Format(displayName, GetEnumMemberAttrValue(chargeDTO.ChargeType), $"{card.Contact.Client.Ruc} / {clientName}" ,contactName );
 
             var chargeCurrency = _currencyRepository.Filter(c => c.Id == chargeDTO.Amount.CurrencyId).FirstOrDefault();
 
@@ -137,7 +155,7 @@ namespace VolvoCash.Application.MainContext.Charges.Services
         #region Common Public Method
         public async Task<ChargeDTO> GetChargeById(int id)
         {
-            var charge = (await _chargeRepository.FilterAsync(filter: c => c.Id == id, includeProperties: "Cashier,Card.Contact.DocumentType")).FirstOrDefault();
+            var charge = (await _chargeRepository.FilterAsync(filter: c => c.Id == id, includeProperties: "Cashier.Dealer,Card.Contact.DocumentType")).FirstOrDefault();
             return charge.ProjectedAs<ChargeDTO>();
         }
         #endregion

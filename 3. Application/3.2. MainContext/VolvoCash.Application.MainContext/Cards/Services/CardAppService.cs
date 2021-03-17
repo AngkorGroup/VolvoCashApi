@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Batches;
 using VolvoCash.Application.MainContext.DTO.Cards;
+using VolvoCash.Application.MainContext.DTO.Common;
+using VolvoCash.Application.MainContext.DTO.Currencies;
 using VolvoCash.Application.MainContext.DTO.Movements;
 using VolvoCash.Application.Seedwork;
 using VolvoCash.CrossCutting.Localization;
@@ -42,15 +44,17 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         #region ApiClient Public Methods
         public async Task<List<CardListDTO>> GetCardsByPhone(string phone, int? contactId = null)
         {
-            List<Card> cards = null;
+            List<Card> cards = null;           
+            
             if (contactId == null)
             {
                 cards = (await _cardRepository.FilterAsync(
                                     filter: c => (c.Contact.ContactParent.Phone == phone || c.Contact.Phone == phone) && c.Status == Status.Active,
                                     includeProperties: "CardType,Contact.Client")).ToList();
             }else{
+                var contact = _contactRepository.Get(contactId);
                 cards = (await _cardRepository.FilterAsync(
-                                    filter: c => (c.Contact.Phone == phone && c.ContactId != contactId) && c.Status == Status.Active,
+                                    filter: c => (c.Contact.Phone == phone && c.ContactId != contactId && c.Contact.ClientId == contact.ClientId) && c.Status == Status.Active,
                                     includeProperties: "CardType,Contact.Client")).ToList();
             }                       
             if (cards != null && cards.Any())
@@ -64,6 +68,32 @@ namespace VolvoCash.Application.MainContext.Cards.Services
             }
             return new List<CardListDTO>();
         }
+
+        public async Task<MoneyDTO> GetTotalBalance(string phone, int? contactId = null)
+        {
+            List<Card> cards = (await _cardRepository.FilterAsync(
+                                    filter: c => ( c.Contact.Phone == phone) && c.Status == Status.Active,
+                                    includeProperties: "Balance.Currency")).ToList();
+            
+            if (cards != null && cards.Any())
+            {
+                Money totalBalance= null;
+                foreach(var card in cards)
+                {
+                    if (totalBalance == null)
+                        totalBalance = card.Balance;
+                    else
+                        totalBalance = totalBalance.Add(card.Balance);
+                }                
+                return new MoneyDTO() { 
+                     Currency = totalBalance.Currency.ProjectedAs<CurrencyDTO>(),
+                     CurrencyId = totalBalance.CurrencyId,
+                     Value =totalBalance.Value
+                };
+            }
+            return new MoneyDTO();
+        }
+
 
         public async Task<CardDTO> GetCardByPhone(string phone, int id)
         {
@@ -89,11 +119,11 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         {
             query = query?.Trim().ToUpper();
             var cards = await _cardRepository.FilterAsync(
-                filter: c => (c.Code.Trim().ToUpper().Contains(query)
-                  || c.Contact.FirstName.ToUpper().Contains(query)
+                filter: c => (c.Contact.FirstName.ToUpper().Contains(query)
                   || c.Contact.LastName.ToUpper().Contains(query)
                   || c.Contact.Phone.Trim().Contains(query)
                   || c.Contact.Client.Ruc.Trim().Contains(query)
+                  || c.Contact.Client.Name.ToUpper().Trim().Contains(query)
                   || string.IsNullOrEmpty(query)) && c.Contact.Status == Status.Active,
                 includeProperties: "Contact.Client,CardType,Balance.Currency");
             cards = cards.Take(Math.Min(cards.Count(), maxRecords));

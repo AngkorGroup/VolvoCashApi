@@ -73,7 +73,11 @@
             exception_DealerBankAccountIsNull,
             exception_BankAccountAlreadyExists,
             exception_InvalidRefundStatusForCancel,
-            exception_RoleAlreadyExists
+            exception_RoleAlreadyExists,
+            messages_RecoverAdminPasswordEmailSubject,
+            messages_RecoverAdminPasswordEmailBody,
+            messages_RecoverCashierPasswordEmailSubject,
+            messages_RecoverCashierPasswordEmailBody
         }
 
         public enum Domain

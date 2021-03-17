@@ -54,7 +54,7 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
 
         public async Task SendNotificationToContact(Charge charge)
         {
-            var deviceTokens = await _sessionRepository.GetActivePushDeviceTokensAsync(charge.Card.Contact.UserId);
+            var deviceTokens = await _sessionRepository.GetActivePushDeviceTokensByPhoneAsync(charge.Card.Contact.Phone);
             var heading = _resources.GetStringResource(LocalizationKeys.Domain.messages_OnCreatingChargeHeadingToContact);
             var content = _resources.GetStringResource(LocalizationKeys.Domain.messages_OnCreatingChargeContentToContact);
             content = string.Format(content, charge.Amount.GetLabel());

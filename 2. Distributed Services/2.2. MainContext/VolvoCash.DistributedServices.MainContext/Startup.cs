@@ -139,7 +139,6 @@ namespace VolvoCash.DistributedServices.MainContext
             {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
@@ -212,6 +211,7 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleMenuRepository, RoleMenuRepository>();
             services.AddScoped<IRoleAdminRepository, RoleAdminRepository>();
+            services.AddScoped<IResetPasswordTokenRepository, ResetPasswordTokenRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

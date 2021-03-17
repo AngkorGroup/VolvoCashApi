@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VolvoCash.CrossCutting.Localization;
+using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Enums;
 
@@ -8,6 +10,10 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
 {
     public class CardChargeService : ICardChargeService
     {
+        private string GetBatchDetail(List<BatchMovement> batchMovements)
+        {
+            return string.Join(",", batchMovements.Select(bm => $"Chasis # {bm.Batch.TPChasis}: {bm.Amount.GetLabel()}"));
+        }
         public void PerformCharge(Charge charge)
         {
             var card = charge.Card;
@@ -20,10 +26,10 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                 }
                 if (card.CanWithdraw(charge.Amount))
                 {
-                    card.WithdrawMoney(charge.Movements.FirstOrDefault(), charge.Amount);
+                    var batchMovements = card.WithdrawMoney(charge.Movements.FirstOrDefault(), charge.Amount);
+                    charge.BatchesDetail = GetBatchDetail(batchMovements);
                     charge.Status = ChargeStatus.Accepted;
                     charge.GenerateOperationCode();
-                    //charge.ImageUrl = GenerateChargeUrl();
                 }
                 else
                 {
@@ -34,8 +40,6 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
                     else
                     {
                         throw new InvalidOperationException(messages.GetStringResource(LocalizationKeys.Domain.exception_NoEnoughMoneyToWithdraw));
-                        //if the charge already exists only cancel it
-                        //charge.Status = ChargeStatus.Canceled;
                     }
                 }
             }

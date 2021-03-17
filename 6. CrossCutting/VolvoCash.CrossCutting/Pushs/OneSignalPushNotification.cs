@@ -82,7 +82,14 @@ namespace VolvoCash.CrossCutting.Pushs
         {
             foreach (var deviceToken in deviceTokens)
             {
-                SendNotification(appType, deviceToken, heading, content, data);
+                try
+                {
+                    SendNotification(appType, deviceToken, heading, content, data);
+                }
+                catch
+                {
+
+                }               
             }
             return true;
         }

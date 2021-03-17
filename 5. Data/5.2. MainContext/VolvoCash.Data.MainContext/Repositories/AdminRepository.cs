@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using VolvoCash.Data.Seedwork;
 using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.Data.MainContext.Repositories
 {
@@ -26,10 +27,20 @@ namespace VolvoCash.Data.MainContext.Repositories
         public async Task<Admin> LoginAsync(string email, string passwordHash)
         {
             var admin = (await FilterAsync(
-                    filter: c => c.Email == email && c.PasswordHash == passwordHash,
+                    filter: a => a.Email.ToUpper().Trim() == email.ToUpper().Trim() 
+                    && a.PasswordHash == passwordHash 
+                    && a.Status == Status.Active,
                     includeProperties: "Dealer,RoleAdmins.Role.RoleMenus.Menu.MenuParent")
                 ).FirstOrDefault();
             admin.SetMenuOptions();
+            return admin;
+        }
+
+        public async Task<Admin> GetAdminByEmailAsync(string email)
+        {
+            var admin = (await FilterAsync(
+                    filter: a => a.Email.ToUpper().Trim() == email.ToUpper().Trim() && a.Status == Status.Active)
+                ).FirstOrDefault();
             return admin;
         }
 

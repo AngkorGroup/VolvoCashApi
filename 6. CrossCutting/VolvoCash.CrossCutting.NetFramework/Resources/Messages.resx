@@ -175,7 +175,7 @@
     <value>Transferencia de {0} a {1}</value>
   </data>
   <data name="Application_messages_CreateChargeDisplayName" xml:space="preserve">
-    <value>Cobro: {0} - {1}</value>
+    <value>{0}: {1} - {2}</value>
   </data>
   <data name="Application_exception_ApplicationValidationExceptionDefaultMessage" xml:space="preserve">
     <value>Validation exception, check ValidationErrors for more information.</value>
@@ -226,10 +226,10 @@
     <value>The value of {0} in {1} must be greater than {2} and less than {3}</value>
   </data>
   <data name="Domain_messages_RechargeMessageDisplayName" xml:space="preserve">
-    <value>Recarga desde el Sistema</value>
+    <value>Recarga {0} - {1}</value>
   </data>
   <data name="Domain_messages_RechargeMessageDescription" xml:space="preserve">
-    <value>Recarga desde el Sistema</value>
+    <value>Recarga {0} - {1}</value>
   </data>
   <data name="Domain_messages_TransferFromMessageDisplayName" xml:space="preserve">
     <value>Transferencia a {0}</value>
@@ -344,5 +344,17 @@
   </data>
   <data name="Application_exception_RoleAlreadyExists" xml:space="preserve">
     <value>El nombre del rol ingresado ya existe.</value>
+  </data>
+  <data name="Application_messages_RecoverAdminPasswordEmailBody" xml:space="preserve">
+    <value>Se generó una solicitud de restablecimiento de contraseña ingrese al siguiente link &lt;a href="{0}"&gt;aquí.&lt;/a&gt;</value>
+  </data>
+  <data name="Application_messages_RecoverAdminPasswordEmailSubject" xml:space="preserve">
+    <value>Volvo Cash Admin - Solicitud para restablecer contraseña</value>
+  </data>
+  <data name="Application_messages_RecoverCashierPasswordEmailBody" xml:space="preserve">
+    <value>Ingrese el código {{Code}} para continuar</value>
+  </data>
+  <data name="Application_messages_RecoverCashierPasswordEmailSubject" xml:space="preserve">
+    <value>VolvoCash POS - Solicitud para restablecer contraseña</value>
   </data>
 </root>

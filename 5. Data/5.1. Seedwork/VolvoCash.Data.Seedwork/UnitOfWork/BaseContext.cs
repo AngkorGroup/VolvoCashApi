@@ -37,12 +37,12 @@ namespace VolvoCash.Data.Seedwork.UnitOfWork
             {
                 if (auditedEntity.State == EntityState.Added || auditedEntity.State == EntityState.Modified)
                 {
-                    auditedEntity.Entity.LastModifiedAt = DateTime.UtcNow;
+                    auditedEntity.Entity.LastModifiedAt = DateTime.Now;
                     auditedEntity.Entity.LastModifiedBy = userName;
 
                     if (auditedEntity.State == EntityState.Added)
                     {
-                        auditedEntity.Entity.CreatedAt = DateTime.UtcNow;
+                        auditedEntity.Entity.CreatedAt = DateTime.Now;
                         auditedEntity.Entity.CreatedBy = userName;
                     }
                     else

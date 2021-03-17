@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using VolvoCash.Data.MainContext;
@@ -9,9 +10,10 @@ using VolvoCash.Data.MainContext;
 namespace VolvoCash.DistributedServices.MainContext.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210118154231_AddCashierIdToAdminDTO")]
+    partial class AddCashierIdToAdminDTO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1572,33 +1574,6 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                     b.ToTable("Cashiers");
                 });
 
-            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.UserAgg.ResetPasswordToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("RAW(16)");
-
-                    b.Property<int?>("AdminId")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.Property<int?>("CashierId")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("NVARCHAR2(2000)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.HasIndex("CashierId");
-
-                    b.ToTable("ResetPasswordTokens");
-                });
-
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.UserAgg.Session", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2272,17 +2247,6 @@ namespace VolvoCash.DistributedServices.MainContext.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.UserAgg.ResetPasswordToken", b =>
-                {
-                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.UserAgg.Admin", "Admin")
-                        .WithMany()
-                        .HasForeignKey("AdminId");
-
-                    b.HasOne("VolvoCash.Domain.MainContext.Aggregates.UserAgg.Cashier", "Cashier")
-                        .WithMany()
-                        .HasForeignKey("CashierId");
                 });
 
             modelBuilder.Entity("VolvoCash.Domain.MainContext.Aggregates.UserAgg.Session", b =>

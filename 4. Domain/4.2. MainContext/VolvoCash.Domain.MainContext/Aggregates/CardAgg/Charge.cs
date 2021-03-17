@@ -57,6 +57,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.CardAgg
         public virtual Liquidation Liquidation { get; set; }
 
         public virtual ICollection<Movement> Movements { get; set; } = new List<Movement>();
+        public string BatchesDetail { get;  set; }
         #endregion
 
         #region Constructor

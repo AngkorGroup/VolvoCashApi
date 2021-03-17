@@ -44,6 +44,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
 
         public virtual Dealer Dealer { get; set; }
 
+        [ForeignKey("Cashier")]
+        public int? CashierId { get; set; }
+
+        public virtual Cashier Cashier { get; set; }
+
         public DateTime? ArchiveAt { get; set; }
 
         public Status Status { get; set; }
@@ -64,7 +69,10 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
         {
         }
 
-        public Admin(string firstName, string lastName, string password, string phone, string email, List<int> roleIds, Dealer dealer = null)
+        public Admin(string firstName, string lastName, string password, string phone, string email, 
+            List<int> roleIds,
+            Dealer dealer = null,
+            Cashier cashier = null)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -75,6 +83,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.UserAgg
             User = new User(UserType.WebAdmin);
             roleIds.ForEach(roleId => RoleAdmins.Add(new RoleAdmin(roleId, Id)));
             Dealer = dealer;
+            Cashier = Cashier;
         }
         #endregion
 

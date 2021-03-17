@@ -49,7 +49,31 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         [Route("logout")]
         public async Task<ActionResult> Logout()
         {
-            await _authenticationAppService.DestroySessionAsync(_applicationUser.GetSessionId());
+            try
+            {
+                await _authenticationAppService.DestroySessionAsync(_applicationUser.GetSessionId());
+                
+            }
+            catch
+            {
+
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("request_recover_password")]
+        public async Task<ActionResult> RequestRecoverPasswordAdmin([FromBody] RequestRecoverPasswordRequest request)
+        {
+            await _authenticationAppService.SendRecoverPasswordEmailToAdmin(request.Email);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("forgot_password")]
+        public async Task<ActionResult> RecoverPasswordAdmin([FromBody] RecoverPasswordRequest request)
+        {
+            await _authenticationAppService.RecoverPasswordAdmin(request.Token,request.NewPassword,request.ConfirmPassword);
             return Ok();
         }
         #endregion

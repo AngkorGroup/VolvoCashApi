@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Cards.Services;
 using VolvoCash.CrossCutting.NetFramework.Identity;
@@ -36,7 +38,11 @@ namespace VolvoCash.DistributedServices.MainContext.ApiClient
         public async Task<ActionResult> GetCards([FromQuery] int? contactId = null)
         {
             var cards = await _cardAppService.GetCardsByPhone(_applicationUser.GetUserName(), contactId);
-            return Ok(cards);
+            var totalBalance = await _cardAppService.GetTotalBalance(_applicationUser.GetUserName(), contactId);
+            return Ok(new { 
+                Data = cards,
+                TotalBalance = totalBalance
+            });
         }
 
         [HttpGet("{id}")]

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VolvoCash.Application.MainContext.DTO.Refunds;
 using VolvoCash.Application.MainContext.Refunds.Services;
 using VolvoCash.CrossCutting.Utils;
 using VolvoCash.CrossCutting.Utils.Constants;
@@ -33,10 +35,11 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         public async Task<IActionResult> GetRefunds([FromQuery] string beginDate,
                                                     [FromQuery] string endDate, [FromQuery] string status)
         {
-            var _beginDate = DateTimeParser.ParseString(beginDate, DateTimeFormats.DateFormat);
-            var _endDate = DateTimeParser.ParseString(endDate, DateTimeFormats.DateFormat);
+            var _beginDate = DateTimeParser.TryParseString(beginDate, DateTimeFormats.DateFormat);
+            var _endDate = DateTimeParser.TryParseString(endDate, DateTimeFormats.DateFormat);
+            if (_beginDate == null || _endDate == null) return Ok(new List<RefundDTO>());
             var refundStatus = (RefundStatus)EnumParser.ToEnum<RefundStatus>(status);
-            var refunds = await _refundAppService.GetRefunds(_beginDate, _endDate, refundStatus);
+            var refunds = await _refundAppService.GetRefunds(_beginDate.Value, _endDate.Value, refundStatus);
             return Ok(refunds);
         }
 

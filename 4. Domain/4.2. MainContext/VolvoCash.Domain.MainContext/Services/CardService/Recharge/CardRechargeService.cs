@@ -11,11 +11,15 @@ namespace VolvoCash.Domain.MainContext.Services.CardService
         {
             var messages = LocalizationFactory.CreateLocalResources();
             if ( card != null )
-            {             
+            {
+                var description = messages.GetStringResource(LocalizationKeys.Domain.messages_RechargeMessageDescription);
+                var displayName = messages.GetStringResource(LocalizationKeys.Domain.messages_RechargeMessageDisplayName);
+                description = string.Format(description, batch.BusinessArea?.Name, batch.TPChasis);
+                displayName = string.Format(displayName, batch.BusinessArea?.Name, batch.TPChasis);
                 card.RechargeMoney(
                     batch,
-                    messages.GetStringResource(LocalizationKeys.Domain.messages_RechargeMessageDescription),
-                    messages.GetStringResource(LocalizationKeys.Domain.messages_RechargeMessageDisplayName)
+                    description,
+                    displayName
                 );
             }
             else

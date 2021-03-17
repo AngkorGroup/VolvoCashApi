@@ -21,7 +21,6 @@ namespace VolvoCash.Data.MainContext.Repositories
             return await FilterAsync(
                 filter: c => c.LiquidationId == null
                     && c.Status == ChargeStatus.Accepted
-                    && c.Cashier.Dealer.Type == DealerType.Internal
                     && c.OperationDate != null
                     && !c.HasBeenRefunded,
                 includeProperties: "Cashier.Dealer,Amount.Currency");

@@ -11,7 +11,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
 {
     [ApiController]
     [Authorize]
-    [Route("api_pos/[controller]")]
+    [Route("api_pos")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
     public class ProfileController : ControllerBase
     {
@@ -34,6 +34,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
 
         #region Public Methods
         [HttpGet]
+        [Route("profile")]
         public async Task<ActionResult> GetProfile()
         {
             var cashier = await _cashierAppService.GetByUserId(_applicationUser.GetUserId());
@@ -41,7 +42,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiPOS
         }
 
         [HttpPost]
-        [Route("change_password")]
+        [Route("reset_password")]
         public async Task<ActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
         {
             await _userAppService.ChangePassword(_applicationUser.GetUserId(),changePasswordRequest.OldPassword, changePasswordRequest.NewPassword,changePasswordRequest.ConfirmPassword);

@@ -84,6 +84,11 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
                     defaultBankAccount = BankAccounts.FirstOrDefault(ba => ba.CurrencyId == currencyId && ba.Status == Status.Active);
                 }
             }
+
+            if (defaultBankAccount is null)
+            {
+                throw new Exception($"El dealer {Ruc}-{Name} no tiene ninguna cuenta configurada para el banco seleccionado");
+            }
             return defaultBankAccount;
         }
         #endregion
