@@ -1,11 +1,5 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using VolvoCash.CrossCutting.NetFramework.Utils;
 using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Liquidations;
 using VolvoCash.DistributedServices.MainContext.ApiWeb.Requests.Reports;
-using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
