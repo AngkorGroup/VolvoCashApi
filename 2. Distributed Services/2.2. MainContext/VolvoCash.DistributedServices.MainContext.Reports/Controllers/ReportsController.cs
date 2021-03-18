@@ -74,15 +74,16 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Controllers
             {
                 return Ok(new ReportFileResponse(false, e.Message +
                     "======================" +
-                    e.StackTrace +
+
+                    e?.StackTrace +
                      "======================" +
-                     e.InnerException.Message +
+                     e?.InnerException?.Message +
                      "======================" +
-                    e.InnerException.StackTrace +
+                    e?.InnerException?.StackTrace +
                      "======================" +
-                     e.InnerException.InnerException.Message +
+                     e?.InnerException?.InnerException?.Message +
                      "======================" +
-                     e.InnerException.InnerException.StackTrace));
+                     e?.InnerException?.InnerException?.StackTrace));
             }
         }
     }
