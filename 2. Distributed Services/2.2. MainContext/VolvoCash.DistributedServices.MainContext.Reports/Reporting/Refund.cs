@@ -16,14 +16,14 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class ClientsMatrixvsCardUsage : ReportClass {
+    public class Refund : ReportClass {
         
-        public ClientsMatrixvsCardUsage() {
+        public Refund() {
         }
         
         public override string ResourceName {
             get {
-                return "ClientsMatrixvsCardUsage.rpt";
+                return "Refund.rpt";
             }
             set {
                 // Do nothing
@@ -41,8 +41,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         public override string FullResourceName {
             get {
-                return "VolvoCash.DistributedServices.MainContext.Reports.Reporting.ClientsMatrixvsCardUs" +
-                    "age.rpt";
+                return "VolvoCash.DistributedServices.MainContext.Reports.Reporting.Refund.rpt";
             }
             set {
                 // Do nothing
@@ -75,7 +74,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -83,7 +82,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -91,7 +90,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -99,7 +98,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
                 return this.ReportDefinition.Sections[6];
             }
@@ -107,23 +106,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[7];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
-            get {
-                return this.ReportDefinition.Sections[8];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_p_card_types {
+        public CrystalDecisions.Shared.IParameterField Parameter_p_begin_date {
             get {
                 return this.DataDefinition.ParameterFields[0];
             }
@@ -131,7 +114,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_p_branch {
+        public CrystalDecisions.Shared.IParameterField Parameter_p_end_date {
             get {
                 return this.DataDefinition.ParameterFields[1];
             }
@@ -139,7 +122,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_p_company {
+        public CrystalDecisions.Shared.IParameterField Parameter_p_branch {
             get {
                 return this.DataDefinition.ParameterFields[2];
             }
@@ -147,7 +130,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_p_clients {
+        public CrystalDecisions.Shared.IParameterField Parameter_p_company {
             get {
                 return this.DataDefinition.ParameterFields[3];
             }
@@ -163,7 +146,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_p_begin_date {
+        public CrystalDecisions.Shared.IParameterField Parameter_p_banks {
             get {
                 return this.DataDefinition.ParameterFields[5];
             }
@@ -171,7 +154,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_p_end_date {
+        public CrystalDecisions.Shared.IParameterField Parameter_p_dealers {
             get {
                 return this.DataDefinition.ParameterFields[6];
             }
@@ -179,9 +162,9 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedClientsMatrixvsCardUsage : Component, ICachedReport {
+    public class CachedRefund : Component, ICachedReport {
         
-        public CachedClientsMatrixvsCardUsage() {
+        public CachedRefund() {
         }
         
         [Browsable(false)]
@@ -218,7 +201,7 @@ namespace VolvoCash.DistributedServices.MainContext.Reports.Reporting {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            ClientsMatrixvsCardUsage rpt = new ClientsMatrixvsCardUsage();
+            Refund rpt = new Refund();
             rpt.Site = this.Site;
             return rpt;
         }
