@@ -61,6 +61,7 @@
             exception_PasswordAndConfirmNotMatch,
             exception_InvalidRechargeTypeCode,
             exception_InvalidBusinessAreaCode,
+            exception_InvalidUserEmail,
             exception_InvalidCurrencyCode,
             exception_AdminNotFound,
             exception_BatchAlreadyExists,

@@ -357,4 +357,7 @@
   <data name="Application_messages_RecoverCashierPasswordEmailSubject" xml:space="preserve">
     <value>VolvoCash POS - Solicitud para restablecer contraseña</value>
   </data>
+  <data name="Application_exception_InvalidUserEmail" xml:space="preserve">
+    <value>El correo ingresado no se encuentra registrado en el sistema.</value>
+  </data>
 </root>
