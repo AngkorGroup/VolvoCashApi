@@ -57,7 +57,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
 
         public Dealer(string tpCode, string phone, string address,
                       string contactName, string name, string ruc,
-                      int maxCashiers, DealerType type)
+                      int maxCashiers, DealerType type,string zone)
         {
             TPCode = tpCode;
             Phone = phone;
@@ -67,6 +67,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.DealerAgg
             Ruc = ruc;
             MaxCashiers = maxCashiers;
             Type = type;
+            Zone = zone;
             Status = Status.Active;
         }
         #endregion

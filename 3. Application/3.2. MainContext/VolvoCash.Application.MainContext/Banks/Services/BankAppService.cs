@@ -78,6 +78,7 @@ namespace VolvoCash.Application.MainContext.Banks.Services
         public void Dispose()
         {
             _bankRepository.Dispose();
+            _bankAccountRepository.Dispose();
         }
         #endregion
     }

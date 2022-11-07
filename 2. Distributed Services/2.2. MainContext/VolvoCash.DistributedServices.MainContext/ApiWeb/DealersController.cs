@@ -1,16 +1,14 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DTO.Dealers;
 using VolvoCash.CrossCutting.Utils;
-using VolvoCash.DistributedServices.Seedwork.Controllers;
-using VolvoCash.DistributedServices.Seedwork.Filters;
-using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
-using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.CrossCutting.Utils.Constants;
+using VolvoCash.DistributedServices.Seedwork.Filters;
+using VolvoCash.Domain.MainContext.Enums;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
 {
@@ -18,20 +16,26 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
     [ApiController]
     [Route("api_web/[controller]")]
     [ServiceFilter(typeof(CustomExceptionFilterAttribute))]
-    public class DealersController : AsyncBaseApiController<Dealer, DealerDTO>
+    public class DealersController : ControllerBase
     {
         #region Members
         private readonly IDealerAppService _dealerAppService;
         #endregion
 
         #region Constructor
-        public DealersController(IDealerAppService dealerAppService) : base(dealerAppService)
+        public DealersController(IDealerAppService dealerAppService)
         {
             _dealerAppService = dealerAppService;
         }
         #endregion
 
         #region Public Methods
+        [HttpGet]
+        public async Task<IActionResult> GetDealers([FromQuery] bool onlyActive = false)
+        {
+            return Ok(await _dealerAppService.GetDealers(onlyActive));
+        }
+
         [HttpGet("by_filter")]
         public async Task<ActionResult> GetDealers([FromQuery] string query = "", int maxRecords = 50)
         {
@@ -59,14 +63,20 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         }
 
         [HttpPost]
-        public override async Task<DealerDTO> Post([FromBody] DealerDTO entityDTO)
+        public async Task<IActionResult> Post([FromBody] DealerDTO dealerDTO)
         {
-            entityDTO.Status = Status.Active;
-            return await _service.AddAsync(entityDTO);
+            dealerDTO.Status = Status.Active;
+            return Ok(await _dealerAppService.AddAsync(dealerDTO));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutDealer([FromBody] DealerDTO dealerDTO)
+        {
+            return Ok(await _dealerAppService.ModifyAsync(dealerDTO));
         }
 
         [HttpDelete("{id}")]
-        public override async Task Delete([FromRoute] int id)
+        public async Task Delete([FromRoute] int id)
         {
             await _dealerAppService.Delete(id);
         }

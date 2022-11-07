@@ -107,7 +107,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                 var invoiceDocumentNumber = GetLineSegment(lineSegments, 6);
                 var invoiceDate = DateTimeParser.TryParseString(GetLineSegment(lineSegments, 7), DateTimeFormats.DateFormat);
                 var batchAmount = double.Parse(GetLineSegment(lineSegments, 8));
-                var batchCurrency = GetLineSegment(lineSegments, 9);
+                //var batchCurrency = GetLineSegment(lineSegments, 9);
                 var contactName = GetLineSegment(lineSegments, 10);
                 var rechargeTypeCode = GetLineSegment(lineSegments, 11);
                 var contractNumber = GetLineSegment(lineSegments, 12);
@@ -164,10 +164,7 @@ namespace VolvoCash.Application.MainContext.Cards.Services
                     if (businessArea == null)
                         throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidBusinessAreaCode));
 
-                    var currency = _currencyRepository.Filter(c => c.TPCode == batchCurrency).FirstOrDefault();
-
-                    if (currency == null)
-                        throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidCurrencyCode));
+                    var currency = _currencyRepository.Filter(c => c.Id == cardType.CurrencyId).FirstOrDefault();
 
                     var existingBatch = _batchRepository.Filter(b => b.TPContractBatchNumber == batchTPCode && b.TPChasis == chasisNumber).FirstOrDefault();
 

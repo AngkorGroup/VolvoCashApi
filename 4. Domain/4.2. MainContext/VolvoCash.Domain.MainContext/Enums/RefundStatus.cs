@@ -11,6 +11,10 @@ namespace VolvoCash.Domain.MainContext.Enums
         Scheduled = 1,
 
         [EnumMember(Value = "Pagado")]
-        Paid = 2
+        Paid = 2,
+
+        [EnumMember(Value = "Contabilizado")]
+
+        Accounted = 3
     }
 }

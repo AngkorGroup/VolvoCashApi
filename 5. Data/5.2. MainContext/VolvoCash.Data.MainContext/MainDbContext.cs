@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VolvoCash.CrossCutting.NetFramework.Identity;
 using VolvoCash.Data.Seedwork.UnitOfWork;
+using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BankAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BatchAgg;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
@@ -11,16 +12,14 @@ using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
+using VolvoCash.Domain.MainContext.Aggregates.MappingAgg;
+using VolvoCash.Domain.MainContext.Aggregates.MenuAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
+using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SectorAgg;
 using VolvoCash.Domain.MainContext.Aggregates.SMSCodeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.UserAgg;
-using VolvoCash.Domain.MainContext.Aggregates.BankAccountAgg;
-using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
-using VolvoCash.Domain.MainContext.Aggregates.RoleAgg;
-using VolvoCash.Domain.MainContext.Aggregates.MenuAgg;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
 
 namespace VolvoCash.Data.MainContext
 {
@@ -62,6 +61,9 @@ namespace VolvoCash.Data.MainContext
         public DbSet<Menu> Menus { get; set; }
         public DbSet<RoleMenu> RoleMenus { get; set; }
         public DbSet<RoleAdmin> RoleAdmins { get; set; }
+        public DbSet<Mapping> Mappings { get; set; }
+        public DbSet<MappingHeader> MappingHeaders { get; set; }
+        public DbSet<MappingDetail> MappingDetails { get; set; }
         #endregion
 
         #region Constructor
@@ -232,6 +234,18 @@ namespace VolvoCash.Data.MainContext
 
             modelBuilder.Entity<Refund>()
                 .OwnsOne(m => m.Amount);
+
+            modelBuilder.Entity<Mapping>()
+             .HasMany(m => m.MappingHeaders)
+             .WithOne(ra => ra.Mapping)
+             .HasForeignKey(ra => ra.MappingId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MappingHeader>()
+            .HasMany(m => m.MappingDetails)
+            .WithOne(ra => ra.MappingHeader)
+            .HasForeignKey(ra => ra.MappingHeaderId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             //var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
             //                            v => v.ToUniversalTime(),

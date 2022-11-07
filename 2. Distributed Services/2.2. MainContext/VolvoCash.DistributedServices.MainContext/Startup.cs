@@ -27,6 +27,9 @@ using VolvoCash.Application.MainContext.Currencies.Services;
 using VolvoCash.Application.MainContext.Dealers.Services;
 using VolvoCash.Application.MainContext.DocumentTypes.Services;
 using VolvoCash.Application.MainContext.Liquidations.Services;
+using VolvoCash.Application.MainContext.MappingDetails.Services;
+using VolvoCash.Application.MainContext.MappingHeaders.Services;
+using VolvoCash.Application.MainContext.Mappings.Services;
 using VolvoCash.Application.MainContext.Menus.Services;
 using VolvoCash.Application.MainContext.Movements.Services;
 using VolvoCash.Application.MainContext.RechargeTypes.Services;
@@ -60,6 +63,7 @@ using VolvoCash.Domain.MainContext.Aggregates.CurrencyAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DealerAgg;
 using VolvoCash.Domain.MainContext.Aggregates.DocumentTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.LiquidationAgg;
+using VolvoCash.Domain.MainContext.Aggregates.MappingAgg;
 using VolvoCash.Domain.MainContext.Aggregates.MenuAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RefundAgg;
@@ -170,6 +174,9 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<ICurrencyAppService, CurrencyAppService>();
             services.AddScoped<IMenuAppService, MenuAppService>();
             services.AddScoped<IRoleAppService, RoleAppService>();
+            services.AddScoped<IMappingAppService, MappingAppService>();
+            services.AddScoped<IMappingHeaderAppService, MappingHeaderAppService>();
+            services.AddScoped<IMappingDetailAppService, MappingDetailAppService>();
 
             // Domain Services
             services.AddScoped<ICardTransferService, CardTransferService>();
@@ -212,6 +219,9 @@ namespace VolvoCash.DistributedServices.MainContext
             services.AddScoped<IRoleMenuRepository, RoleMenuRepository>();
             services.AddScoped<IRoleAdminRepository, RoleAdminRepository>();
             services.AddScoped<IResetPasswordTokenRepository, ResetPasswordTokenRepository>();
+            services.AddScoped<IMappingRepository, MappingRepository>();
+            services.AddScoped<IMappingHeaderRepository, MappingHeaderRepository>();
+            services.AddScoped<IMappingDetailRepository, MappingDetailRepository>();
 
             //Common Services
             services.AddScoped<IAmazonBucketService, AmazonBucketService>();

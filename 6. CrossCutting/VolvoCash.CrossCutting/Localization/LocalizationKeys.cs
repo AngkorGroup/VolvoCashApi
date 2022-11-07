@@ -77,7 +77,8 @@
             messages_RecoverAdminPasswordEmailSubject,
             messages_RecoverAdminPasswordEmailBody,
             messages_RecoverCashierPasswordEmailSubject,
-            messages_RecoverCashierPasswordEmailBody
+            messages_RecoverCashierPasswordEmailBody,
+            exception_DealerNotFound
         }
 
         public enum Domain
