@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.Authentication.Services;
 using VolvoCash.CrossCutting.NetFramework.Identity;
@@ -54,9 +55,9 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
                 await _authenticationAppService.DestroySessionAsync(_applicationUser.GetSessionId());
                 
             }
-            catch
+            catch(Exception ex)
             {
-
+                _ = ex.Message;
             }
             return Ok();
         }

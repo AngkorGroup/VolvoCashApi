@@ -137,6 +137,12 @@ namespace VolvoCash.Application.MainContext.Authentication.Services
         public async Task SendRecoverPasswordEmailToAdmin(string email)
         {
             var admin = await _adminRepository.GetAdminByEmailAsync(email);
+
+            if (admin == null) 
+            {
+                throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidUserEmail));
+            }
+
             var resetPasswordToken = new ResetPasswordToken(admin);
             _resetPasswordTokenRepository.Add(resetPasswordToken);
             await _resetPasswordTokenRepository.UnitOfWork.CommitAsync();

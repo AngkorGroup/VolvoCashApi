@@ -2,6 +2,7 @@
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using System;
 
 namespace VolvoCash.CrossCutting.NetFramework.Utils
 {
@@ -49,7 +50,7 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 //Any exception is ignore to avoid program crash
             }
