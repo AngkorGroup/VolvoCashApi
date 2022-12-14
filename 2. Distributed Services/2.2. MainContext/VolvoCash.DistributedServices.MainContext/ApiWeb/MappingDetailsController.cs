@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Mappings;
 using VolvoCash.Application.MainContext.MappingDetails.Services;
+using VolvoCash.Application.MainContext.MappingHeaders.Services;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
@@ -14,21 +15,24 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
     public class MappingDetailsController : ControllerBase
     {
         #region Members
+        private readonly IMappingHeaderAppService _mappingHeaderAppService;
         private readonly IMappingDetailAppService _mappingDetailAppService;
         #endregion
 
         #region Constructor
-        public MappingDetailsController(IMappingDetailAppService mappingDetailAppService)
+        public MappingDetailsController(IMappingHeaderAppService mappingHeaderAppService,
+            IMappingDetailAppService mappingDetailAppService)
         {
+            _mappingHeaderAppService = mappingHeaderAppService;
             _mappingDetailAppService = mappingDetailAppService;
         }
         #endregion
 
         #region Public Methods
         [HttpGet]
-        public async Task<IActionResult> GetMappingDetails([FromQuery] bool onlyActive = false)
+        public async Task<IActionResult> GetMappingDetailsByMappingHeaderId([FromQuery] int id)
         {
-            return Ok(await _mappingDetailAppService.GetMappingDetails(onlyActive));
+            return Ok(await _mappingHeaderAppService.GetMappingDetails(id));
         }
 
         [HttpGet("{id}")]

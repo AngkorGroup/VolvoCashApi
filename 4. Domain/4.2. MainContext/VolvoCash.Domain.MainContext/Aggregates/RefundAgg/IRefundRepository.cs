@@ -12,5 +12,6 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RefundAgg
         Task<Refund> GetRefund(int id);
         Task<Refund> GetRefundWithLiquidationsAndCharges(int id);
         Task<Refund> GetRefundWithLiquidations(int id);
+        void SendSap(int id);
     }
 }

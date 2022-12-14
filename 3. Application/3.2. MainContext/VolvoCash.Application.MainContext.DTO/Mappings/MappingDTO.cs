@@ -30,17 +30,17 @@ namespace VolvoCash.Application.MainContext.DTO.Mappings
        
         public string Date { get; set; }
        
-        public string Filter { get; set; }
+        public string Filler { get; set; }
        
         public string Version { get; set; }
        
-        public string ReceiverLogicalId { get; set; }
+        public string ReceiverLogicalID { get; set; }
        
-        public string ReceiverComponentId { get; set; }
+        public string ReceiverComponentID { get; set; }
        
-        public string SenderLogicalId { get; set; }
+        public string SenderLogicalID { get; set; }
        
-        public string SenderComponentId { get; set; }
+        public string SenderComponentID { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }

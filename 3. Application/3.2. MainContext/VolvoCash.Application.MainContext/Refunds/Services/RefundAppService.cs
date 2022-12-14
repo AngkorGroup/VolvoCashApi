@@ -67,7 +67,20 @@ namespace VolvoCash.Application.MainContext.Refunds.Services
                 throw new InvalidOperationException(_resources.GetStringResource(LocalizationKeys.Application.exception_InvalidRefundStatusForCancel));
             }
             refund.CancelRefund();
-            await _liquidationRepository.UnitOfWork.CommitAsync();
+            await _refundRepository.UnitOfWork.CommitAsync();
+        }
+
+        public void SendSap(int id)
+        {
+            _refundRepository.SendSap(id);
+        }
+
+        public async Task ResendSap(int id)
+        {
+            var refund = await _refundRepository.GetRefundWithLiquidationsAndCharges(id);
+            refund.RollbackRefundFromSap();
+            await _refundRepository.UnitOfWork.CommitAsync();
+            _refundRepository.SendSap(id);
         }
         #endregion
 

@@ -40,22 +40,22 @@ namespace VolvoCash.Domain.MainContext.Aggregates.MappingAgg
         public string Date { get; set; }
 
         [MaxLength(200)]
-        public string Filter { get; set; }
+        public string Filler { get; set; }
 
         [MaxLength(200)]
         public string Version { get; set; }
 
         [MaxLength(200)]
-        public string ReceiverLogicalId { get; set; }
+        public string ReceiverLogicalID { get; set; }
 
         [MaxLength(200)]
-        public string ReceiverComponentId { get; set; }
+        public string ReceiverComponentID { get; set; }
 
         [MaxLength(200)]
-        public string SenderLogicalId { get; set; }
+        public string SenderLogicalID { get; set; }
 
         [MaxLength(200)]
-        public string SenderComponentId { get; set; }
+        public string SenderComponentID { get; set; }
 
         public DateTime? ArchiveAt { get; set; }
 
@@ -73,8 +73,8 @@ namespace VolvoCash.Domain.MainContext.Aggregates.MappingAgg
         }
 
         public Mapping(string mappingNumber, string name, string type, string description, string company,
-            string feeder, string file, string username, string password, string date, string filter, string version,
-            string receiverLogicalId, string receiverComponentId, string senderLogicalId, string senderComponentId)
+            string feeder, string file, string username, string password, string date, string filler, string version,
+            string receiverLogicalID, string receiverComponentID, string senderLogicalID, string senderComponentID)
         {
             MappingNumber = mappingNumber;
             Name = name;
@@ -86,12 +86,12 @@ namespace VolvoCash.Domain.MainContext.Aggregates.MappingAgg
             Username = username;
             Password = password;
             Date = date;
-            Filter = filter;
+            Filler = filler;
             Version = version;
-            ReceiverLogicalId = receiverLogicalId;
-            ReceiverComponentId = receiverComponentId;
-            SenderLogicalId = senderLogicalId;
-            SenderComponentId = senderComponentId;
+            ReceiverLogicalID = receiverLogicalID;
+            ReceiverComponentID = receiverComponentID;
+            SenderLogicalID = senderLogicalID;
+            SenderComponentID = senderComponentID;
             Status = Status.Active;
         }
         #endregion

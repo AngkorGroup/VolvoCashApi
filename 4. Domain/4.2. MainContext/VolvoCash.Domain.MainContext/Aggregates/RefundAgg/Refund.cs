@@ -88,6 +88,18 @@ namespace VolvoCash.Domain.MainContext.Aggregates.RefundAgg
                 liquidation.LiquidationStatus = LiquidationStatus.Generated;
             }            
         }
+
+        public void RollbackRefundFromSap()
+        {
+            if (RefundStatus == RefundStatus.Accounted)
+            {
+                RefundStatus = RefundStatus.Paid;
+                foreach (var liquidation in Liquidations)
+                {
+                    liquidation.LiquidationStatus = LiquidationStatus.Paid;
+                }
+            }
+        }
         #endregion
     }
 }

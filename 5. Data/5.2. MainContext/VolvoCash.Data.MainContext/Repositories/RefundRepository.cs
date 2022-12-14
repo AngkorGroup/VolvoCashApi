@@ -51,6 +51,17 @@ namespace VolvoCash.Data.MainContext.Repositories
                 includeProperties: "Amount.Currency,BankAccount.Bank,Liquidations",
                 orderBy: lq => lq.OrderByDescending(l => l.Id))).FirstOrDefault();
         }
+
+        public void SendSap(int id)
+        {
+            var company = "001";
+            var branch = "001";
+            var connectedUser = _context._applicationUser.GetName();
+            var userName = string.IsNullOrEmpty(connectedUser) ? "Anonymous" : connectedUser;
+            userName = userName.Substring(0, Math.Min(userName.Length, 10));
+            var command = $"TEL01.PKG_REM_MAPPING_CONTABLE_I.P_REM_MAPPING_CONTABLE('{company}','{branch}','{userName}','{id}');";
+            _context.ExecuteCommand(command);
+        }
         #endregion
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VolvoCash.Application.MainContext.DTO.Mappings;
 using VolvoCash.Application.MainContext.MappingHeaders.Services;
+using VolvoCash.Application.MainContext.Mappings.Services;
 using VolvoCash.DistributedServices.Seedwork.Filters;
 
 namespace VolvoCash.DistributedServices.MainContext.ApiWeb
@@ -14,21 +15,24 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
     public class MappingHeadersController : ControllerBase
     {
         #region Members
+        private readonly IMappingAppService _mappingAppService;
         private readonly IMappingHeaderAppService _mappingHeaderAppService;
         #endregion
 
         #region Constructor
-        public MappingHeadersController(IMappingHeaderAppService mappingHeaderAppService)
+        public MappingHeadersController(IMappingAppService mappingAppService, 
+                                        IMappingHeaderAppService mappingHeaderAppService)
         {
             _mappingHeaderAppService = mappingHeaderAppService;
+            _mappingAppService = mappingAppService;
         }
         #endregion
 
         #region Public Methods
         [HttpGet]
-        public async Task<IActionResult> GetMappingHeaders([FromQuery] bool onlyActive = false)
+        public async Task<IActionResult> GetMappingHeadersByMappingId([FromQuery] int id)
         {
-            return Ok(await _mappingHeaderAppService.GetMappingHeaders(onlyActive));
+            return Ok(await _mappingAppService.GetMappingHeaders(id));
         }
 
         [HttpGet("{id}")]
@@ -46,7 +50,14 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
         [HttpPut]
         public async Task<IActionResult> PutMappingHeader([FromBody] MappingHeaderDTO mappingHeaderDTO)
         {
-            return Ok(await _mappingHeaderAppService.ModifyAsync(mappingHeaderDTO));
+            if (mappingHeaderDTO.Id == 0)
+            {
+                return Ok(await _mappingHeaderAppService.AddAsync(mappingHeaderDTO));
+            }
+            else
+            {
+                return Ok(await _mappingHeaderAppService.ModifyAsync(mappingHeaderDTO));
+            }            
         }
 
         [HttpDelete("{id}")]

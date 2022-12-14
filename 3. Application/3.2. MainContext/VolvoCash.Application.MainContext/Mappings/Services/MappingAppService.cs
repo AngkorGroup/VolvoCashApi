@@ -42,8 +42,8 @@ namespace VolvoCash.Application.MainContext.Mappings.Services
         {
             var mapping = new Mapping(mappingDTO.MappingNumber, mappingDTO.Name, mappingDTO.Type, mappingDTO.Description, mappingDTO.Company,
                                       mappingDTO.Feeder, mappingDTO.File, mappingDTO.Username, mappingDTO.Password, mappingDTO.Date, 
-                                      mappingDTO.Filter, mappingDTO.Version, mappingDTO.ReceiverLogicalId, mappingDTO.ReceiverComponentId, 
-                                      mappingDTO.SenderLogicalId, mappingDTO.SenderComponentId);
+                                      mappingDTO.Filler, mappingDTO.Version, mappingDTO.ReceiverLogicalID, mappingDTO.ReceiverComponentID, 
+                                      mappingDTO.SenderLogicalID, mappingDTO.SenderComponentID);
             _mappingRepository.Add(mapping);
             await _mappingRepository.UnitOfWork.CommitAsync();
             return mapping.ProjectedAs<MappingDTO>();
@@ -62,12 +62,12 @@ namespace VolvoCash.Application.MainContext.Mappings.Services
             mapping.Username = mappingDTO.Username;
             mapping.Password = mappingDTO.Password;
             mapping.Date = mappingDTO.Date;
-            mapping.Filter = mappingDTO.Filter;
+            mapping.Filler = mappingDTO.Filler;
             mapping.Version = mappingDTO.Version;
-            mapping.ReceiverLogicalId = mappingDTO.ReceiverLogicalId;
-            mapping.ReceiverComponentId = mappingDTO.ReceiverComponentId;
-            mapping.SenderLogicalId = mappingDTO.SenderLogicalId;
-            mapping.SenderComponentId = mappingDTO.SenderComponentId;
+            mapping.ReceiverLogicalID = mappingDTO.ReceiverLogicalID;
+            mapping.ReceiverComponentID = mappingDTO.ReceiverComponentID;
+            mapping.SenderLogicalID = mappingDTO.SenderLogicalID;
+            mapping.SenderComponentID = mappingDTO.SenderComponentID;
             await _mappingRepository.UnitOfWork.CommitAsync();
             return mappingDTO;
         }

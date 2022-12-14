@@ -11,7 +11,7 @@ namespace VolvoCash.Data.Seedwork.UnitOfWork
 {
     public class BaseContext : DbContext, IQueryableUnitOfWork
     {
-        private readonly IApplicationUser _applicationUser;
+        public readonly IApplicationUser _applicationUser;
 
         #region Constructor
         public BaseContext(IApplicationUser applicationUser)
