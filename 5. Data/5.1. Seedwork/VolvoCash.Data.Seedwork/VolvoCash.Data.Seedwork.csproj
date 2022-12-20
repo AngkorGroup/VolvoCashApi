@@ -9,6 +9,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.80" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\4. Domain\4.1. Seedwork\VolvoCash.Domain.Seedwork\VolvoCash.Domain.Seedwork.csproj" />

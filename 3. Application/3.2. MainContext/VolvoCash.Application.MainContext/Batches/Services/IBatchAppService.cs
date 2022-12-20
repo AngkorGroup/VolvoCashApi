@@ -20,5 +20,9 @@ namespace VolvoCash.Application.MainContext.Batches.Services
         Task<List<BatchErrorDTO>> PerformLoadsFromFileStreamAsync(string fileName, Stream stream);
         Task ExtendExpiredDate(int id, DateTime newExpiredDate);
         #endregion
+
+        #region ConsoleApp 
+        Task PerformBatchExpiration();
+        #endregion
     }
 }

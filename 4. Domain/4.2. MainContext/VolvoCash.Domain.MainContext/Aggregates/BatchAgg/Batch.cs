@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using VolvoCash.CrossCutting.Localization;
 using VolvoCash.Domain.MainContext.Aggregates.BusinessAreaAgg;
 using VolvoCash.Domain.MainContext.Aggregates.CardAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ClientAgg;
 using VolvoCash.Domain.MainContext.Aggregates.ContactAgg;
 using VolvoCash.Domain.MainContext.Aggregates.RechargeTypeAgg;
+using VolvoCash.Domain.MainContext.Enums;
 using VolvoCash.Domain.Seedwork;
 
 namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
@@ -113,5 +116,32 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
             LineContent = lineContent;
         }
         #endregion
+
+        public void PerformExpiration()
+        {
+            var messages = LocalizationFactory.CreateLocalResources();
+            var cardBatches = CardBatches.Where(cb => cb.Balance.Value > 0);
+            var description = string.Format(messages.GetStringResource(LocalizationKeys.Domain.messages_BalanceExpirationMessageDescription),
+                                            BusinessArea?.Name, TPChasis);
+            var displayName = string.Format(messages.GetStringResource(LocalizationKeys.Domain.messages_BalanceExpirationMessageDisplayName),
+                                            BusinessArea?.Name, TPChasis);
+
+            foreach (var cardBatch in cardBatches)
+            {
+                var amountToSubstract = cardBatch.Balance;
+                var movement = new Movement(
+                   amountToSubstract.Opposite(),
+                   description,
+                   displayName,
+                   MovementType.CVT);
+                var card = cardBatch.Card;               
+                card.Movements.Add(movement);
+                card.Balance = card.Balance.Substract(amountToSubstract);
+                var batchMovement = new BatchMovement(amountToSubstract.Opposite(), this, movement);
+                BatchMovements.Add(batchMovement);
+                cardBatch.Balance = new Money(Balance.Currency, 0);
+            }
+            Balance = new Money(Balance.Currency, 0);          
+        }
     }
 }

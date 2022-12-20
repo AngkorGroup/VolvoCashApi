@@ -115,7 +115,9 @@
             exception_PerformTransferOriginCardIsNull,
             exception_PerformTransferDestinyCardIsNull,
             exception_BankAccountIsNull,
-            exception_NoLiquidationsToGenerateFile
+            exception_NoLiquidationsToGenerateFile,
+            messages_BalanceExpirationMessageDescription,
+            messages_BalanceExpirationMessageDisplayName
         }
     }
 }

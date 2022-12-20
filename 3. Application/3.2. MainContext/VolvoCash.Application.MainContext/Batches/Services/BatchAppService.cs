@@ -443,6 +443,23 @@ namespace VolvoCash.Application.MainContext.Cards.Services
         }
         #endregion
 
+        #region ConsoleApp 
+        public async Task PerformBatchExpiration()
+        {
+            var cutDate = DateTime.Now;
+            var batchesToExpire = _batchRepository.Filter( filter: (b) => b.Balance.Value > 0 && b.ExpiresAtExtent < cutDate);
+            foreach(var batch in batchesToExpire)
+            {
+                var fullBatch = _batchRepository.Filter(
+                   filter: (b) => b.Id == batch.Id,
+                   includeProperties: "CardBatches.Balance.Currency,CardBatches.Card.Movements,BatchMovements,Balance.Currency,BusinessArea"
+               ).FirstOrDefault();
+                fullBatch.PerformExpiration();
+                await _batchRepository.UnitOfWork.CommitAsync();
+            }           
+        }
+        #endregion
+
         #region IDisposable Members
         public void Dispose()
         {

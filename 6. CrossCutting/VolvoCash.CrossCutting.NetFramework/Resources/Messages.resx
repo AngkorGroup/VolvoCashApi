@@ -360,4 +360,10 @@
   <data name="Application_exception_InvalidUserEmail" xml:space="preserve">
     <value>El correo ingresado no se encuentra registrado en el sistema.</value>
   </data>
+  <data name="Domain_messages_BalanceExpirationMessageDescription" xml:space="preserve">
+    <value>Expiración {0} - {1}</value>
+  </data>
+  <data name="Domain_messages_BalanceExpirationMessageDisplayName" xml:space="preserve">
+    <value>Expiración {0} - {1}</value>
+  </data>
 </root>

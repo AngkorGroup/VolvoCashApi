@@ -34,6 +34,6 @@ namespace VolvoCash.Data.Seedwork
         ///</param>
         /// <param name="parameters">A vector of parameters values</param>
         /// <returns>The number of affected records</returns>
-        int ExecuteCommand(string sqlCommand, params object[] parameters);
+        int ExecuteCommand(string sqlCommand, Dictionary<string, string> parameters);
     }
 }

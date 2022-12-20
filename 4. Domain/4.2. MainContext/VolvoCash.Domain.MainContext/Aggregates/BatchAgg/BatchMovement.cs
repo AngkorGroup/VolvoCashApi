@@ -41,7 +41,7 @@ namespace VolvoCash.Domain.MainContext.Aggregates.BatchAgg
             Batch = batch;
         }
 
-        public BatchMovement(Money amount, Batch batch,Movement movement)
+        public BatchMovement(Money amount, Batch batch, Movement movement)
         {
             Amount = amount;
             Batch = batch;

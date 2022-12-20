@@ -2,6 +2,6 @@
 {
     public interface ISMSManager
     {
-        string SendSMS(string to, string body);
+        void SendSMS(string to, string body);
     }
 }

@@ -89,6 +89,14 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             await _batchAppService.ExtendExpiredDate(id, newExpiredDate);
             return Ok();
         }
+
+        [AllowAnonymous]
+        [HttpPost("expire_batches")]
+        public ActionResult ExpireBatches()
+        {
+           _batchAppService.PerformBatchExpiration();
+           return Ok();
+        }
         #endregion
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -171,10 +173,22 @@ namespace VolvoCash.Data.Seedwork.UnitOfWork
             throw new NotImplementedException();
         }
 
-        public virtual int ExecuteCommand(string sqlCommand, params object[] parameters)
+        public virtual int ExecuteCommand(string sqlCommand, Dictionary<string,string> parameters)
         {
-            //Not implemented yet
-            throw new NotImplementedException();
+            var connection = Database.GetDbConnection();
+            connection.Open();
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = sqlCommand;
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            foreach(var param in parameters)
+            {
+                var oracleParameter = new OracleParameter() { ParameterName = param.Key, OracleDbType = OracleDbType.Varchar2,
+                                                              Value = param.Value, Direction = ParameterDirection.Input };
+                cmd.Parameters.Add(oracleParameter);
+            }
+
+            return cmd.ExecuteNonQuery();
         }
 
         public virtual void Refresh(object entity)

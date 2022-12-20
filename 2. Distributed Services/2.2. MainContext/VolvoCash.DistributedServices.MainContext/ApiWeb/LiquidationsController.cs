@@ -54,6 +54,7 @@ namespace VolvoCash.DistributedServices.MainContext.ApiWeb
             return Ok(await _liquidationAppService.GetLiquidationCharges(id));
         }
 
+        [AllowAnonymous]
         [HttpGet("generate")]
         public async Task<IActionResult> GenerateLiquidations()
         {

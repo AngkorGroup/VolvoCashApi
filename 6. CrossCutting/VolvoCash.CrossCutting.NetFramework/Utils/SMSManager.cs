@@ -1,6 +1,10 @@
 ﻿using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace VolvoCash.CrossCutting.NetFramework.Utils
 {
@@ -18,35 +22,37 @@ namespace VolvoCash.CrossCutting.NetFramework.Utils
         #endregion
 
         #region Public Methods
-        public string SendSMS(string to, string body)
+        public void SendSMS(string to, string body)
         {
             try
             {
-                var accountSid = _configuration["TwilioSMS:AccountSid"];
-                var authToken = _configuration["TwilioSMS:AuthToken"];
+                var mockSMS = bool.Parse(_configuration["SMS:ShouldMockSMS"]);
+                if (mockSMS)
+                    return;
 
-                TwilioClient.Init(accountSid, authToken);
+                var username = _configuration["SMS:Username"];
+                var password = _configuration["SMS:Password"];
+                var baseUrl = _configuration["SMS:BaseUrl"];
+                var sendSmsUri = _configuration["SMS:SendSmsUri"];
+                var defaultCountryCode = _configuration["SMS:DefaultCountryCode"];
+                var base64Credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + password));
 
                 if (!to.Contains('+'))
                 {
-                    to = _configuration["TwilioSMS:DefaultCountryCode"] + to;
+                    to = defaultCountryCode + to;
                 }
-
-                var from = _configuration["TwilioSMS:From"];
-
-                var message = MessageResource.Create(
-                    body: body,
-                    from: new Twilio.Types.PhoneNumber(from),
-                    to: new Twilio.Types.PhoneNumber(to)
-                );
-
-                return message.Sid;
+                
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Add("authorization", "Basic " + base64Credentials);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                to.Replace("+", "");
+                var content = new StringContent("{\"to\":[\"" + to + "\"],\"text\":\"" + body + "\"}", Encoding.UTF8, "application/json");
+                var result = client.PostAsync(sendSmsUri, content).Result;
             }
             catch
             {
-                //Ignore any connectivity problem with Twilio API
-            }
-            return null;            
+            }         
         }
         #endregion
     }

@@ -32,8 +32,12 @@ namespace VolvoCash.Data.MainContext.Repositories
                     && a.Status == Status.Active,
                     includeProperties: "Dealer,RoleAdmins.Role.RoleMenus.Menu.MenuParent")
                 ).FirstOrDefault();
-            admin.SetMenuOptions();
-            return admin;
+            if (admin != null)
+            {
+                admin.SetMenuOptions();
+                return admin;
+            }
+            return null;          
         }
 
         public async Task<Admin> GetAdminByEmailAsync(string email)
